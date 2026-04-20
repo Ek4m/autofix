@@ -22,7 +22,7 @@ export const createRegisterSchema = (requireMechanic: boolean) => {
       .required("Şifrəni təsdiqləyin")
       .oneOf([yup.ref("password")], "Şifrələr uyğun deyil"),
 
-    phone: yup
+    phoneNumber: yup
       .string()
       .required("Telefon nömrəsi tələb olunur")
       .min(10, "Telefon nömrəsi düzgün deyil"),
@@ -31,7 +31,7 @@ export const createRegisterSchema = (requireMechanic: boolean) => {
     mechanic: requireMechanic
       ? yup
           .object({
-            specialization: yup.string().required("İxtisas tələb olunur"),
+            profession: yup.string().required("İxtisas tələb olunur"),
             garageName: yup.string().required("Qaraj adı tələb olunur"),
             experienceYears: yup
               .number()

@@ -1,5 +1,5 @@
 import { httpClient } from "@/config/httpClient";
-import { LoginForm } from "./types/dtos";
+import { LoginForm, RegisterForm } from "./types/dtos";
 
 export const loginService = async (body: LoginForm) => {
   try {
@@ -12,4 +12,12 @@ export const loginService = async (body: LoginForm) => {
     console.error("Login error:", error);
     throw error;
   }
+};
+
+export const registerService = async (body: RegisterForm) => {
+  const response = await httpClient("/api/register", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+  return response;
 };

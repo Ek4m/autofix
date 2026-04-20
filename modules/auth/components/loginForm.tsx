@@ -22,9 +22,14 @@ export default function LoginView() {
   const { isSubmitting } = formState;
 
   const handleLogin: SubmitHandler<LoginForm> = async (data: LoginForm) => {
-    const response = await loginService(data);
-    console.log(response);
-    toast.success("Uğurla daxil oldunuz!");
+    try {
+      await loginService(data);
+      toast.success("Uğurla daxil oldunuz!");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
   };
 
   return (

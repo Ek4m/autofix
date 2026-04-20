@@ -38,7 +38,7 @@ const RegisterMechanic: FC<{
         )}
       />
       <Controller
-        name={"mechanic.specialization"}
+        name={"mechanic.profession"}
         control={control}
         render={({ field, fieldState }) => (
           <SelectField

@@ -6,9 +6,9 @@ export interface LoginForm {
 export interface RegisterForm extends LoginForm {
   fullName: string;
   passwordConfirm: string;
-  phone: string;
+  phoneNumber: string;
   mechanic: {
-    specialization: string;
+    profession: string;
     garageName: string;
     experienceYears: number;
     city: string;

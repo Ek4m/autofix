@@ -14,6 +14,8 @@ import RegisterMechanic from "./registerMechanic";
 
 import { RegisterForm } from "../types/dtos";
 import { createRegisterSchema } from "../schemas/register";
+import { registerService } from "../services";
+import { toast } from "sonner";
 
 export default function RegisterView() {
   const tAuth = useTranslations("auth");
@@ -35,7 +37,13 @@ export default function RegisterView() {
   const handleSignupUser: SubmitHandler<RegisterForm> = async (
     data: RegisterForm,
   ) => {
-    console.log(data);
+    try {
+      await registerService(data);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
   };
 
   return (
@@ -135,13 +143,12 @@ export default function RegisterView() {
           )}
         />
         <Controller
-          name="phone"
+          name="phoneNumber"
           control={control}
           render={({ field, fieldState }) => (
             <PhoneField
               {...field}
               hasError={Boolean(fieldState.error)}
-              label={tAuth("phone")}
               helperText={fieldState.error?.message}
             />
           )}
