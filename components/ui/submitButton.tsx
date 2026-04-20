@@ -6,7 +6,7 @@ const SubmitButton: FC<ButtonProps> = (props) => {
     <Button
       className="!btn-primary w-full py-3"
       {...props}
-      sx={{ color: "white", p: 2, borderRadius: 2 }}
+      sx={{ color: "white", p: 2, borderRadius: 2, fontWeight: "500" }}
     >
       {props.title}
     </Button>

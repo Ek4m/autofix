@@ -1,25 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import AppLogo from "@/components/ui/AppLogo";
-import { LOCALES, useLocale } from "@/context/LocaleContext";
-import { FiChevronDown } from "react-icons/fi";
-import { FaShieldAlt, FaBolt, FaStar, FaCheck } from "react-icons/fa";
+import { FaShieldAlt, FaBolt, FaStar } from "react-icons/fa";
 
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { locale, setLocale } = useLocale();
-  const [langOpen, setLangOpen] = useState(false);
-  const currentLocale = LOCALES.find((l) => l.code === locale) ?? LOCALES[0];
-
-  const handleLocaleChange = (newLocale: typeof locale) => {
-    setLocale(newLocale);
-    setLangOpen(false);
-  };
-
   return (
     <div className="min-h-screen flex bg-brand-bg">
       {/* Left brand panel */}
@@ -103,36 +92,6 @@ export default function AuthLayout({
             <span className="font-bold text-base text-navy">AutoFixHub</span>
           </Link>
           <div className="lg:hidden" />
-          {/* <div className="relative ml-auto">
-            <button
-              onClick={() => setLangOpen(!langOpen)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-brand-muted-fg hover:bg-brand-muted transition-all duration-150"
-            >
-              <span>{currentLocale.flag}</span>
-              <span>{currentLocale.label}</span>
-              <FiChevronDown
-                size={13}
-                className={`transition-transform duration-150 ${langOpen ? "rotate-180" : ""}`}
-              />
-            </button>
-            {langOpen && (
-              <div className="absolute right-0 top-full mt-1.5 bg-white border border-brand-border rounded-xl shadow-card py-1 min-w-[110px] z-50 animate-fade-in">
-                {LOCALES.map((l) => (
-                  <button
-                    key={l.code}
-                    onClick={() => handleLocaleChange(l.code)}
-                    className={`w-full flex items-center gap-2.5 px-3.5 py-2 text-sm transition-colors duration-100 hover:bg-brand-muted ${locale === l.code ? "font-semibold text-primary" : "text-brand-fg"}`}
-                  >
-                    <span>{l.flag}</span>
-                    <span>{l.label}</span>
-                    {locale === l.code && (
-                      <FaCheck size={13} className="ml-auto text-primary" />
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div> */}
         </div>
         <div className="flex-1 flex items-start justify-center px-6 py-10">
           <div className="w-full max-w-md">{children}</div>

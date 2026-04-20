@@ -10,6 +10,7 @@ import TextField from "@/components/ui/textField";
 import PasswordField from "@/components/ui/passwordField";
 import SubmitButton from "@/components/ui/submitButton";
 import { loginSchema } from "../schemas/login";
+import { loginService } from "../services";
 
 export default function LoginView() {
   const tAuth = useTranslations("auth");
@@ -21,8 +22,9 @@ export default function LoginView() {
   const { isSubmitting } = formState;
 
   const handleLogin: SubmitHandler<LoginForm> = async (data: LoginForm) => {
-    console.log("Login Data:", data);
-    // toast.success("Uğurla daxil oldunuz!");
+    const response = await loginService(data);
+    console.log(response);
+    toast.success("Uğurla daxil oldunuz!");
   };
 
   return (
@@ -46,7 +48,7 @@ export default function LoginView() {
       <form
         {...formMethods}
         onSubmit={handleSubmit(handleLogin)}
-        className="space-y-4"
+        className="space-y-4 animate-fade-in"
       >
         <Controller
           name="email"

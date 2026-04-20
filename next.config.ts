@@ -10,6 +10,9 @@ const nextConfig: NextConfig = withNextIntl({
       permanent: false,
     },
   ],
+  images: {
+    qualities: [75, 85],
+  },
 });
 
 export default nextConfig;

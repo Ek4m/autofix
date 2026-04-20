@@ -12,13 +12,12 @@ interface AppLogoProps {
 }
 
 const AppLogo = memo(function AppLogo({
-  src = "/assets/images/app_logo.png",
+  src = "/images/app_logo.png",
   iconName = "SparklesIcon",
   size = 64,
   className = "",
   onClick,
 }: AppLogoProps) {
-  // Memoize className calculation
   const containerClassName = useMemo(() => {
     const classes = ["flex items-center"];
     if (onClick)
