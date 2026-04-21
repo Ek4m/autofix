@@ -25,7 +25,7 @@ const RegisterMechanic: FC<{
   return (
     <>
       <Controller
-        name="mechanic.garageName"
+        name="mechanic.objectName"
         control={control}
         render={({ field, fieldState }) => (
           <TextField

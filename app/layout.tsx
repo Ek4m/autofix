@@ -6,6 +6,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getLocale } from "next-intl/server";
 import { LocaleProvider } from "@/context/LocaleContext";
 import type { Locale } from "@/context/LocaleContext";
+import { AuthProvider } from "@/modules/auth/contexts";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -32,7 +33,7 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <LocaleProvider initialLocale={locale as Locale}>
-            {children}
+            <AuthProvider>{children}</AuthProvider>
             <Toaster position="bottom-right" richColors />
           </LocaleProvider>
         </NextIntlClientProvider>

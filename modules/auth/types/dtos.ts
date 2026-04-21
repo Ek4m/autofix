@@ -9,7 +9,7 @@ export interface RegisterForm extends LoginForm {
   phoneNumber: string;
   mechanic: {
     profession: string;
-    garageName: string;
+    objectName: string;
     experienceYears: number;
     city: string;
   } | null;

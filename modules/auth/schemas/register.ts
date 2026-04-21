@@ -32,7 +32,7 @@ export const createRegisterSchema = (requireMechanic: boolean) => {
       ? yup
           .object({
             profession: yup.string().required("İxtisas tələb olunur"),
-            garageName: yup.string().required("Qaraj adı tələb olunur"),
+            objectName: yup.string().required("Qaraj adı tələb olunur"),
             experienceYears: yup
               .number()
               .typeError("Rəqəm daxil edin")

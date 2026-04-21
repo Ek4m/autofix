@@ -16,6 +16,7 @@ import { RegisterForm } from "../types/dtos";
 import { createRegisterSchema } from "../schemas/register";
 import { registerService } from "../services";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function RegisterView() {
   const tAuth = useTranslations("auth");
@@ -25,6 +26,7 @@ export default function RegisterView() {
     resolver: yupResolver(createRegisterSchema(role === "mechanic")),
   });
   const { setValue } = formMethods;
+  const router = useRouter();
 
   useEffect(() => {
     if (role === "user") {
@@ -39,6 +41,8 @@ export default function RegisterView() {
   ) => {
     try {
       await registerService(data);
+      router.push("/auth/login");
+      toast.success("Hesabınız uğurla yaradıldı! İndi daxil ola bilərsiniz.");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

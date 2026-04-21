@@ -10,5 +10,5 @@ export const httpClient = async (url: string, options: RequestInit) => {
   if ("ok" in response && !response.ok) {
     throw new Error(result.message || "HTTP error");
   }
-  return result;
+  return result.data;
 };

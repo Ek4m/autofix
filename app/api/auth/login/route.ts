@@ -2,7 +2,11 @@ import { AppDataSource, initDb } from "@/config/db";
 import {} from "crypto";
 import { User } from "@/config/db/entities/User";
 import { NextResponse } from "next/server";
-import { comparePassword } from "@/modules/auth/utils";
+import {
+  comparePassword,
+  generateToken,
+  setAuthCookie,
+} from "@/modules/auth/utils";
 
 export async function POST(request: Request) {
   try {
@@ -22,6 +26,8 @@ export async function POST(request: Request) {
         { message: "İstifadəçi adı və ya parol səhvdir" },
         { status: 401 },
       );
+    const token = generateToken(Number(user.id));
+    await setAuthCookie(token);
     return NextResponse.json({ message: "Giriş uğurlu" }, { status: 200 });
   } catch (error) {
     console.error("Login error:", error);

@@ -11,20 +11,25 @@ import PasswordField from "@/components/ui/passwordField";
 import SubmitButton from "@/components/ui/submitButton";
 import { loginSchema } from "../schemas/login";
 import { loginService } from "../services";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../contexts";
 
 export default function LoginView() {
   const tAuth = useTranslations("auth");
+  const { getUserInfo } = useAuth();
   const formMethods = useForm<LoginForm>({
     resolver: yupResolver(loginSchema),
   });
-
+  const router = useRouter();
   const { control, handleSubmit, formState } = formMethods;
   const { isSubmitting } = formState;
 
   const handleLogin: SubmitHandler<LoginForm> = async (data: LoginForm) => {
     try {
       await loginService(data);
+      await getUserInfo();
       toast.success("Uğurla daxil oldunuz!");
+      router.push("/");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

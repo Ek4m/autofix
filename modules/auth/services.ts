@@ -3,7 +3,7 @@ import { LoginForm, RegisterForm } from "./types/dtos";
 
 export const loginService = async (body: LoginForm) => {
   try {
-    const response = await httpClient("/api/login", {
+    const response = await httpClient("/api/auth/login", {
       method: "POST",
       body: JSON.stringify(body),
     });
@@ -15,9 +15,16 @@ export const loginService = async (body: LoginForm) => {
 };
 
 export const registerService = async (body: RegisterForm) => {
-  const response = await httpClient("/api/register", {
+  const response = await httpClient("/api/auth/register", {
     method: "POST",
     body: JSON.stringify(body),
+  });
+  return response;
+};
+
+export const getUserInfoService = async () => {
+  const response = await httpClient("/api/auth/info", {
+    method: "GET",
   });
   return response;
 };
