@@ -1,12 +1,13 @@
 import React from "react";
 import type { Metadata, Viewport } from "next";
-import "../styles/index.css";
 import { Toaster } from "sonner";
+
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getLocale } from "next-intl/server";
 import { LocaleProvider } from "@/context/LocaleContext";
 import type { Locale } from "@/context/LocaleContext";
 import { AuthProvider } from "@/modules/auth/contexts";
+import "../styles/index.css";
 
 export const viewport: Viewport = {
   width: "device-width",

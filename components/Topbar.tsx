@@ -13,12 +13,7 @@ import {
   HiOutlineArrowRightOnRectangle,
   HiOutlineUserPlus,
 } from "react-icons/hi2";
-
-interface TopbarProps {
-  isLoggedIn?: boolean;
-  userRole?: "user" | "mechanic";
-  userName?: string;
-}
+import { useAuth } from "@/modules/auth/contexts";
 
 const NAV_LINKS = [
   { href: "/car-problems-feed", labelKey: "Problemlər", icon: HiOutlineTruck },
@@ -29,13 +24,10 @@ const NAV_LINKS = [
   },
 ];
 
-export default function Topbar({
-  isLoggedIn = false,
-  userRole,
-  userName,
-}: TopbarProps) {
+export default function Topbar() {
   const pathname = usePathname();
   const { locale, setLocale } = useLocale();
+  const { user, isMechanic } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const currentLocale = LOCALES.find((l) => l.code === locale) ?? LOCALES[0];
@@ -115,12 +107,12 @@ export default function Topbar({
               )}
             </div>
 
-            {isLoggedIn ? (
+            {user ? (
               <div className="flex items-center gap-2">
                 <span className="hidden sm:block text-sm font-medium text-brand-fg">
-                  {userName}
+                  {user?.fullName}
                 </span>
-                {userRole === "mechanic" && (
+                {isMechanic && (
                   <span className="hidden sm:flex items-center gap-1 bg-primary-DEFAULT/10 text-primary-DEFAULT text-xs font-semibold rounded-full px-2.5 py-0.5">
                     <HiOutlineWrenchScrewdriver size={10} /> Mexanik
                   </span>
@@ -184,7 +176,7 @@ export default function Topbar({
                 </Link>
               );
             })}
-            {!isLoggedIn && (
+            {!user && (
               <div className="pt-2 border-t border-brand-border space-y-2">
                 <Link
                   href="/auth/login"

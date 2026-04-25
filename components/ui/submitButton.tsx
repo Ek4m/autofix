@@ -4,9 +4,16 @@ import React, { FC } from "react";
 const SubmitButton: FC<ButtonProps> = (props) => {
   return (
     <Button
-      className="!btn-primary w-full py-3"
+      className="w-full py-3"
       {...props}
-      sx={{ color: "white", p: 2, borderRadius: 2, fontWeight: "500" }}
+      sx={{
+        p: 2,
+        borderRadius: 2,
+        fontWeight: "500",
+        color: props.variant === "contained" ? "white" : "#E84B2F",
+        backgroundColor: props.variant === "contained" ? "#E84B2F" : "white",
+        borderColor: props.variant === "outlined" ? "#E84B2F" : "white",
+      }}
     >
       {props.title}
     </Button>

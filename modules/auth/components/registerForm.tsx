@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { FaCar, FaWrench } from "react-icons/fa";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 import TextField from "@/components/ui/textField";
 import PhoneField from "@/components/ui/phoneField";
@@ -15,8 +17,6 @@ import RegisterMechanic from "./registerMechanic";
 import { RegisterForm } from "../types/dtos";
 import { createRegisterSchema } from "../schemas/register";
 import { registerService } from "../services";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 export default function RegisterView() {
   const tAuth = useTranslations("auth");

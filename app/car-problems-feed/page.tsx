@@ -1,6 +1,12 @@
 import React from "react";
-import CarProblemsFeedScreen from "./components/CarProblemsFeedScreen";
+import Topbar from "@/components/Topbar";
+import HomeMain from "@/modules/problems/components/blocks/home";
 
 export default function CarProblemsFeedPage() {
-  return <CarProblemsFeedScreen />;
+  return (
+    <div className="min-h-screen bg-brand-bg">
+      <Topbar />
+      <HomeMain />
+    </div>
+  );
 }
