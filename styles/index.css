@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -31,24 +31,24 @@
   }
 
   body {
-    font-family: 'DM Sans', sans-serif;
+    font-family: "DM Sans", sans-serif;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
     -webkit-font-smoothing: antialiased;
   }
 
   .font-mono {
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: "IBM Plex Mono", monospace;
   }
 }
 
 @layer components {
   .btn-primary {
     @apply text-white font-semibold rounded-lg px-5 py-2.5 text-sm transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
-    background-color: #E84B2F;
+    background-color: #e84b2f;
   }
   .btn-primary:hover {
-    background-color: #C73820;
+    background-color: #c73820;
   }
 
   .btn-secondary {
@@ -73,7 +73,7 @@
     border: 1px solid hsl(var(--border));
   }
   .input-field:focus {
-    border-color: #E84B2F;
+    border-color: #e84b2f;
     box-shadow: 0 0 0 2px rgba(232, 75, 47, 0.3);
   }
   .input-field::placeholder {
@@ -87,16 +87,16 @@
 
   .badge-premium {
     @apply inline-flex items-center gap-1 text-xs font-semibold rounded-full px-2.5 py-0.5;
-    background-color: #FFFBEB;
-    color: #B45309;
-    border: 1px solid #FCD34D;
+    background-color: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fcd34d;
   }
 
   .badge-verified {
     @apply inline-flex items-center gap-1 text-xs font-semibold rounded-full px-2.5 py-0.5;
-    background-color: #ECFDF5;
+    background-color: #ecfdf5;
     color: #047857;
-    border: 1px solid #6EE7B7;
+    border: 1px solid #6ee7b7;
   }
 
   .badge-status {
@@ -106,12 +106,13 @@
   .filter-chip {
     @apply inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium cursor-pointer transition-all duration-150 select-none;
     border: 1px solid hsl(var(--border));
+    font-size: 12px;
   }
 
   .filter-chip-active {
     @apply text-white;
-    background-color: #E84B2F;
-    border-color: #E84B2F;
+    background-color: #e84b2f;
+    border-color: #e84b2f;
   }
 
   .filter-chip-inactive {
@@ -120,8 +121,8 @@
     border: 1px solid hsl(var(--border));
   }
   .filter-chip-inactive:hover {
-    color: #E84B2F;
-    border-color: #E84B2F;
+    color: #e84b2f;
+    border-color: #e84b2f;
   }
 
   .skeleton {
@@ -131,8 +132,8 @@
 
   .tab-active {
     @apply font-semibold;
-    color: #E84B2F;
-    border-bottom: 2px solid #E84B2F;
+    color: #e84b2f;
+    border-bottom: 2px solid #e84b2f;
   }
 
   .tab-inactive {

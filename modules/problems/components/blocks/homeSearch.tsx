@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import React, { FC, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import {
   HiCheckCircle,
   HiChevronDown,
@@ -8,6 +8,7 @@ import {
 } from "react-icons/hi";
 import { HiArrowsUpDown, HiOutlineXMark } from "react-icons/hi2";
 import categoryList from "@/data/categories.json";
+import { Typography } from "@mui/material";
 
 const SORT_OPTIONS = [
   { key: "newest", labelKey: "newest" },
@@ -23,11 +24,20 @@ const HomeSearch: FC<{
 }> = ({ activeCategory, premiumOnly, setPremiumOnly, setActiveCategory }) => {
   const [search, setSearch] = useState("");
   const [sortOpen, setSortOpen] = useState(false);
+  const [parentCategory, setParentCategory] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState("newest");
 
   const tFeed = useTranslations("feed");
   const currentSortLabel =
     SORT_OPTIONS.find((s) => s.key === sortBy)?.labelKey ?? "newest";
+
+  const childCategories = useMemo(() => {
+    if (!parentCategory) return null;
+    const selectedParent = categoryList.find(
+      (c) => c.id === Number(parentCategory),
+    );
+    return selectedParent?.subcategories;
+  }, [parentCategory]);
 
   return (
     <div className="card-surface p-4 mb-6">
@@ -107,14 +117,14 @@ const HomeSearch: FC<{
           {tFeed("filter.premium")}
         </button>
       </div>
-
-      <div className="flex gap-2 mt-4 overflow-x-auto pb-1 scrollbar-hide">
+      <Typography sx={{ mt: 2, fontSize: 15 }}>Kategoriya seçin</Typography>
+      <div className="flex gap-2 mt-4 flex-wrap pb-1 scrollbar-hide">
         {categoryList.map((cat) => (
           <button
             key={`cat-${cat.id}`}
-            onClick={() => setActiveCategory(String(cat.id))}
+            onClick={() => setParentCategory(String(cat.id))}
             className={`filter-chip whitespace-nowrap shrink-0 ${
-              activeCategory === String(cat.id)
+              parentCategory === String(cat.id)
                 ? "filter-chip-active"
                 : "filter-chip-inactive"
             }`}
@@ -123,6 +133,28 @@ const HomeSearch: FC<{
           </button>
         ))}
       </div>
+      {childCategories && (
+        <>
+          <Typography sx={{ mt: 2, fontSize: 15 }}>
+            Sub-kategoriya seçin
+          </Typography>
+          <div className="flex gap-2 mt-4 flex-wrap pb-1 scrollbar-hide">
+            {childCategories.map((cat) => (
+              <button
+                key={`cat-${cat.id}`}
+                onClick={() => setActiveCategory(String(cat.id))}
+                className={`filter-chip whitespace-nowrap shrink-0 ${
+                  activeCategory === String(cat.id)
+                    ? "filter-chip-active"
+                    : "filter-chip-inactive"
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
