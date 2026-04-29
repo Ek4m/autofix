@@ -8,7 +8,7 @@ export interface RegisterForm extends LoginForm {
   passwordConfirm: string;
   phoneNumber: string;
   mechanic: {
-    profession: string;
+    profession: string[];
     objectName: string;
     experienceYears: number;
     city: string;

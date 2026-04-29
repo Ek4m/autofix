@@ -184,7 +184,7 @@ export default function RegisterView() {
           )}
         />
         {role === "mechanic" && <RegisterMechanic control={control} />}
-        <SubmitButton title={tAuth("signup")} type="submit" />
+        <SubmitButton variant="contained" title={tAuth("signup")} type="submit" />
       </form>
       <p className="mt-8 text-center text-sm text-brand-muted-fg">
         {tAuth("has_account")}{" "}

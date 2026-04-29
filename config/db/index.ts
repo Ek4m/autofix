@@ -1,5 +1,6 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
 import pg from "pg";
+import { ICategory } from "@/modules/categories/types";
 // ================= DB =================
 export const sequelize = new Sequelize({
   dialect: "postgres",
@@ -33,7 +34,7 @@ User.init(
   {
     sequelize,
     tableName: "users",
-    timestamps: false,
+    timestamps: true,
   },
 );
 
@@ -47,7 +48,6 @@ Problem.init(
     carMake: DataTypes.STRING,
     carModel: DataTypes.STRING,
     carYear: DataTypes.INTEGER,
-    category: DataTypes.STRING,
     city: DataTypes.STRING,
     isVip: { type: DataTypes.BOOLEAN, defaultValue: false },
     status: { type: DataTypes.STRING, defaultValue: "PENDING" },
@@ -65,7 +65,7 @@ export class SpecialistInfo extends Model {}
 SpecialistInfo.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    profession: DataTypes.STRING,
+    profession: DataTypes.JSONB,
     experienceYears: DataTypes.INTEGER,
     bio: DataTypes.STRING,
     locationUrl: DataTypes.STRING,
@@ -76,7 +76,7 @@ SpecialistInfo.init(
   {
     sequelize,
     tableName: "specialist_info",
-    timestamps: false,
+    timestamps: true,
   },
 );
 
@@ -93,7 +93,28 @@ VipInfo.init(
   {
     sequelize,
     tableName: "vip_infos",
-    timestamps: false,
+    timestamps: true,
+  },
+);
+
+export class Category extends Model<Partial<ICategory>> {}
+Category.init(
+  {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    name: DataTypes.STRING,
+    parentId: {
+      type: DataTypes.INTEGER,
+      allowNull: true, // null = top-level category
+      references: {
+        model: "categories",
+        key: "id",
+      },
+    },
+  },
+  {
+    sequelize,
+    tableName: "categories",
+    timestamps: true,
   },
 );
 
@@ -102,6 +123,21 @@ VipInfo.init(
 // USER ↔ PROBLEM
 User.hasMany(Problem, { foreignKey: "userId", as: "problems" });
 Problem.belongsTo(User, { foreignKey: "userId", as: "user" });
+
+// CATEGORY ↔ PROBLEM
+Category.hasMany(Problem, { foreignKey: "categoryId", as: "problems" });
+Problem.belongsTo(Category, { foreignKey: "categoryId", as: "category" });
+
+// CATEGORY ↔ PARENT CATEGORY
+Category.hasMany(Category, {
+  foreignKey: "parentId",
+  as: "subcategories",
+});
+
+Category.belongsTo(Category, {
+  foreignKey: "parentId",
+  as: "parent",
+});
 
 // USER ↔ SPECIALIST
 User.hasOne(SpecialistInfo, { foreignKey: "userId", as: "specialistInfo" });
@@ -116,7 +152,7 @@ VipInfo.belongsTo(Problem, { foreignKey: "problemId", as: "problem" });
 export const initDb = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync();
+    await sequelize.sync({ alter: true, logging: false });
     console.log("✅ Database connected");
   } catch (error) {
     console.error("❌ DB connection error:", error);

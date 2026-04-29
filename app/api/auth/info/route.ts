@@ -9,6 +9,7 @@ export const GET = async () => {
     const mechanicInfo = await SpecialistInfo.findOne({
       where: { userId: user.id },
     });
+
     return NextResponse.json({ data: { ...user, mechanicInfo } });
   } else {
     return NextResponse.json({ data: user });

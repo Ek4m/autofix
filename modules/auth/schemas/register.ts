@@ -31,7 +31,19 @@ export const createRegisterSchema = (requireMechanic: boolean) => {
     mechanic: requireMechanic
       ? yup
           .object({
-            profession: yup.string().required("İxtisas tələb olunur"),
+            profession: yup
+              .array()
+              .of(
+                yup
+                  .mixed<string | number>()
+                  .test(
+                    "is-valid-type",
+                    "Yanlış dəyər",
+                    (val) => typeof val === "string" || typeof val === "number",
+                  ),
+              )
+              .min(1, "İxtisas tələb olunur")
+              .required("İxtisas tələb olunur"),
             objectName: yup.string().required("Qaraj adı tələb olunur"),
             experienceYears: yup
               .number()
