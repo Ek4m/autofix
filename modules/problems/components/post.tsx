@@ -22,9 +22,11 @@ import SubmitButton from "@/components/ui/submitButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postProblemSchema } from "../schemas";
 import { useEffect } from "react";
+import { createProblemPost } from "../services";
+import { toast } from "sonner";
 
 export function PostProblemModal({ onClose }: { onClose: () => void }) {
-  const form = useForm<PostProblemForm,object, PostProblemForm>({
+  const form = useForm<PostProblemForm, object, PostProblemForm>({
     defaultValues: { isVip: false },
     resolver: yupResolver(postProblemSchema),
   });
@@ -39,13 +41,20 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
   const handlePostSubmit: SubmitHandler<PostProblemForm> = async (
     data: PostProblemForm,
   ) => {
-    console.log("+++++++++++++++++++++++", data);
-    // await new Promise((r) => setTimeout(r, 1500));
-    // form.reset();
+    try {
+      const result = await createProblemPost(data);
+      console.log(result);
+      toast.success(
+        "Probleminiz uğurla paylaşıldı! Mexaniklər tezliklə cavab verəcək.",
+      );
+      form.reset();
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
     // toast.success(
     //   "Probleminiz uğurla paylaşıldı! Mexaniklər tezliklə cavab verəcək.",
     // );
-    // onClose();
   };
   const tCommon = useTranslations("common");
   const CAR_MAKES = [

@@ -4,10 +4,7 @@ import jwt from "jsonwebtoken";
 import { promisify } from "util";
 
 import { ACCESS_TOKEN, JWT_EXPIRES_IN, JWT_SECRET } from "./vault";
-import { AppDataSource } from "@/config/db";
-
-import { User } from "@/config/db/entities/User";
-import { SpecialistInfo } from "@/config/db/entities/SpecialistInfo";
+import { SpecialistInfo, User } from "@/config/db";
 
 const scrypt = promisify(_scrypt);
 
@@ -38,17 +35,13 @@ export const getAuthUserFromRequest = async () => {
   const userId =
     "id" in (payload as object) ? (payload as { id: number }).id : null;
   if (!userId) return null;
-  const user = await AppDataSource.getRepository(User).findOne({
-    where: { id: userId.toString() },
+  const user = await User.findOne({
+    where: { id: userId },
   });
   if (!user) return null;
-  const { password, ...userWithoutPassword } = user;
-  const mechanicInfo = await AppDataSource.getRepository(
-    SpecialistInfo,
-  ).findOne({
-    where: { user: { id: userId.toString() } },
-  });
-  return { ...userWithoutPassword, mechanicInfo };
+  const { password, ...userWithoutPassword } = user.get();
+
+  return { ...userWithoutPassword };
 };
 
 export function generateToken(userId: number) {

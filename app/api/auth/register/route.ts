@@ -1,13 +1,11 @@
-import { AppDataSource, initDb } from "@/config/db";
-import { SpecialistInfo } from "@/config/db/entities/SpecialistInfo";
-import { User } from "@/config/db/entities/User";
+import { initDb, SpecialistInfo, User } from "@/config/db";
 import { hashPassword } from "@/modules/auth/utils";
 import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
   await initDb();
   const { mechanic, ...userData } = await req.json();
-  const existingUser = await AppDataSource.getRepository(User).findOne({
+  const existingUser = await User.findOne({
     where: [{ email: userData.email }, { phoneNumber: userData.phoneNumber }],
   });
   if (existingUser) {
@@ -19,14 +17,14 @@ export const POST = async (req: Request) => {
 
   const newPassword = await hashPassword(userData.password);
 
-  const newUser = await AppDataSource.getRepository(User).save({
+  const newUser = await User.create({
     ...userData,
     password: newPassword,
   });
   if (mechanic) {
-    await AppDataSource.getRepository(SpecialistInfo).save({
+    await SpecialistInfo.create({
       ...mechanic,
-      user: newUser,
+      userId: newUser.get().id,
     });
   }
   return NextResponse.json(true);
