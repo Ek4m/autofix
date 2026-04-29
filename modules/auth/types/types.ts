@@ -4,7 +4,7 @@ export interface AuthUser {
   email: string;
   phoneNumber: string;
   mechanicInfo?: {
-    profession: string;
+    profession: number[];
     objectName: string;
     experienceYears: number;
     city: string;

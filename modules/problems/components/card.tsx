@@ -5,7 +5,6 @@ import { useState } from "react";
 import { FiMessageSquare } from "react-icons/fi";
 import { HiCheckCircle, HiOutlineClock } from "react-icons/hi";
 import { HiBolt, HiOutlineArrowPath, HiOutlineMapPin } from "react-icons/hi2";
-import { CATEGORY_ICONS } from "../vault";
 import { FaCar } from "react-icons/fa";
 import { useAuth } from "@/modules/auth/contexts";
 
@@ -117,7 +116,6 @@ export default function ProblemCard({
 
         <div className="mb-2">
           <span className="inline-flex items-center gap-1 bg-brand-muted text-brand-muted-fg text-xs font-medium rounded-full px-2.5 py-0.5">
-            {CATEGORY_ICONS[problem.category]}{" "}
             {tFeed(`filter.${problem.category}`)}
           </span>
         </div>

@@ -7,7 +7,7 @@ import {
   HiStar,
 } from "react-icons/hi";
 import { HiArrowsUpDown, HiOutlineXMark } from "react-icons/hi2";
-import { CATEGORIES, CATEGORY_ICONS } from "../../vault";
+import categoryList from "@/data/categories.json";
 
 const SORT_OPTIONS = [
   { key: "newest", labelKey: "newest" },
@@ -21,7 +21,6 @@ const HomeSearch: FC<{
   setPremiumOnly(val: boolean): void;
   setActiveCategory(val: string): void;
 }> = ({ activeCategory, premiumOnly, setPremiumOnly, setActiveCategory }) => {
-    
   const [search, setSearch] = useState("");
   const [sortOpen, setSortOpen] = useState(false);
   const [sortBy, setSortBy] = useState("newest");
@@ -110,18 +109,17 @@ const HomeSearch: FC<{
       </div>
 
       <div className="flex gap-2 mt-4 overflow-x-auto pb-1 scrollbar-hide">
-        {CATEGORIES.map((cat) => (
+        {categoryList.map((cat) => (
           <button
-            key={`cat-${cat.key}`}
-            onClick={() => setActiveCategory(cat.key)}
+            key={`cat-${cat.id}`}
+            onClick={() => setActiveCategory(String(cat.id))}
             className={`filter-chip whitespace-nowrap shrink-0 ${
-              activeCategory === cat.key
+              activeCategory === String(cat.id)
                 ? "filter-chip-active"
                 : "filter-chip-inactive"
             }`}
           >
-            <span>{CATEGORY_ICONS[cat.key]}</span>
-            {tFeed(`filter.${cat.labelKey}`)}
+            {cat.name}
           </button>
         ))}
       </div>

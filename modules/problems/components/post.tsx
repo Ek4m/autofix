@@ -15,13 +15,13 @@ import { PostProblemForm } from "../types/dtos";
 
 import TextField from "@/components/ui/textField";
 import SelectField from "@/components/ui/selectField";
-import { CATEGORIES } from "../vault";
+import categoryList from "@/data/categories.json";
 import SwitchField from "@/components/ui/switchField";
 import PremiumPost from "./premiumPost";
 import SubmitButton from "@/components/ui/submitButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postProblemSchema } from "../schemas";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { createProblemPost } from "../services";
 import { toast } from "sonner";
 
@@ -37,6 +37,18 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
     setValue,
     handleSubmit,
   } = form;
+
+  const categories = useMemo(
+    () =>
+      categoryList.flatMap((cat) =>
+        cat.subcategories.map((c) => ({
+          ...c,
+          id: c.id.toString(),
+          name: `${cat.name} / ${c.name}`,
+        })),
+      ),
+    [],
+  );
 
   const handlePostSubmit: SubmitHandler<PostProblemForm> = async (
     data: PostProblemForm,
@@ -181,9 +193,9 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   render={({ field, fieldState }) => (
                     <SelectField
                       {...field}
-                      options={CATEGORIES.map((m) => ({
-                        label: m.labelKey,
-                        value: m.key,
+                      options={categories.map((m) => ({
+                        label: m.name,
+                        value: m.id,
                       }))}
                       hasError={Boolean(fieldState.error)}
                       label="Kateqoriya seçin"
