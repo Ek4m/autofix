@@ -37,11 +37,10 @@ export const getAuthUserFromRequest = async () => {
   if (!userId) return null;
   const user = await User.findOne({
     where: { id: userId },
+    attributes: { exclude: ["password"] },
   });
   if (!user) return null;
-  const { password, ...userWithoutPassword } = user.get();
-
-  return { ...userWithoutPassword };
+  return user.get();
 };
 
 export function generateToken(userId: number) {

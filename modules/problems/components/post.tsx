@@ -50,12 +50,14 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
     [],
   );
 
+  const errors = form.formState.errors
+  console.log(errors)
+
   const handlePostSubmit: SubmitHandler<PostProblemForm> = async (
     data: PostProblemForm,
   ) => {
     try {
-      const result = await createProblemPost(data);
-      console.log(result);
+      await createProblemPost(data);
       toast.success(
         "Probleminiz uğurla paylaşıldı! Mexaniklər tezliklə cavab verəcək.",
       );
@@ -64,9 +66,6 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
     } catch (error) {
       console.log(error);
     }
-    // toast.success(
-    //   "Probleminiz uğurla paylaşıldı! Mexaniklər tezliklə cavab verəcək.",
-    // );
   };
   const tCommon = useTranslations("common");
   const CAR_MAKES = [
@@ -188,14 +187,14 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
               </Grid>
               <Grid size={6}>
                 <Controller
-                  name="category"
+                  name="categoryId"
                   control={control}
                   render={({ field, fieldState }) => (
                     <SelectField
                       {...field}
                       options={categories.map((m) => ({
                         label: m.name,
-                        value: m.id,
+                        value: Number(m.id),
                       }))}
                       hasError={Boolean(fieldState.error)}
                       label="Kateqoriya seçin"

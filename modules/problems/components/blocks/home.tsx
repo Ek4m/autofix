@@ -1,6 +1,5 @@
 "use client";
-import { CAR_PROBLEMS, CarProblem } from "@/lib/mockData";
-import React, { useMemo, useState } from "react";
+import React, { useContext, useState } from "react";
 import { toast } from "sonner";
 import { HiXMark } from "react-icons/hi2";
 import { PostProblemModal } from "../post";
@@ -10,47 +9,23 @@ import { useAuth } from "@/modules/auth/contexts";
 import { FaCar } from "react-icons/fa";
 import HomeHead from "./homeHead";
 import HomeSearch from "./homeSearch";
+import { HomeSearchContext } from "../../contexts/homeSearch";
+import { useGetProblems } from "../../hooks/useGetProblems";
+import { UserProblem } from "../../types/interfaces";
+import { PAGE_FILTERS } from "../../constants";
 
 const HomeMain = () => {
   const { user } = useAuth();
-
+  const { category, setCategory } = useContext(HomeSearchContext);
   const [search, setSearch] = useState("");
-  const [activeCategory, setActiveCategory] = useState("all");
   const [premiumOnly, setPremiumOnly] = useState(false);
-  const [sortBy] = useState("newest");
-  const [selectedProblem, setSelectedProblem] = useState<CarProblem | null>(
+  const [sortBy] = useState(PAGE_FILTERS.NEWEST);
+  const [selectedProblem, setSelectedProblem] = useState<UserProblem | null>(
     null,
   );
+  const { data } = useGetProblems({ category });
   const [showPostModal, setShowPostModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
-
-  const filtered = useMemo(() => {
-    let result = [...CAR_PROBLEMS];
-    if (search) {
-      const q = search.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.title.toLowerCase().includes(q) ||
-          p.description.toLowerCase().includes(q) ||
-          p.carMake.toLowerCase().includes(q) ||
-          p.carModel.toLowerCase().includes(q),
-      );
-    }
-    if (activeCategory !== "all")
-      result = result.filter((p) => p.category === activeCategory);
-    if (premiumOnly) result = result.filter((p) => p.isPremium);
-    if (sortBy === "newest") {
-      result.sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-      );
-    } else if (sortBy === "offers") {
-      result.sort((a, b) => b.offerCount - a.offerCount);
-    } else if (sortBy === "premium") {
-      result.sort((a, b) => (b.isPremium ? 1 : 0) - (a.isPremium ? 1 : 0));
-    }
-    return result;
-  }, [search, activeCategory, premiumOnly, sortBy]);
 
   const handleMakeOffer = () => {
     if (!user) {
@@ -63,25 +38,20 @@ const HomeMain = () => {
     <>
       <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6">
         <HomeHead onShowPostModal={setShowPostModal} />
-        <HomeSearch
-          activeCategory={activeCategory}
-          premiumOnly={premiumOnly}
-          setActiveCategory={setActiveCategory}
-          setPremiumOnly={setPremiumOnly}
-        />
+        <HomeSearch premiumOnly={premiumOnly} setPremiumOnly={setPremiumOnly} />
 
         <div className="flex items-center justify-between mb-4">
           <p className="text-sm text-brand-muted-fg">
             <span className="font-semibold text-brand-fg tabular-nums">
-              {filtered.length}
+              {data?.length}
             </span>{" "}
             problem tapıldı
           </p>
-          {(search || activeCategory !== "all" || premiumOnly) && (
+          {(search || category !== 0 || premiumOnly) && (
             <button
               onClick={() => {
                 setSearch("");
-                setActiveCategory("all");
+                setCategory(0);
                 setPremiumOnly(false);
               }}
               className="text-sm text-primary-DEFAULT font-medium hover:text-primary-dark flex items-center gap-1 transition-colors"
@@ -91,7 +61,7 @@ const HomeMain = () => {
           )}
         </div>
 
-        {filtered.length === 0 ? (
+        {data?.length === 0 ? (
           <div className="card-surface p-16 text-center">
             <FaCar size={48} className="mx-auto text-brand-muted-fg/40 mb-4" />
             <h3 className="text-lg font-bold text-brand-fg mb-2">
@@ -103,7 +73,7 @@ const HomeMain = () => {
             <button
               onClick={() => {
                 setSearch("");
-                setActiveCategory("all");
+                setCategory(0);
                 setPremiumOnly(false);
               }}
               className="btn-primary"
@@ -113,7 +83,7 @@ const HomeMain = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-5">
-            {filtered.map((problem) => (
+            {data?.map((problem) => (
               <ProblemCard
                 key={problem.id}
                 problem={problem}

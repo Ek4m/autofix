@@ -4,7 +4,7 @@ export interface PostProblemForm {
   carMake: string;
   carModel: string;
   carYear: string;
-  category: string;
+  categoryId: number;
   city: string;
   isVip: boolean;
   vipInfo?: {

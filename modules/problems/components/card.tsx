@@ -1,5 +1,4 @@
 import AppImage from "@/components/ui/AppImage";
-import { CarProblem } from "@/lib/mockData";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { FiMessageSquare } from "react-icons/fi";
@@ -7,6 +6,9 @@ import { HiCheckCircle, HiOutlineClock } from "react-icons/hi";
 import { HiBolt, HiOutlineArrowPath, HiOutlineMapPin } from "react-icons/hi2";
 import { FaCar } from "react-icons/fa";
 import { useAuth } from "@/modules/auth/contexts";
+import cityList from "@/data/cities.json";
+import { UserProblem } from "../types/interfaces";
+import { datePrettify } from "@/helpers/datePrettify";
 
 const STATUS_CONFIG: Record<
   string,
@@ -34,21 +36,20 @@ export default function ProblemCard({
   onViewOffers,
   onMakeOffer,
 }: {
-  problem: CarProblem;
+  problem: UserProblem;
   onViewOffers: () => void;
   onMakeOffer: () => void;
 }) {
-  const { isMechanic } = useAuth();
   const tFeed = useTranslations("feed");
   const tCommon = useTranslations("common");
   const [imgIdx, setImgIdx] = useState(0);
-  const status = STATUS_CONFIG[problem.status];
+  const status = STATUS_CONFIG["resolved"];
 
   return (
     <div
-      className={`card-surface overflow-hidden transition-all duration-200 hover:shadow-card-hover hover:-translate-y-0.5 group ${problem.isPremium ? "premium-glow ring-amber-300/60" : ""}`}
+      className={`card-surface overflow-hidden transition-all duration-200 hover:shadow-card-hover hover:-translate-y-0.5 group ${problem.isVip ? "premium-glow ring-amber-300/60" : ""}`}
     >
-      <div className="relative h-48 bg-brand-muted overflow-hidden">
+      {/* <div className="relative h-48 bg-brand-muted overflow-hidden">
         {problem.photos.length > 0 ? (
           <AppImage
             src={problem.photos[imgIdx]}
@@ -75,38 +76,32 @@ export default function ProblemCard({
               />
             ))}
           </div>
-        )}
-        <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap">
-          {problem.isPremium && (
-            <span className="badge-premium text-xs">
-              ⭐ {tFeed("premium_badge")}
-            </span>
-          )}
-          <span className={`badge-status border text-xs ${status.color}`}>
-            {status.icon}
-            {tFeed(status.labelKey)}
-          </span>
-        </div>
-        <div
+        )}*/}
+      <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap">
+        <span className={`badge-status border text-xs ${status.color}`}>
+          {status.icon}
+          {tFeed(status.labelKey)}
+        </span>
+      </div>
+      {/* <div
           className={`absolute top-2.5 right-2.5 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${problem.offerCount > 0 ? "bg-primary-DEFAULT text-white" : "bg-black/40 text-white"}`}
         >
           <FiMessageSquare size={11} />
           {problem.offerCount} {tFeed("offers")}
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
 
       <div className="p-4">
         <div className="flex items-center gap-2.5 mb-3">
-          <AppImage
-            src={problem.authorAvatar}
-            alt={`${problem.authorName} profil şəkli`}
-            width={32}
-            height={32}
-            className="rounded-full border border-brand-border shrink-0"
-          />
+          <div className="w-100 h-100 rounded bg-[lightgrey] p-2">
+            {problem.user.fullName
+              .split(" ")
+              .map((c) => c[0].toUpperCase())
+              .join("")}
+          </div>
           <div className="min-w-0">
             <p className="text-sm font-semibold text-brand-fg truncate">
-              {problem.authorName}
+              {problem.user.fullName}
             </p>
             <p className="text-xs text-brand-muted-fg font-mono tabular-nums">
               {problem.carMake} {problem.carModel} · {problem.carYear}
@@ -114,10 +109,15 @@ export default function ProblemCard({
           </div>
         </div>
 
-        <div className="mb-2">
+        <div className="mb-2 flex flex-col items-start">
           <span className="inline-flex items-center gap-1 bg-brand-muted text-brand-muted-fg text-xs font-medium rounded-full px-2.5 py-0.5">
-            {tFeed(`filter.${problem.category}`)}
+            {problem.category.name}
           </span>
+          {problem.isVip && (
+            <span className="badge-premium text-xs mt-2">
+              ⭐ {tFeed("premium_badge")}
+            </span>
+          )}
         </div>
 
         <h3 className="text-sm font-bold text-brand-fg mb-1.5 leading-snug line-clamp-2">
@@ -129,14 +129,15 @@ export default function ProblemCard({
 
         <div className="flex items-center gap-3 text-xs text-brand-muted-fg mb-4">
           <span className="flex items-center gap-1">
-            <HiOutlineMapPin size={11} /> {problem.location}
+            <HiOutlineMapPin size={11} />{" "}
+            {cityList.find((c) => c.id === Number(problem.city))?.name}
           </span>
           <span className="flex items-center gap-1">
-            <HiOutlineClock size={11} /> {problem.timeAgo} {tCommon("ago")}
+            <HiOutlineClock size={11} /> {datePrettify(problem.createdAt)}
           </span>
         </div>
 
-        <div className="flex gap-2">
+        {/* <div className="flex gap-2">
           <button
             onClick={onViewOffers}
             className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-brand-muted hover:bg-primary-DEFAULT/10 hover:text-primary-DEFAULT text-sm font-semibold text-brand-fg transition-all duration-150"
@@ -155,7 +156,7 @@ export default function ProblemCard({
               {tFeed("make_offer")}
             </button>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );

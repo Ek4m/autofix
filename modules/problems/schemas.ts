@@ -29,7 +29,7 @@ export const postProblemSchema = yup.object({
         return year >= 1900 && year <= currentYear;
       },
     ),
-  category: yup.string().required("Kateqoriya mütləqdir"),
+  categoryId: yup.number().required("Kateqoriya mütləqdir"),
 
   city: yup.string().required("Şəhər mütləqdir"),
 
@@ -37,22 +37,32 @@ export const postProblemSchema = yup.object({
 
   vipInfo: yup
     .object({
-      vipLifeTime: yup.string().required("VIP müddəti mütləqdir"),
-
-      minBudget: yup.string().required("Minimum büdcə mütləqdir"),
-
-      maxBudget: yup
-        .string()
-        .required("Maksimum büdcə mütləqdir")
-        .test(
-          "is-greater",
-          "Maksimum büdcə minimum büdcədən kiçik ola bilməz",
-          function (value) {
-            const { minBudget } = this.parent;
-            if (!value || !minBudget) return true;
-            return Number(value) >= Number(minBudget);
-          },
-        ),
+      vipLifeTime: yup.string().when("isVip", {
+        is: true,
+        then: (schema) => schema.required("VIP müddəti mütləqdir"),
+        otherwise: (schema) => schema.notRequired().nullable(),
+      }),
+      minBudget: yup.string().when("isVip", {
+        is: true,
+        then: (schema) => schema.required("Minimum büdcə mütləqdir"),
+        otherwise: (schema) => schema.notRequired().nullable(),
+      }),
+      maxBudget: yup.string().when("isVip", {
+        is: true,
+        then: (schema) =>
+          schema
+            .required("Maksimum büdcə mütləqdir")
+            .test(
+              "is-greater",
+              "Maksimum büdcə minimum büdcədən kiçik ola bilməz",
+              function (value) {
+                const { minBudget } = this.parent;
+                if (!value || !minBudget) return true;
+                return Number(value) >= Number(minBudget);
+              },
+            ),
+        otherwise: (schema) => schema.notRequired().nullable(),
+      }),
     })
     .nullable()
     .when("isVip", {
