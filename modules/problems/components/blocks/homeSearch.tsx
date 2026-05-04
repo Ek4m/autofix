@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import React, { FC, useContext, useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import {
   HiCheckCircle,
   HiChevronDown,
@@ -10,19 +10,32 @@ import { HiArrowsUpDown, HiOutlineXMark } from "react-icons/hi2";
 import categoryList from "@/data/categories.json";
 import { Typography } from "@mui/material";
 import { HomeSearchContext } from "../../contexts/homeSearch";
-import { PAGE_FILTERS } from "../../constants";
+import { ORDER_BY_CREATION } from "../../constants";
+import { useDebounce } from "@/modules/common/hooks/useDebounce";
 
-const HomeSearch: FC<{
-  premiumOnly: boolean;
-  setPremiumOnly(val: boolean): void;
-}> = ({ premiumOnly, setPremiumOnly }) => {
-  const { category, search, setCategory, setSearch } =
-    useContext(HomeSearchContext);
+const HomeSearch = () => {
+  const {
+    category,
+    search,
+    setCategory,
+    setSearch,
+    setIsVip,
+    isVip,
+    orderBy,
+    setOrderBy,
+  } = useContext(HomeSearchContext);
   const [sortOpen, setSortOpen] = useState(false);
   const [parentCategory, setParentCategory] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState("newest");
-
+  const [localSearch, setLocalSearch] = useState("");
   const tFeed = useTranslations("feed");
+
+  useDebounce(
+    () => {
+      setSearch(localSearch);
+    },
+    [localSearch],
+    1500,
+  );
 
   const childCategories = useMemo(() => {
     if (!parentCategory) return null;
@@ -42,8 +55,8 @@ const HomeSearch: FC<{
           />
           <input
             type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
             placeholder={tFeed("search")}
             className="input-field pl-9 pr-9"
           />
@@ -64,7 +77,7 @@ const HomeSearch: FC<{
           >
             <HiArrowsUpDown size={14} className="text-brand-muted-fg" />
 
-            {sortBy === PAGE_FILTERS.NEWEST ? "Ən yeni" : "Ən köhnə"}
+            {orderBy === ORDER_BY_CREATION.DESC ? "Ən yeni" : "Ən köhnə"}
 
             <HiChevronDown
               size={13}
@@ -77,33 +90,33 @@ const HomeSearch: FC<{
             <div className="absolute right-0 top-full mt-1.5 bg-white border border-brand-border rounded-xl shadow-card py-1 min-w-[180px] z-20 animate-fade-in">
               <button
                 onClick={() => {
-                  setSortBy(PAGE_FILTERS.NEWEST);
+                  setOrderBy(ORDER_BY_CREATION.DESC);
                   setSortOpen(false);
                 }}
                 className={`w-full flex items-center justify-between px-4 py-2.5 text-sm transition-colors hover:bg-brand-muted ${
-                  sortBy === PAGE_FILTERS.NEWEST
+                  orderBy === ORDER_BY_CREATION.DESC
                     ? "font-semibold text-primary-DEFAULT"
                     : "text-brand-fg"
                 }`}
               >
                 Ən yeni
-                {sortBy === PAGE_FILTERS.NEWEST && (
+                {orderBy === ORDER_BY_CREATION.DESC && (
                   <HiCheckCircle size={14} className="text-primary" />
                 )}
               </button>
               <button
                 onClick={() => {
-                  setSortBy(PAGE_FILTERS.OLDEST);
+                  setOrderBy(ORDER_BY_CREATION.ASC);
                   setSortOpen(false);
                 }}
                 className={`w-full flex items-center justify-between px-4 py-2.5 text-sm transition-colors hover:bg-brand-muted ${
-                  sortBy === PAGE_FILTERS.OLDEST
+                  orderBy === ORDER_BY_CREATION.ASC
                     ? "font-semibold text-primary-DEFAULT"
                     : "text-brand-fg"
                 }`}
               >
                 Ən köhnə
-                {sortBy === PAGE_FILTERS.OLDEST && (
+                {orderBy === ORDER_BY_CREATION.ASC && (
                   <HiCheckCircle size={14} className="text-primary" />
                 )}
               </button>
@@ -112,9 +125,9 @@ const HomeSearch: FC<{
         </div>
 
         <button
-          onClick={() => setPremiumOnly(!premiumOnly)}
+          onClick={() => setIsVip(!isVip)}
           className={`flex items-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-medium transition-all duration-150 shrink-0 ${
-            premiumOnly
+            isVip
               ? "bg-amber-50 border-amber-300 text-amber-700"
               : "bg-white border-brand-border text-brand-muted-fg hover:border-amber-300 hover:text-amber-700"
           }`}

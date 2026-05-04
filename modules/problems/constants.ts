@@ -1,4 +1,4 @@
-export enum PAGE_FILTERS {
-  NEWEST = "newest",
-  OLDEST = "oldest",
+export enum ORDER_BY_CREATION {
+  DESC = "DESC",
+  ASC = "ASC",
 }

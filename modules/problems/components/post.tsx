@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import {
   Controller,
@@ -6,6 +7,7 @@ import {
   useForm,
 } from "react-hook-form";
 import { HiStar } from "react-icons/hi";
+import { toast } from "sonner";
 import { HiBolt, HiXMark } from "react-icons/hi2";
 import { Grid } from "@mui/material";
 
@@ -21,9 +23,7 @@ import PremiumPost from "./premiumPost";
 import SubmitButton from "@/components/ui/submitButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postProblemSchema } from "../schemas";
-import { useEffect, useMemo } from "react";
 import { createProblemPost } from "../services";
-import { toast } from "sonner";
 
 export function PostProblemModal({ onClose }: { onClose: () => void }) {
   const form = useForm<PostProblemForm, object, PostProblemForm>({
@@ -49,9 +49,6 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
       ),
     [],
   );
-
-  const errors = form.formState.errors
-  console.log(errors)
 
   const handlePostSubmit: SubmitHandler<PostProblemForm> = async (
     data: PostProblemForm,

@@ -12,20 +12,22 @@ import HomeSearch from "./homeSearch";
 import { HomeSearchContext } from "../../contexts/homeSearch";
 import { useGetProblems } from "../../hooks/useGetProblems";
 import { UserProblem } from "../../types/interfaces";
-import { PAGE_FILTERS } from "../../constants";
 
 const HomeMain = () => {
   const { user } = useAuth();
-  const { category, setCategory } = useContext(HomeSearchContext);
-  const [search, setSearch] = useState("");
-  const [premiumOnly, setPremiumOnly] = useState(false);
-  const [sortBy] = useState(PAGE_FILTERS.NEWEST);
+  const { category, setCategory, isVip, setIsVip, search, setSearch, orderBy } =
+    useContext(HomeSearchContext);
   const [selectedProblem, setSelectedProblem] = useState<UserProblem | null>(
     null,
   );
-  const { data } = useGetProblems({ category });
+  const { data } = useGetProblems({
+    category,
+    vip: Number(isVip),
+    search,
+    order: orderBy,
+  });
   const [showPostModal, setShowPostModal] = useState(false);
-  const [showOfferModal, setShowOfferModal] = useState(false);
+  const [, setShowOfferModal] = useState(false);
 
   const handleMakeOffer = () => {
     if (!user) {
@@ -38,7 +40,7 @@ const HomeMain = () => {
     <>
       <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6">
         <HomeHead onShowPostModal={setShowPostModal} />
-        <HomeSearch premiumOnly={premiumOnly} setPremiumOnly={setPremiumOnly} />
+        <HomeSearch />
 
         <div className="flex items-center justify-between mb-4">
           <p className="text-sm text-brand-muted-fg">
@@ -47,12 +49,12 @@ const HomeMain = () => {
             </span>{" "}
             problem tapıldı
           </p>
-          {(search || category !== 0 || premiumOnly) && (
+          {(search || category !== 0 || isVip) && (
             <button
               onClick={() => {
                 setSearch("");
                 setCategory(0);
-                setPremiumOnly(false);
+                setIsVip(false);
               }}
               className="text-sm text-primary-DEFAULT font-medium hover:text-primary-dark flex items-center gap-1 transition-colors"
             >
@@ -74,7 +76,7 @@ const HomeMain = () => {
               onClick={() => {
                 setSearch("");
                 setCategory(0);
-                setPremiumOnly(false);
+                setIsVip(false);
               }}
               className="btn-primary"
             >
