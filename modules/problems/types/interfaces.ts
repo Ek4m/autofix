@@ -10,3 +10,8 @@ export interface UserProblem extends PostProblemForm {
   category: ICategory;
   createdAt: string;
 }
+export interface MechanicOffer {
+  id: number;
+  description: string;
+  
+}

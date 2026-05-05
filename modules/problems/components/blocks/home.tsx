@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "sonner";
 import { HiXMark } from "react-icons/hi2";
 import { PostProblemModal } from "../post";
-import { OffersModal } from "../offer";
+import { OffersModal } from "../offers";
 import ProblemCard from "../card";
 import { useAuth } from "@/modules/auth/contexts";
 import { FaCar } from "react-icons/fa";
@@ -12,6 +12,7 @@ import HomeSearch from "./homeSearch";
 import { HomeSearchContext } from "../../contexts/homeSearch";
 import { useGetProblems } from "../../hooks/useGetProblems";
 import { UserProblem } from "../../types/interfaces";
+import { OfferSolution } from "../offer";
 
 const HomeMain = () => {
   const { user } = useAuth();
@@ -27,14 +28,16 @@ const HomeMain = () => {
     order: orderBy,
   });
   const [showPostModal, setShowPostModal] = useState(false);
-  const [, setShowOfferModal] = useState(false);
+  const [problemForOffering, setProblemForOffering] =
+    useState<UserProblem | null>(null);
 
-  const handleMakeOffer = () => {
+  const handleMakeOffer = (problem: UserProblem) => {
     if (!user) {
       toast.error("Təklif vermək üçün mexanik hesabına daxil olun.");
       return;
     }
-    setShowOfferModal(true);
+    setSelectedProblem(null);
+    setProblemForOffering(problem);
   };
   return (
     <>
@@ -96,7 +99,9 @@ const HomeMain = () => {
           </div>
         )}
       </main>
-
+      {problemForOffering && (
+        <OfferSolution problem={problemForOffering} onClose={() => setProblemForOffering(null)} />
+      )}
       {selectedProblem && (
         <OffersModal
           problem={selectedProblem}

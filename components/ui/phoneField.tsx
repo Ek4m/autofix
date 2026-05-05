@@ -25,7 +25,7 @@ const PhoneField: React.FC<PhoneInputProps> = ({
           style={{
             display: "block",
             marginBottom: 0,
-            color: hasError ? "#ff4646" : "#000",
+            color: hasError ? "#ff4646" : "#807f7f",
             fontSize: 14,
           }}
         >

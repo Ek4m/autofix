@@ -7,7 +7,7 @@ import {
 
 export type SelectOption = {
   label: string;
-  value: (string | number);
+  value: string | number;
 };
 
 export type SelectFieldProps = Omit<TextFieldProps, "onChange" | "select"> & {
@@ -44,11 +44,11 @@ const SelectField: React.FC<SelectFieldProps> = ({
         },
 
         "& .MuiInputLabel-root": {
-          color: "#000000",
+          color: "#807f7f",
         },
 
         "& .MuiInputLabel-root.Mui-focused": {
-          color: hasError ? "#ff4646" : "#E84B2F",
+          color: hasError ? "#ff4646" : "#807f7f",
         },
 
         "& .MuiFormHelperText-root": {

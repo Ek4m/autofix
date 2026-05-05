@@ -38,7 +38,7 @@ export default function ProblemCard({
 }: {
   problem: UserProblem;
   onViewOffers: () => void;
-  onMakeOffer: () => void;
+  onMakeOffer: (p: UserProblem) => void;
 }) {
   const tFeed = useTranslations("feed");
   const status = STATUS_CONFIG[problem.status];
@@ -129,7 +129,7 @@ export default function ProblemCard({
           </button>
           {isMechanic && (
             <button
-              onClick={onMakeOffer}
+              onClick={() => onMakeOffer(problem)}
               className="btn-primary flex items-center gap-1.5 px-3 py-2 text-sm"
             >
               <HiBolt size={13} />

@@ -14,3 +14,13 @@ export interface PostProblemForm {
     maxBudget: string;
   };
 }
+
+export interface OfferForm {
+  description: string;
+  minHours: number;
+  maxHours: number;
+  minHoursUnit: number;
+  maxHoursUnit: number;
+  minPrice: number;
+  maxPrice: number;
+}
