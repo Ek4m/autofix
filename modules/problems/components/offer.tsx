@@ -1,8 +1,5 @@
-import AppImage from "@/components/ui/AppImage";
-import { CarProblem, MECHANIC_OFFERS } from "@/lib/mockData";
-import { useAuth } from "@/modules/auth/contexts";
-import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { HiOutlineClock, HiOutlineShieldCheck, HiStar } from "react-icons/hi";
 import {
   HiOutlineBolt,
@@ -11,18 +8,33 @@ import {
   HiXMark,
 } from "react-icons/hi2";
 
+import AppImage from "@/components/ui/AppImage";
+import { MECHANIC_OFFERS } from "@/lib/mockData";
+import { useAuth } from "@/modules/auth/contexts";
+import citiesList from "@/data/cities.json";
+import { UserProblem } from "../types/interfaces";
+import { useGetUploadedImages } from "@/modules/upload/hooks/useGetUploads";
+import { UploadedFileType } from "@/constants/enums";
+import { makeImagePath } from "@/helpers/makeImagePath";
+import { timeAgoAze } from "@/helpers/timeAgoAze";
+
 export function OffersModal({
   problem,
   onClose,
   onMakeOffer,
 }: {
-  problem: CarProblem;
+  problem: UserProblem;
   onClose: () => void;
   onMakeOffer: () => void;
 }) {
   const { isMechanic } = useAuth();
   const tFeed = useTranslations("feed");
   const [activeImg, setActiveImg] = useState(0);
+  const { data: photos } = useGetUploadedImages(
+    problem.id,
+    UploadedFileType.PROBLEM,
+  );
+  const city = citiesList.find((e) => e.id === Number(problem.city));
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
@@ -34,7 +46,7 @@ export function OffersModal({
             </h2>
             <p className="text-xs text-brand-muted-fg font-mono mt-0.5">
               {problem.carMake} {problem.carModel} · {problem.carYear} ·{" "}
-              {problem.location}
+              {city?.name}
             </p>
           </div>
           <button
@@ -46,27 +58,28 @@ export function OffersModal({
         </div>
 
         <div className="overflow-y-auto flex-1">
-          {problem.photos.length > 0 && (
+          {photos.length > 0 && (
             <div className="px-5 pt-4">
-              <div className="relative h-52 rounded-xl overflow-hidden bg-brand-muted">
+              <div className="relative h-[300px] rounded-xl overflow-hidden bg-brand-muted">
                 <AppImage
-                  src={problem.photos[activeImg]}
+                  key={activeImg}
+                  src={makeImagePath(photos[activeImg].name)}
                   alt={`${problem.carMake} ${problem.carModel} şəkli ${activeImg + 1}`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 640px) 100vw, 640px"
                 />
               </div>
-              {problem.photos.length > 1 && (
+              {photos.length > 1 && (
                 <div className="flex gap-2 mt-2">
-                  {problem.photos.map((photo, i) => (
+                  {photos.map((photo, i) => (
                     <button
                       key={`modal-thumb-${problem.id}-${i}`}
                       onClick={() => setActiveImg(i)}
                       className={`w-14 h-10 rounded-lg overflow-hidden border-2 transition-all ${i === activeImg ? "border-primary-DEFAULT" : "border-transparent"}`}
                     >
                       <AppImage
-                        src={photo}
+                        src={makeImagePath(photo.name)}
                         alt={`Kiçik şəkil ${i + 1}`}
                         width={56}
                         height={40}
@@ -85,13 +98,14 @@ export function OffersModal({
             </p>
             <div className="flex items-center gap-3 mt-3 text-xs text-brand-muted-fg">
               <span className="flex items-center gap-1">
-                <HiOutlineClock size={11} /> {problem.timeAgo} əvvəl
+                <HiOutlineClock size={11} /> {timeAgoAze(problem.createdAt)}{" "}
+                əvvəl
               </span>
 
               <span className="flex items-center gap-1">
-                <HiOutlineMapPin size={11} /> {problem.location}
+                <HiOutlineMapPin size={11} /> {city?.name}
               </span>
-              {problem.isPremium && (
+              {problem.isVip && (
                 <span className="badge-premium">
                   ⭐ {tFeed("premium_badge")}
                 </span>

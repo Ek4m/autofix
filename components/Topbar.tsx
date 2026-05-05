@@ -18,7 +18,7 @@ import { useAuth } from "@/modules/auth/contexts";
 const NAV_LINKS = [
   { href: "/car-problems-feed", labelKey: "Problemlər", icon: HiOutlineTruck },
   {
-    href: "/mechanic-service-listings",
+    href: "/mechanic-service-listing",
     labelKey: "Xidmətlər",
     icon: HiOutlineWrenchScrewdriver,
   },

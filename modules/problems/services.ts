@@ -3,7 +3,9 @@ import { PostProblemForm } from "./types/dtos";
 import { UserProblem } from "./types/interfaces";
 import { urlFactory } from "@/helpers/urlFactory";
 
-export const createProblemPost = async (body: PostProblemForm) => {
+export const createProblemPost = async (
+  body: PostProblemForm,
+): Promise<UserProblem> => {
   const response = await httpClient("/api/issues/post", {
     method: "POST",
     body: JSON.stringify(body),

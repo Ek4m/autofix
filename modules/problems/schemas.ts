@@ -14,6 +14,10 @@ export const postProblemSchema = yup.object({
   carMake: yup.string().required("Avtomobil markası mütləqdir"),
 
   carModel: yup.string().required("Avtomobil modeli mütləqdir"),
+  images: yup
+    .array()
+    .of(yup.mixed<object>())
+    .min(1, "Minimum 1 şəkil seçilməlidir"),
 
   carYear: yup
     .string()

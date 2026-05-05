@@ -22,5 +22,5 @@ export const POST = async (request: Request) => {
       problemId: prob.get().id,
     });
   }
-  return NextResponse.json(prob);
+  return NextResponse.json({ data: prob });
 };

@@ -24,10 +24,13 @@ import SubmitButton from "@/components/ui/submitButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postProblemSchema } from "../schemas";
 import { createProblemPost } from "../services";
+import FileUpload from "@/components/ui/fileUploadField";
+import { uploadFiles } from "@/modules/upload/services";
+import { UploadedFileType } from "@/constants/enums";
 
 export function PostProblemModal({ onClose }: { onClose: () => void }) {
   const form = useForm<PostProblemForm, object, PostProblemForm>({
-    defaultValues: { isVip: false },
+    defaultValues: { isVip: false, images: [] },
     resolver: yupResolver(postProblemSchema),
   });
   const {
@@ -54,7 +57,9 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
     data: PostProblemForm,
   ) => {
     try {
-      await createProblemPost(data);
+      const problem = await createProblemPost(data);
+      const images = data.images;
+      await uploadFiles(images, UploadedFileType.PROBLEM, problem.id);
       toast.success(
         "Probleminiz uğurla paylaşıldı! Mexaniklər tezliklə cavab verəcək.",
       );
@@ -102,7 +107,10 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
           </button>
         </div>
         <FormProvider {...form}>
-          <form onSubmit={handleSubmit(handlePostSubmit)}>
+          <form
+            encType="multipart/form-data"
+            onSubmit={handleSubmit(handlePostSubmit)}
+          >
             <Grid container spacing={2} sx={{ padding: 3 }}>
               <Grid size={12}>
                 <Controller
@@ -216,6 +224,19 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                       label="Şəhər seçin"
                       helperText={fieldState.error?.message}
                       placeholder="Seçin"
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid size={12}>
+                <Controller
+                  name="images"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <FileUpload
+                      helperText={fieldState.error?.message}
+                      multiple
+                      onChange={field.onChange}
                     />
                   )}
                 />

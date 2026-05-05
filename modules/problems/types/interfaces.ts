@@ -4,7 +4,9 @@ import { ICategory } from "@/modules/categories/types";
 
 export interface UserProblem extends PostProblemForm {
   id: number;
+  thumbnail: string;
   user: AuthUser;
+  status: string;
   category: ICategory;
   createdAt: string;
 }

@@ -1,6 +1,7 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
 import pg from "pg";
 import { ICategory } from "@/modules/categories/types";
+import { UploadedFileType } from "@/constants/enums";
 // ================= DB =================
 export const sequelize = new Sequelize({
   dialect: "postgres",
@@ -46,6 +47,7 @@ Problem.init(
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
     carMake: DataTypes.STRING,
+    thumbnail: DataTypes.STRING,
     carModel: DataTypes.STRING,
     carYear: DataTypes.INTEGER,
     city: DataTypes.STRING,
@@ -56,6 +58,21 @@ Problem.init(
   {
     sequelize,
     tableName: "user_issues",
+    timestamps: true,
+  },
+);
+
+export class Upload extends Model {}
+Upload.init(
+  {
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    name: DataTypes.STRING,
+    entityId: DataTypes.INTEGER,
+    type: DataTypes.ENUM(UploadedFileType.PROBLEM),
+  },
+  {
+    sequelize,
+    tableName: "uploads",
     timestamps: true,
   },
 );
