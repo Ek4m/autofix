@@ -13,15 +13,14 @@ import { OfferForm } from "../types/dtos";
 
 import TextField from "@/components/ui/textField";
 import SelectField from "@/components/ui/selectField";
-import categoryList from "@/data/categories.json";
 import SubmitButton from "@/components/ui/submitButton";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { createProblemPost } from "../services";
-import { uploadFiles } from "@/modules/upload/services";
-import { UploadedFileType } from "@/constants/enums";
 import { makeImagePath } from "@/helpers/makeImagePath";
 import { UserProblem } from "../types/interfaces";
 import { TIME_UNITS } from "../constants";
+import { offerSchema } from "../schemas";
+import { offerSolution } from "../services";
+import { useAuth } from "@/modules/auth/contexts";
 
 export function OfferSolution({
   onClose,
@@ -30,11 +29,13 @@ export function OfferSolution({
   onClose: () => void;
   problem: UserProblem;
 }) {
-  const form = useForm<OfferForm>({
+  const { user } = useAuth();
+  const form = useForm<OfferForm, object, OfferForm>({
     defaultValues: {
-      minHoursUnit: 1,
-      maxHoursUnit: 1,
+      minHoursUnit: "1",
+      maxHoursUnit: "1",
     },
+    resolver: yupResolver(offerSchema),
   });
   const {
     control,
@@ -46,13 +47,18 @@ export function OfferSolution({
     data: OfferForm,
   ) => {
     try {
+      await offerSolution(data, problem.id, user?.id);
       toast.success(
-        "Probleminiz uğurla paylaşıldı! Mexaniklər tezliklə cavab verəcək.",
+        "Təklifiniz uğurla paylaşıldı! İstifadəçi üçün maraqlı olduqda cavab verəcək.",
       );
       form.reset();
       onClose();
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Xəta baş verdi!");
+      }
     }
   };
   const tCommon = useTranslations("common");
@@ -170,7 +176,7 @@ export function OfferSolution({
                       {...field}
                       type="number"
                       hasError={Boolean(fieldState.error)}
-                      label="Minimum zəhmət haqqı(təqribi)"
+                      label="Minimum zəhmət haqqı(təqribi, azn)"
                       helperText={fieldState.error?.message}
                     />
                   )}
@@ -185,7 +191,7 @@ export function OfferSolution({
                       {...field}
                       type="number"
                       hasError={Boolean(fieldState.error)}
-                      label="Maks. zəhmət haqqı(təqribi)"
+                      label="Maks. zəhmət haqqı(təqribi, azn)"
                       helperText={fieldState.error?.message}
                     />
                   )}

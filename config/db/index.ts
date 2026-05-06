@@ -62,6 +62,7 @@ Problem.init(
   },
 );
 
+// -------- UPLOAD --------
 export class Upload extends Model {}
 Upload.init(
   {
@@ -73,6 +74,26 @@ Upload.init(
   {
     sequelize,
     tableName: "uploads",
+    timestamps: true,
+  },
+);
+
+// -------- OFFER --------
+export class Offer extends Model {}
+Offer.init(
+  {
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    description: DataTypes.STRING(500),
+    minHours: DataTypes.INTEGER,
+    maxHours: DataTypes.INTEGER,
+    minHoursUnit: DataTypes.INTEGER,
+    maxHoursUnit: DataTypes.INTEGER,
+    minPrice: DataTypes.INTEGER,
+    maxPrice: DataTypes.INTEGER,
+  },
+  {
+    sequelize,
+    tableName: "offers",
     timestamps: true,
   },
 );
@@ -114,6 +135,7 @@ VipInfo.init(
   },
 );
 
+// --------- CATEGORY --------
 export class Category extends Model<Partial<ICategory>> {}
 Category.init(
   {
@@ -163,6 +185,14 @@ SpecialistInfo.belongsTo(User, { foreignKey: "userId", as: "user" });
 // PROBLEM ↔ VIP
 Problem.hasOne(VipInfo, { foreignKey: "problemId", as: "vipInfo" });
 VipInfo.belongsTo(Problem, { foreignKey: "problemId", as: "problem" });
+
+// USER  ↔ OFFER
+User.hasMany(Offer, { foreignKey: "userId", as: "offers" });
+Offer.belongsTo(User, { foreignKey: "userId", as: "user" });
+
+// OFFER  ↔ PROBLEM
+Problem.hasMany(Offer, { foreignKey: "problemId", as: "offers" });
+Offer.belongsTo(Problem, { foreignKey: "problemId", as: "problem" });
 
 // ================= INIT =================
 

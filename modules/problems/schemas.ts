@@ -1,5 +1,10 @@
 import * as yup from "yup";
 
+const checkMinusAndZero = (value: string) => {
+  const val = Number(value);
+  return !isNaN(val) && val > 0;
+};
+
 export const postProblemSchema = yup.object({
   title: yup
     .string()
@@ -74,4 +79,52 @@ export const postProblemSchema = yup.object({
       then: (schema) => schema.required("VIP məlumatları mütləqdir"),
       otherwise: (schema) => schema.notRequired().nullable(),
     }),
+});
+
+export const offerSchema = yup.object({
+  description: yup
+    .string()
+    .required("Təsvir tələb olunur")
+    .min(10, "Təsvir ən azı 10 simvol olmalıdır"),
+
+  minHours: yup
+    .string()
+    .required("Minimum vaxt tələb olunur")
+    .test("noninteger", "Düzgün dəyər daxil edilməlidir", checkMinusAndZero),
+
+  maxHours: yup
+    .string()
+    .required("Maksimum vaxt tələb olunur")
+    .test("noninteger", "Düzgün dəyər daxil edilməlidir", checkMinusAndZero)
+    .test(
+      "max-hours-check",
+      "Maksimum vaxt minimumdan kiçik ola bilməz",
+      function (value) {
+        const { minHours, minHoursUnit, maxHoursUnit } = this.parent;
+        const minUnit = Number(minHoursUnit);
+        const maxUnit = Number(maxHoursUnit);
+        const minH = Number(minHours) | 1;
+        const maxH = Number(value) | 1;
+
+        return maxUnit * maxH >= minH * minUnit;
+      },
+    ),
+  minHoursUnit: yup.string().required("Minimum qiymət tələb olunur"),
+  maxHoursUnit: yup.string().required("Minimum qiymət tələb olunur"),
+  minPrice: yup
+    .string()
+    .required("Minimum qiymət tələb olunur")
+    .test("noninteger", "Düzgün dəyər daxil edilməlidir", checkMinusAndZero),
+  maxPrice: yup
+    .string()
+    .required("Maksimum qiymət tələb olunur")
+    .test("noninteger", "Düzgün dəyər daxil edilməlidir", checkMinusAndZero)
+    .test(
+      "max-price-check",
+      "Maksimum qiymət minimumdan kiçik ola bilməz",
+      function (value) {
+        const { minPrice } = this.parent;
+        return Number(value) >= Number(minPrice);
+      },
+    ),
 });

@@ -17,10 +17,10 @@ export interface PostProblemForm {
 
 export interface OfferForm {
   description: string;
-  minHours: number;
-  maxHours: number;
-  minHoursUnit: number;
-  maxHoursUnit: number;
-  minPrice: number;
-  maxPrice: number;
+  minHours: string;
+  maxHours: string;
+  minHoursUnit: string;
+  maxHoursUnit: string;
+  minPrice: string;
+  maxPrice: string;
 }

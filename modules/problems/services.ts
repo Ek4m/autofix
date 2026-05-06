@@ -1,5 +1,5 @@
 import { httpClient } from "@/config/httpClient";
-import { PostProblemForm } from "./types/dtos";
+import { OfferForm, PostProblemForm } from "./types/dtos";
 import { UserProblem } from "./types/interfaces";
 import { urlFactory } from "@/helpers/urlFactory";
 
@@ -10,6 +10,19 @@ export const createProblemPost = async (
     method: "POST",
     body: JSON.stringify(body),
   });
+  return response;
+};
+
+export const offerSolution = async (
+  body: OfferForm,
+  problemId: number,
+  userId?: number,
+): Promise<UserProblem> => {
+  const response = await httpClient("/api/issues/offer", {
+    method: "POST",
+    body: JSON.stringify({ ...body, userId, problemId }),
+  });
+  console.log("________WDWDWDWDW", response);
   return response;
 };
 
