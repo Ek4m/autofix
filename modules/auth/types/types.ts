@@ -3,7 +3,7 @@ export interface AuthUser {
   fullName: string;
   email: string;
   phoneNumber: string;
-  mechanicInfo?: {
+  specialistInfo?: {
     profession: number[];
     objectName: string;
     experienceYears: number;

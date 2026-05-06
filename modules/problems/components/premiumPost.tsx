@@ -1,10 +1,10 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Grid } from "@mui/material";
 
-import { UserProblem } from "../types/dtos";
 import SelectField from "@/components/ui/selectField";
 import { NUMBER_OF_VIP_POST_DAYS } from "../vault";
 import TextField from "@/components/ui/textField";
+import { UserProblem } from "../types/interfaces";
 
 const PremiumPost = () => {
   const { control } = useFormContext<UserProblem>();

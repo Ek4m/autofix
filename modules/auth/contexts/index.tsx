@@ -24,7 +24,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const isMechanic = !!user?.mechanicInfo;
+  const isMechanic = !!user?.specialistInfo;
   const getUserInfo = async () => {
     setIsLoading(true);
     try {

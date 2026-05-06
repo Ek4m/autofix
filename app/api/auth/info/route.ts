@@ -6,11 +6,11 @@ export const GET = async () => {
   await initDb();
   const user = await getAuthUserFromRequest();
   if (user) {
-    const mechanicInfo = await SpecialistInfo.findOne({
+    const specialistInfo = await SpecialistInfo.findOne({
       where: { userId: user.id },
     });
 
-    return NextResponse.json({ data: { ...user, mechanicInfo } });
+    return NextResponse.json({ data: { ...user, specialistInfo } });
   } else {
     return NextResponse.json({ data: user });
   }

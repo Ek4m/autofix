@@ -16,6 +16,7 @@ import { makeImagePath } from "@/helpers/makeImagePath";
 import { timeAgoAze } from "@/helpers/timeAgoAze";
 import { useGetProblemDetails } from "../hooks/useGetProblemDetails";
 import OfferListItem from "./offerListItem";
+import { Typography } from "@mui/material";
 
 export function OffersModal({
   problem,
@@ -26,9 +27,11 @@ export function OffersModal({
   onClose: () => void;
   onMakeOffer: (p: UserProblem) => void;
 }) {
-  const { isMechanic } = useAuth();
+  const { user } = useAuth();
   const tFeed = useTranslations("feed");
   const [activeImg, setActiveImg] = useState(0);
+  const isMyPost = user?.id === problem.user.id;
+
   const {
     data: { images, offers },
   } = useGetProblemDetails(problem.id);
@@ -39,9 +42,7 @@ export function OffersModal({
       <div className="bg-white w-full sm:max-w-2xl max-h-[92vh] sm:max-h-[85vh] rounded-t-2xl sm:rounded-2xl flex flex-col overflow-hidden shadow-modal animate-slide-up">
         <div className="flex items-center justify-between px-5 py-4 border-b border-brand-border shrink-0">
           <div>
-            <h2 className="text-base font-bold text-brand-fg line-clamp-1">
-              {problem.title}
-            </h2>
+            <Typography variant="h5">{problem.title}</Typography>
             <p className="text-xs text-brand-muted-fg font-mono mt-0.5">
               {problem.carMake} {problem.carModel} · {problem.carYear} ·{" "}
               {city?.name}
@@ -143,7 +144,7 @@ export function OffersModal({
           </div>
         </div>
 
-        {isMechanic && (
+        {!isMyPost && (
           <div className="px-5 py-4 border-t border-brand-border shrink-0">
             <button
               onClick={() => onMakeOffer(problem)}

@@ -1,4 +1,4 @@
-import { initDb, Offer, Upload, User } from "@/config/db";
+import { initDb, Offer, SpecialistInfo, Upload, User } from "@/config/db";
 import { UploadedFileType } from "@/constants/enums";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -14,7 +14,23 @@ export const GET = async (
   });
   const offers = await Offer.findAll({
     where: { problemId: id },
-    include: [{ model: User, as: "user" }],
+    include: [
+      {
+        model: User,
+        as: "user",
+        attributes: {
+          exclude: ["password"],
+          include: ["id"],
+        },
+        include: [
+          {
+            model: SpecialistInfo,
+            as: "specialistInfo",
+            attributes: { include: ["id", "objectName"] },
+          },
+        ],
+      },
+    ],
   });
   return NextResponse.json({ data: { offers, images } });
 };
