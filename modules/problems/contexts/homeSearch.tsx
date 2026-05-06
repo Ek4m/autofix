@@ -6,6 +6,8 @@ export const HomeSearchContext = createContext<{
   category?: number;
   setCategory(val: number): void;
   search: string;
+  city: string | null;
+  setCity(c: string): void;
   isVip: boolean;
   setIsVip(val: boolean): void;
   setSearch(val: string): void;
@@ -16,6 +18,8 @@ export const HomeSearchContext = createContext<{
   search: "",
   setSearch() {},
   isVip: false,
+  city: null,
+  setCity() {},
   setIsVip() {},
   orderBy: ORDER_BY_CREATION.DESC,
   setOrderBy() {},
@@ -23,6 +27,7 @@ export const HomeSearchContext = createContext<{
 
 export const HomeSearchProvider: FC<PropsWithChildren> = ({ children }) => {
   const [category, setCategory] = useState<number | undefined>(undefined);
+  const [city, setCity] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [orderBy, setOrderBy] = useState(ORDER_BY_CREATION.DESC);
   const [isVip, setIsVip] = useState(false);
@@ -36,6 +41,8 @@ export const HomeSearchProvider: FC<PropsWithChildren> = ({ children }) => {
         isVip,
         setIsVip,
         orderBy,
+        city,
+        setCity,
         setOrderBy,
       }}
     >

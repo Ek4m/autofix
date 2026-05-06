@@ -27,7 +27,7 @@ export const offerSolution = async (
 };
 
 export const getProblemsList = async (
-  filters?: Record<string, string | number>,
+  filters?: Record<string, string | number | null>,
 ): Promise<UserProblem[]> => {
   const response: UserProblem[] = await httpClient(
     urlFactory("/api/issues/list", filters),

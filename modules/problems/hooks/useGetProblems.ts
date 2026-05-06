@@ -7,6 +7,7 @@ export const useGetProblems = (filter?: {
   vip?: number;
   search?: string;
   order: ORDER_BY_CREATION;
+  city: string | null;
 }) =>
   useQuery({
     queryKey: ["getproblems", filter],

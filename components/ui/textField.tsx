@@ -1,7 +1,7 @@
 import React from "react";
 import { TextField as MUITextField, TextFieldProps } from "@mui/material";
 
-export type TextFieldComponentProps = TextFieldProps & {
+export type TextFieldComponentProps = Omit<TextFieldProps, "onChange"> & {
   onChange(val: string): void;
   hasError?: boolean;
 };

@@ -7,7 +7,7 @@ const SubmitButton: FC<ButtonProps> = (props) => {
       className="w-full py-3"
       {...props}
       sx={{
-        p: 2,
+        p: 1.7,
         borderRadius: 2,
         fontWeight: "500",
         color: props.variant === "contained" ? "white" : "#E84B2F",

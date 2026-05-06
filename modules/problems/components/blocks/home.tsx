@@ -16,8 +16,17 @@ import { OfferSolution } from "../offer";
 
 const HomeMain = () => {
   const { user } = useAuth();
-  const { category, setCategory, isVip, setIsVip, search, setSearch, orderBy } =
-    useContext(HomeSearchContext);
+  const {
+    category,
+    setCategory,
+    isVip,
+    setIsVip,
+    search,
+    setSearch,
+    orderBy,
+    city,
+    setCity,
+  } = useContext(HomeSearchContext);
   const [selectedProblem, setSelectedProblem] = useState<UserProblem | null>(
     null,
   );
@@ -26,6 +35,7 @@ const HomeMain = () => {
     vip: Number(isVip),
     search,
     order: orderBy,
+    city,
   });
   const [showPostModal, setShowPostModal] = useState(false);
   const [problemForOffering, setProblemForOffering] =
@@ -52,12 +62,13 @@ const HomeMain = () => {
             </span>{" "}
             problem tapıldı
           </p>
-          {(search || category !== 0 || isVip) && (
+          {(search || category || isVip || city) && (
             <button
               onClick={() => {
                 setSearch("");
                 setCategory(0);
                 setIsVip(false);
+                setCity("");
               }}
               className="text-sm text-primary-DEFAULT font-medium hover:text-primary-dark flex items-center gap-1 transition-colors"
             >
@@ -100,7 +111,10 @@ const HomeMain = () => {
         )}
       </main>
       {problemForOffering && (
-        <OfferSolution problem={problemForOffering} onClose={() => setProblemForOffering(null)} />
+        <OfferSolution
+          problem={problemForOffering}
+          onClose={() => setProblemForOffering(null)}
+        />
       )}
       {selectedProblem && (
         <OffersModal
