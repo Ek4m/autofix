@@ -37,47 +37,6 @@ export interface MechanicService {
   createdAt: string;
 }
 
-export const MECHANIC_OFFERS: MechanicOffer[] = [
-  {
-    id: "offer-001",
-    mechanicName: "Vüsal Əliyev",
-    mechanicAvatar: "https://i.pravatar.cc/40?img=60",
-    rating: 4.9,
-    reviewCount: 134,
-    isVerified: true,
-    price: 80,
-    description:
-      "Bu problem çox güman ki hidrolik lifter səsidir. 1 saata həll edərəm.",
-    estimatedTime: "1-2 saat",
-    createdAt: "2026-04-17T03:30:00Z",
-  },
-  {
-    id: "offer-002",
-    mechanicName: "Elnur Kərimov",
-    mechanicAvatar: "https://i.pravatar.cc/40?img=62",
-    rating: 4.7,
-    reviewCount: 89,
-    isVerified: true,
-    price: 65,
-    description:
-      "Yağ kanallarını təmizləmək lazımdır. Tam diaqnostika aparacam.",
-    estimatedTime: "2-3 saat",
-    createdAt: "2026-04-17T03:45:00Z",
-  },
-  {
-    id: "offer-003",
-    mechanicName: "Samir Hüseynli",
-    mechanicAvatar: "https://i.pravatar.cc/40?img=65",
-    rating: 4.5,
-    reviewCount: 56,
-    isVerified: false,
-    price: 50,
-    description: "Oxşar problemlə çox işləmişəm. Diaqnostika ilə başlayacam.",
-    estimatedTime: "3-4 saat",
-    createdAt: "2026-04-17T04:00:00Z",
-  },
-];
-
 export const MECHANIC_SERVICES: MechanicService[] = [
   {
     id: "svc-001",

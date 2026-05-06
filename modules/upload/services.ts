@@ -1,7 +1,5 @@
 import { httpClient } from "@/config/httpClient";
 import { UploadedFileType } from "@/constants/enums";
-import { urlFactory } from "@/helpers/urlFactory";
-import { IUpload } from "./types";
 
 export const uploadFiles = async (
   files: File[],
@@ -18,16 +16,5 @@ export const uploadFiles = async (
     method: "POST",
     body: formData,
   });
-  return response;
-};
-
-export const getUploadedFiles = async (
-  entityId: number | string,
-  type: UploadedFileType,
-): Promise<IUpload[]> => {
-  const response = await httpClient(
-    urlFactory("/api/upload/list/" + entityId, { type }),
-    { method: "GET" },
-  );
   return response;
 };

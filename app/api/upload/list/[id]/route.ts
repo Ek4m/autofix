@@ -8,7 +8,6 @@ export const GET = async (
   await initDb();
   const searchParams = request.nextUrl.searchParams;
   const payload = await params;
-  console.log(payload);
   const { id } = payload;
   const type = searchParams.get("type");
   const images = await Upload.findAll({ where: { entityId: id, type } });

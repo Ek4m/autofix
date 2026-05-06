@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { HiOutlineClock, HiOutlineShieldCheck, HiStar } from "react-icons/hi";
+import { HiOutlineClock } from "react-icons/hi";
 import {
   HiOutlineBolt,
   HiOutlineChatBubbleLeftRight,
@@ -9,14 +9,13 @@ import {
 } from "react-icons/hi2";
 
 import AppImage from "@/components/ui/AppImage";
-import { MECHANIC_OFFERS } from "@/lib/mockData";
 import { useAuth } from "@/modules/auth/contexts";
 import citiesList from "@/data/cities.json";
 import { UserProblem } from "../types/interfaces";
-import { useGetUploadedImages } from "@/modules/upload/hooks/useGetUploads";
-import { UploadedFileType } from "@/constants/enums";
 import { makeImagePath } from "@/helpers/makeImagePath";
 import { timeAgoAze } from "@/helpers/timeAgoAze";
+import { useGetProblemDetails } from "../hooks/useGetProblemDetails";
+import OfferListItem from "./offerListItem";
 
 export function OffersModal({
   problem,
@@ -30,10 +29,9 @@ export function OffersModal({
   const { isMechanic } = useAuth();
   const tFeed = useTranslations("feed");
   const [activeImg, setActiveImg] = useState(0);
-  const { data: photos } = useGetUploadedImages(
-    problem.id,
-    UploadedFileType.PROBLEM,
-  );
+  const {
+    data: { images, offers },
+  } = useGetProblemDetails(problem.id);
   const city = citiesList.find((e) => e.id === Number(problem.city));
 
   return (
@@ -58,21 +56,21 @@ export function OffersModal({
         </div>
 
         <div className="overflow-y-auto flex-1">
-          {photos.length > 0 && (
+          {images.length > 0 && (
             <div className="px-5 pt-4">
               <div className="relative h-[300px] rounded-xl overflow-hidden bg-brand-muted">
                 <AppImage
                   key={activeImg}
-                  src={makeImagePath(photos[activeImg].name)}
+                  src={makeImagePath(images[activeImg].name)}
                   alt={`${problem.carMake} ${problem.carModel} şəkli ${activeImg + 1}`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 640px) 100vw, 640px"
                 />
               </div>
-              {photos.length > 1 && (
+              {images.length > 1 && (
                 <div className="flex gap-2 mt-2">
-                  {photos.map((photo, i) => (
+                  {images.map((photo, i) => (
                     <button
                       key={`modal-thumb-${problem.id}-${i}`}
                       onClick={() => setActiveImg(i)}
@@ -118,12 +116,12 @@ export function OffersModal({
               <h3 className="text-sm font-bold text-brand-fg">
                 Mexanik Təklifləri
                 <span className="ml-2 text-primary-DEFAULT font-mono tabular-nums">
-                  ({MECHANIC_OFFERS.length})
+                  ({offers.length})
                 </span>
               </h3>
             </div>
 
-            {MECHANIC_OFFERS.length === 0 ? (
+            {offers.length === 0 ? (
               <div className="text-center py-8 text-brand-muted-fg">
                 <HiOutlineChatBubbleLeftRight
                   size={32}
@@ -133,61 +131,12 @@ export function OffersModal({
               </div>
             ) : (
               <div className="space-y-3">
-                {MECHANIC_OFFERS.map((offer) => (
-                  <div
+                {offers.map((offer) => (
+                  <OfferListItem
+                    offer={offer}
+                    problem={problem}
                     key={offer.id}
-                    className="p-4 bg-brand-bg rounded-xl border border-brand-border hover:border-primary-DEFAULT/30 transition-all duration-150"
-                  >
-                    <div className="flex items-start gap-3">
-                      <AppImage
-                        src={offer.mechanicAvatar}
-                        alt={`${offer.mechanicName} mexanik avatarı`}
-                        width={40}
-                        height={40}
-                        className="rounded-full border border-brand-border shrink-0"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-sm font-bold text-brand-fg">
-                            {offer.mechanicName}
-                          </span>
-                          {offer.isVerified && (
-                            <span className="badge-verified text-xs">
-                              <HiOutlineShieldCheck size={10} /> Doğrulanmış
-                            </span>
-                          )}
-                          <div className="flex items-center gap-1 ml-auto">
-                            <HiStar
-                              size={12}
-                              className="text-amber-400 fill-amber-400"
-                            />
-                            <span className="text-xs font-semibold text-brand-fg tabular-nums">
-                              {offer.rating}
-                            </span>
-                            <span className="text-xs text-brand-muted-fg">
-                              ({offer.reviewCount})
-                            </span>
-                          </div>
-                        </div>
-                        <p className="text-sm text-brand-muted-fg mt-1.5 leading-relaxed">
-                          {offer.description}
-                        </p>
-                        <div className="flex items-center gap-4 mt-2.5">
-                          <span className="text-lg font-bold text-primary-DEFAULT tabular-nums">
-                            {offer.price} ₼
-                          </span>
-                          <span className="text-xs text-brand-muted-fg flex items-center gap-1">
-                            <HiOutlineClock size={11} /> {offer.estimatedTime}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    {!isMechanic && (
-                      <button className="mt-3 w-full btn-navy text-sm py-2">
-                        Bu mexanikə müraciət et
-                      </button>
-                    )}
-                  </div>
+                  />
                 ))}
               </div>
             )}

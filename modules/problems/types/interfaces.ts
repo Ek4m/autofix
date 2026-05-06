@@ -13,5 +13,15 @@ export interface UserProblem extends PostProblemForm {
 export interface MechanicOffer {
   id: number;
   description: string;
-  
+  minHours: number;
+  maxHours: number;
+  minHoursUnit: number;
+  maxHoursUnit: number;
+  minPrice: number;
+  maxPrice: number;
+  createdAt: string;
+  updatedAt: string;
+  userId: number;
+  problemId: number;
+  user: AuthUser;
 }

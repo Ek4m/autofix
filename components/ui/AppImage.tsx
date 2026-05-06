@@ -123,6 +123,7 @@ const AppImage = memo(function AppImage({
           }
           style={{ objectFit: "cover" }}
           {...props}
+          alt={props.alt}
         />
       </div>
     );
@@ -135,6 +136,7 @@ const AppImage = memo(function AppImage({
       height={height || 300}
       sizes={sizes}
       {...props}
+      alt={props.alt}
     />
   );
 });
