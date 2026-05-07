@@ -2,7 +2,7 @@ import { Sequelize, DataTypes, Model } from "sequelize";
 import pg from "pg";
 import { ICategory } from "@/modules/categories/types";
 import { UploadedFileType } from "@/constants/enums";
-import { PROBLEM_STATUS } from "@/modules/problems/constants";
+import { OFFER_STATUS, PROBLEM_STATUS } from "@/modules/problems/constants";
 // ================= DB =================
 export const sequelize = new Sequelize({
   dialect: "postgres",
@@ -88,6 +88,7 @@ Offer.init(
     minHours: DataTypes.INTEGER,
     maxHours: DataTypes.INTEGER,
     minHoursUnit: DataTypes.INTEGER,
+    status: { type: DataTypes.STRING, defaultValue: OFFER_STATUS.PENDING },
     maxHoursUnit: DataTypes.INTEGER,
     minPrice: DataTypes.INTEGER,
     maxPrice: DataTypes.INTEGER,

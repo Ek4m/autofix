@@ -36,6 +36,7 @@ export function OffersModal({
 
   const {
     data: { images, offers },
+    refetch,
   } = useGetProblemDetails(problem.id);
   const city = citiesList.find((e) => e.id === Number(problem.city));
 
@@ -150,6 +151,7 @@ export function OffersModal({
               <div className="space-y-3">
                 {offers.map((offer) => (
                   <OfferListItem
+                    onRefetch={refetch}
                     offer={offer}
                     problem={problem}
                     key={offer.id}

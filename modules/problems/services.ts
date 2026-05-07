@@ -19,7 +19,7 @@ export const offerSolution = async (
   problemId: number,
   userId?: number,
 ): Promise<UserProblem> => {
-  const response = await httpClient("/api/issues/offer", {
+  const response = await httpClient("/api/offer", {
     method: "POST",
     body: JSON.stringify({ ...body, userId, problemId }),
   });
@@ -43,6 +43,13 @@ export const getProblemDetails = async (
 ): Promise<{ images: IUpload[]; offers: MechanicOffer[] }> => {
   const response = await httpClient("/api/issues/details/" + id, {
     method: "GET",
+  });
+  return response;
+};
+
+export const cancelOffer = async (id: number): Promise<MechanicOffer> => {
+  const response = await httpClient(`/api/offer/${id}/cancel`, {
+    method: "DELETE",
   });
   return response;
 };

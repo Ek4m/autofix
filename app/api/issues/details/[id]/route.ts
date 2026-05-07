@@ -1,6 +1,9 @@
+import { NextRequest, NextResponse } from "next/server";
+import { Op } from "sequelize";
+
 import { initDb, Offer, SpecialistInfo, Upload, User } from "@/config/db";
 import { UploadedFileType } from "@/constants/enums";
-import { NextRequest, NextResponse } from "next/server";
+import { OFFER_STATUS } from "@/modules/problems/constants";
 
 export const GET = async (
   request: NextRequest,
@@ -13,7 +16,12 @@ export const GET = async (
     where: { entityId: id, type: UploadedFileType.PROBLEM },
   });
   const offers = await Offer.findAll({
-    where: { problemId: id },
+    where: {
+      problemId: id,
+      status: {
+        [Op.not]: OFFER_STATUS.DECLINED,
+      },
+    },
     include: [
       {
         model: User,

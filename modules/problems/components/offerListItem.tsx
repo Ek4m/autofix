@@ -1,18 +1,64 @@
-import React, { FC } from "react";
+import { FC, useState } from "react";
 import { MechanicOffer, UserProblem } from "../types/interfaces";
 import { TIME_UNITS } from "../constants";
 import { HiOutlineClock } from "react-icons/hi";
 import { useAuth } from "@/modules/auth/contexts";
 import SubmitButton from "@/components/ui/submitButton";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Typography,
+} from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
+import { cancelOffer } from "../services";
 
-const OfferListItem: FC<{ offer: MechanicOffer; problem: UserProblem }> = ({
-  offer,
-  problem,
-}) => {
+const OfferListItem: FC<{
+  offer: MechanicOffer;
+  problem: UserProblem;
+  onRefetch(): void;
+}> = ({ offer, problem, onRefetch }) => {
   const { user } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [type, setType] = useState<"cancel" | "accept">();
+
+  const handleClickOpen = (t: typeof type) => {
+    setType(t);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const onCancelOffer = useMutation({
+    mutationFn: async () => {
+      try {
+        await cancelOffer(offer.id);
+        onRefetch();
+        handleClose();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    mutationKey: ["canceloffer", offer],
+  });
+
+  const onSubmit = () => {
+    if (isCancel) {
+      onCancelOffer.mutate();
+    } else {
+    }
+  };
+
   const isMyPost = user?.id === problem.user.id;
+  const isCancel = type === "cancel";
+
   return (
-    <div className="p-4 bg-brand-bg rounded-xl border border-brand-border hover:border-primary-DEFAULT/30 transition-all duration-150">
+    <div className="p-4 bg-brand-bg rounded-xl border hover:border-primary transition-all duration-150">
       <div className="flex items-start gap-3">
         <div className="w-100 h-100 rounded bg-[lightgrey] p-2">
           {offer.user.specialistInfo?.objectName
@@ -22,26 +68,14 @@ const OfferListItem: FC<{ offer: MechanicOffer; problem: UserProblem }> = ({
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-sm font-bold text-brand-fg">
+            <Typography sx={{ fontWeight: "600" }} variant="h6">
               {offer.user.specialistInfo?.objectName}
-            </span>
+            </Typography>
             {/* {offer.isVerified && (
                             <span className="badge-verified text-xs">
                               <HiOutlineShieldCheck size={10} /> Doğrulanmış
                             </span>
                           )} */}
-            {/* <div className="flex items-center gap-1 ml-auto">
-                            <HiStar
-                              size={12}
-                              className="text-amber-400 fill-amber-400"
-                            />
-                            <span className="text-xs font-semibold text-brand-fg tabular-nums">
-                              {offer.rating}
-                            </span>
-                            <span className="text-xs text-brand-muted-fg">
-                              ({offer.reviewCount})
-                            </span>
-                          </div> */}
           </div>
           <p className="text-sm text-brand-muted-fg mt-1.5 leading-relaxed">
             {offer.description}
@@ -60,8 +94,52 @@ const OfferListItem: FC<{ offer: MechanicOffer; problem: UserProblem }> = ({
         </div>
       </div>
       {isMyPost && (
-        <SubmitButton variant="contained" title="müraciət et" />
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <SubmitButton
+              variant="text"
+              title="Ləğv et"
+              onClick={() => handleClickOpen("cancel")}
+            />
+          </Grid>
+          <Grid size={{ xs: 12, md: 6 }}>
+            <SubmitButton
+              variant="contained"
+              title="müraciət et"
+              onClick={() => handleClickOpen("accept")}
+            />
+          </Grid>
+        </Grid>
       )}
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        role="alertdialog"
+      >
+        <DialogTitle>
+          {isCancel
+            ? "Silmək istədiyinizə əminsiniz?"
+            : "Təklifi qəbul etdiyinizə əminsiniz?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            {isCancel
+              ? "Bu təklifi sildikdən sonra bir daha geri qaytara bilməyəcəksiniz"
+              : ""}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <SubmitButton onClick={handleClose} title="Geri qayıt" />
+          <SubmitButton
+            loading={onCancelOffer.isPending}
+            onClick={onSubmit}
+            variant="contained"
+            title={isCancel ? "Sil" : "Qəbul et"}
+          />
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
