@@ -3,11 +3,9 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AppLogo from "@/components/ui/AppLogo";
-import { LOCALES, useLocale } from "@/context/LocaleContext";
 import {
   HiOutlineBars3,
   HiOutlineXMark,
-  HiOutlineChevronDown,
   HiOutlineWrenchScrewdriver,
   HiOutlineTruck,
   HiOutlineArrowRightOnRectangle,
@@ -26,11 +24,8 @@ const NAV_LINKS = [
 
 export default function Topbar() {
   const pathname = usePathname();
-  const { locale, setLocale } = useLocale();
   const { user, isMechanic } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false);
-  const currentLocale = LOCALES.find((l) => l.code === locale) ?? LOCALES[0];
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-brand-border shadow-sm">
@@ -68,45 +63,7 @@ export default function Topbar() {
               );
             })}
           </nav>
-
-          {/* Right actions */}
           <div className="flex items-center gap-2">
-            {/* Language switcher */}
-            <div className="relative">
-              <button
-                onClick={() => setLangOpen(!langOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-brand-muted-fg hover:bg-brand-muted transition-all duration-150"
-              >
-                <span>{currentLocale.flag}</span>
-                <span>{currentLocale.label}</span>
-                <HiOutlineChevronDown
-                  size={14}
-                  className={`transition-transform duration-150 ${langOpen ? "rotate-180" : ""}`}
-                />
-              </button>
-              {langOpen && (
-                <div className="absolute right-0 top-full mt-1.5 bg-white border border-brand-border rounded-xl shadow-card py-1 min-w-[120px] z-50 animate-fade-in">
-                  {LOCALES.map((l) => (
-                    <button
-                      key={`lang-${l.code}`}
-                      onClick={() => {
-                        setLocale(l.code);
-                        setLangOpen(false);
-                      }}
-                      className={`w-full flex items-center gap-2.5 px-3.5 py-2 text-sm transition-colors duration-100 hover:bg-brand-muted ${
-                        locale === l.code
-                          ? "font-semibold text-primary-DEFAULT"
-                          : "text-brand-fg"
-                      }`}
-                    >
-                      <span>{l.flag}</span>
-                      <span>{l.label}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
             {user ? (
               <div className="flex items-center gap-2">
                 <span className="hidden sm:block text-sm font-medium text-brand-fg">

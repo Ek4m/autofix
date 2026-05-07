@@ -60,7 +60,7 @@ const OfferListItem: FC<{ offer: MechanicOffer; problem: UserProblem }> = ({
         </div>
       </div>
       {isMyPost && (
-        <SubmitButton variant="contained" title="Bu mexanikə müraciət et" />
+        <SubmitButton variant="contained" title="müraciət et" />
       )}
     </div>
   );

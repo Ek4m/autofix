@@ -4,12 +4,26 @@ import { useAuth } from "@/modules/auth/contexts";
 import { useTranslations } from "next-intl";
 import { HiCheckCircle, HiOutlinePlus } from "react-icons/hi";
 import { toast } from "sonner";
+import SubmitButton from "@/components/ui/submitButton";
 
 const HomeHead: FC<{ onShowPostModal(val: boolean): void }> = ({
   onShowPostModal,
 }) => {
   const tFeed = useTranslations("feed");
   const { user, isMechanic } = useAuth();
+
+  const onAdd = () => {
+    if (!user) {
+      toast.error("Problem paylaşmaq üçün daxil olun.");
+      return;
+    }
+    if (!isMechanic) {
+      toast.error("Bu ay limitinizi istifadə etdiniz.");
+      return;
+    }
+    onShowPostModal(true);
+  };
+
   return (
     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
       <div>
@@ -27,23 +41,12 @@ const HomeHead: FC<{ onShowPostModal(val: boolean): void }> = ({
             {tFeed("quota")}
           </div>
         )}
-        <button
-          onClick={() => {
-            if (!user) {
-              toast.error("Problem paylaşmaq üçün daxil olun.");
-              return;
-            }
-            if (!isMechanic) {
-              toast.error("Bu ay limitinizi istifadə etdiniz.");
-              return;
-            }
-            onShowPostModal(true);
-          }}
-          className="btn-primary flex items-center gap-2"
-        >
-          <HiOutlinePlus size={16} />
-          {tFeed("post_problem")}
-        </button>
+        <SubmitButton
+          variant="contained"
+          onClick={onAdd}
+          title={tFeed("post_problem")}
+          endIcon={<HiOutlinePlus size={16} />}
+        />
       </div>
     </div>
   );
