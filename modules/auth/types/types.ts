@@ -5,6 +5,8 @@ export interface AuthUser {
   phoneNumber: string;
   specialistInfo?: {
     profession: number[];
+    bio: string;
+    locationUrl: string;
     objectName: string;
     experienceYears: number;
     city: string;

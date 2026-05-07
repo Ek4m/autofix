@@ -29,7 +29,7 @@ export function OffersModal({
   onClose: () => void;
   onMakeOffer: (p: UserProblem) => void;
 }) {
-  const { user } = useAuth();
+  const { user, isMechanic } = useAuth();
   const tFeed = useTranslations("feed");
   const [activeImg, setActiveImg] = useState(0);
   const isMyPost = user?.id === problem.user.id;
@@ -162,7 +162,7 @@ export function OffersModal({
           </div>
         </div>
 
-        {!isMyPost && (
+        {!isMyPost && isMechanic && (
           <div className="px-5 py-4 border-t border-brand-border shrink-0">
             <button
               onClick={() => onMakeOffer(problem)}

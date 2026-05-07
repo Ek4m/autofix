@@ -17,10 +17,6 @@ const HomeHead: FC<{ onShowPostModal(val: boolean): void }> = ({
       toast.error("Problem paylaşmaq üçün daxil olun.");
       return;
     }
-    if (!isMechanic) {
-      toast.error("Bu ay limitinizi istifadə etdiniz.");
-      return;
-    }
     onShowPostModal(true);
   };
 
