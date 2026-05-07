@@ -6,26 +6,31 @@ import { HiBolt, HiOutlineArrowPath, HiOutlineMapPin } from "react-icons/hi2";
 import { useAuth } from "@/modules/auth/contexts";
 import cityList from "@/data/cities.json";
 import { UserProblem } from "../types/interfaces";
-import { datePrettify } from "@/helpers/datePrettify";
 import { makeImagePath } from "@/helpers/makeImagePath";
 import { timeAgoAze } from "@/helpers/timeAgoAze";
+import { PROBLEM_STATUS } from "../constants";
 
 const STATUS_CONFIG: Record<
   string,
   { labelKey: string; color: string; icon: React.ReactNode }
 > = {
-  open: {
-    labelKey: "PENDING",
+  [PROBLEM_STATUS.COMPLETED]: {
+    labelKey: "Tamamlandı",
     color: "bg-emerald-50 text-emerald-700 border-emerald-200",
     icon: <HiCheckCircle size={14} />,
   },
-  in_progress: {
-    labelKey: "in_progress",
+  [PROBLEM_STATUS.ASSIGNED]: {
+    labelKey: "Davam edir",
     color: "bg-blue-50 text-blue-700 border-blue-200",
     icon: <HiOutlineArrowPath size={14} className="animate-spin" />,
   },
-  resolved: {
-    labelKey: "resolved",
+  [PROBLEM_STATUS.OPEN]: {
+    labelKey: "Açıqdır",
+    color: "bg-green-50 text-green-700 border-green-200",
+    icon: <HiCheckCircle size={14} />,
+  },
+  [PROBLEM_STATUS.CANCELLED]: {
+    labelKey: "Ləğv olundu",
     color: "bg-gray-100 text-gray-500 border-gray-200",
     icon: <HiCheckCircle size={14} />,
   },
@@ -61,7 +66,7 @@ export default function ProblemCard({
         <div className="absolute top-2.5 left-2.5 flex gap-1.5 flex-wrap">
           <span className={`badge-status border text-xs ${status?.color}`}>
             {status?.icon}
-            {tFeed(status?.labelKey)}
+            {status?.labelKey}
           </span>
         </div>
       )}

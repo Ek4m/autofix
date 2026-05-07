@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { HiOutlineClock } from "react-icons/hi";
 import {
@@ -17,6 +17,8 @@ import { timeAgoAze } from "@/helpers/timeAgoAze";
 import { useGetProblemDetails } from "../hooks/useGetProblemDetails";
 import OfferListItem from "./offerListItem";
 import { Typography } from "@mui/material";
+import { IUpload } from "@/modules/upload/types";
+import { UploadedFileType } from "@/constants/enums";
 
 export function OffersModal({
   problem,
@@ -36,6 +38,20 @@ export function OffersModal({
     data: { images, offers },
   } = useGetProblemDetails(problem.id);
   const city = citiesList.find((e) => e.id === Number(problem.city));
+
+  const imagesWithThumbnail = useMemo<IUpload[]>(() => {
+    return [
+      {
+        createdAt: problem.createdAt,
+        id: Number.MIN_SAFE_INTEGER,
+        entityId: problem.id,
+        name: problem.thumbnail,
+        type: UploadedFileType.PROBLEM,
+        updatedAt: problem.createdAt,
+      },
+      ...images,
+    ];
+  }, [images, problem]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
@@ -57,21 +73,21 @@ export function OffersModal({
         </div>
 
         <div className="overflow-y-auto flex-1">
-          {images.length > 0 && (
+          {imagesWithThumbnail.length > 0 && (
             <div className="px-5 pt-4">
               <div className="relative h-[300px] rounded-xl overflow-hidden bg-brand-muted">
                 <AppImage
                   key={activeImg}
-                  src={makeImagePath(images[activeImg].name)}
+                  src={makeImagePath(imagesWithThumbnail[activeImg].name)}
                   alt={`${problem.carMake} ${problem.carModel} şəkli ${activeImg + 1}`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 640px) 100vw, 640px"
                 />
               </div>
-              {images.length > 1 && (
+              {imagesWithThumbnail.length > 1 && (
                 <div className="flex gap-2 mt-2">
-                  {images.map((photo, i) => (
+                  {imagesWithThumbnail.map((photo, i) => (
                     <button
                       key={`modal-thumb-${problem.id}-${i}`}
                       onClick={() => setActiveImg(i)}

@@ -2,6 +2,7 @@ import { Sequelize, DataTypes, Model } from "sequelize";
 import pg from "pg";
 import { ICategory } from "@/modules/categories/types";
 import { UploadedFileType } from "@/constants/enums";
+import { PROBLEM_STATUS } from "@/modules/problems/constants";
 // ================= DB =================
 export const sequelize = new Sequelize({
   dialect: "postgres",
@@ -52,7 +53,7 @@ Problem.init(
     carYear: DataTypes.INTEGER,
     city: DataTypes.STRING,
     isVip: { type: DataTypes.BOOLEAN, defaultValue: false },
-    status: { type: DataTypes.STRING, defaultValue: "PENDING" },
+    status: { type: DataTypes.STRING, defaultValue: PROBLEM_STATUS.OPEN },
     userId: DataTypes.INTEGER,
   },
   {
