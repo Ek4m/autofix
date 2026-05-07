@@ -5,20 +5,14 @@ import { Grid, Typography } from "@mui/material";
 import { useTranslations } from "next-intl";
 import { FaAward, FaMapMarkerAlt, FaPhone, FaWrench } from "react-icons/fa";
 
-import AppImage from "@/components/ui/AppImage";
-import { MECHANIC_SERVICES } from "@/lib/mockData";
 import { useGetMechanicInfo } from "../hooks/useGetMechanicInfo";
 import categoriesList from "@/data/categories.json";
 
 const MechanicDetails = () => {
-  const service = MECHANIC_SERVICES[0];
   const { id } = useParams<{ id: string }>();
   const { data } = useGetMechanicInfo(id);
 
   const tServices = useTranslations("services");
-  const allServices = MECHANIC_SERVICES.filter(
-    (s) => s.mechanicId === service.mechanicId,
-  );
 
   const categories = useMemo(() => {
     const flatArray = categoriesList.flatMap((cat) =>
@@ -35,19 +29,18 @@ const MechanicDetails = () => {
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 bg-white">
       <Typography variant="h4" sx={{ fontWeight: "600" }}>
-        Mexanik Profili
+        Usta Profili
       </Typography>
 
       <div className="p-5 space-y-6">
         <div className="flex items-start gap-4">
           <div className="relative shrink-0">
-            <AppImage
-              src={service.mechanicAvatar}
-              alt={`${service.mechanicName} tam profil şəkli`}
-              width={72}
-              height={72}
-              className="rounded-2xl border border-brand-border"
-            />
+            <div className="w-120 h-120 rounded bg-[lightgrey] p-2">
+              {data?.specialistInfo?.objectName
+                .split(" ")
+                .map((c) => c[0].toUpperCase())
+                .join("")}
+            </div>
             {/* {service.isAvailable && (
               <span className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
                 <FaCheckCircle size={11} className="text-white" />
@@ -99,7 +92,7 @@ const MechanicDetails = () => {
             },
             {
               label: "Xidmətlər",
-              value: `${allServices.length}`,
+              value: 1,
               Icon: FaWrench,
             },
             {
@@ -123,9 +116,12 @@ const MechanicDetails = () => {
             </div>
           ))}
         </div>
-
         <div className="space-y-2.5">
-          <h4 className="text-sm font-bold text-brand-fg">Digər məlumatlar</h4>
+          <h4 className="text-lg font-bold text-brand-fg">Ətraflı</h4>
+          <p>{data?.specialistInfo?.bio}</p>
+        </div>
+        <div className="space-y-2.5">
+          <h4 className="text-lg font-bold text-brand-fg">Digər məlumatlar</h4>
           <Grid container spacing={3}>
             <Grid size={{ xs: 12, md: 6 }}>
               <div className="flex items-center gap-3 p-3 bg-brand-bg rounded-xl border border-brand-border">
@@ -134,7 +130,7 @@ const MechanicDetails = () => {
                   className="text-primary-DEFAULT shrink-0"
                 />
                 <span className="text-sm text-brand-fg">
-                  {data?.specialistInfo?.bio}
+                  {data?.specialistInfo?.rawAddress}
                 </span>
               </div>
             </Grid>
@@ -157,7 +153,7 @@ const MechanicDetails = () => {
         </div>
 
         <div>
-          <h4 className="text-sm font-bold text-brand-fg mb-2.5">İxtisaslar</h4>
+          <h4 className="text-lg font-bold text-brand-fg mb-2.5">İxtisaslar</h4>
           <div className="flex gap-2 flex-wrap">
             {categories.map((spec) => (
               <span

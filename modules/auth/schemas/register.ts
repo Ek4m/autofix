@@ -45,6 +45,12 @@ export const createRegisterSchema = (requireMechanic: boolean) => {
               .min(1, "İxtisas tələb olunur")
               .required("İxtisas tələb olunur"),
             objectName: yup.string().required("Qaraj adı tələb olunur"),
+            locationUrl: yup.string().required("Məkan linki tələb olunur"),
+            rawAddress: yup.string().required("Ünvan tələb olunur"),
+            bio: yup
+              .string()
+              .required("Ətraflı mətni tələb olunur")
+              .max(300, "Maksimum 200 hərf tələb olunur"),
             experienceYears: yup
               .number()
               .typeError("Rəqəm daxil edin")

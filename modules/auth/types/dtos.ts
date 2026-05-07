@@ -10,6 +10,9 @@ export interface RegisterForm extends LoginForm {
   mechanic: {
     profession: string[];
     objectName: string;
+    rawAddress: string;
+    locationUrl: string;
+    bio: string;
     experienceYears: number;
     city: string;
   } | null;

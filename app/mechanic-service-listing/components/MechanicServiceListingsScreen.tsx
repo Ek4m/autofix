@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from "react";
 import Topbar from "@/components/Topbar";
 import { Locale } from "@/lib/i18n";
-import { MECHANIC_SERVICES, MechanicService } from "@/lib/mockData";
+import { MechanicService } from "@/lib/mockData";
 import AppImage from "@/components/ui/AppImage";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
@@ -78,7 +78,7 @@ export default function MechanicServiceListingsScreen() {
   });
 
   const filtered = useMemo(() => {
-    let result = [...MECHANIC_SERVICES];
+    let result = [];
     if (search) {
       const q = search.toLowerCase();
       result = result.filter(

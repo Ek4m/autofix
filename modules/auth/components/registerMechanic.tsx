@@ -7,6 +7,7 @@ import TextField from "@/components/ui/textField";
 import SelectField from "@/components/ui/selectField";
 import categoriesList from "@/data/categories.json";
 import SelectWithSearch from "@/components/ui/selectWithSearch";
+import { ImLocation } from "react-icons/im";
 
 const RegisterMechanic: FC<{
   control: Control<RegisterForm, object, RegisterForm>;
@@ -82,6 +83,46 @@ const RegisterMechanic: FC<{
             hasError={Boolean(fieldState.error)}
             label={tAuth("mechanic.experience")}
             helperText={fieldState.error?.message}
+          />
+        )}
+      />
+      <Controller
+        name={"mechanic.rawAddress"}
+        control={control}
+        render={({ field, fieldState }) => (
+          <TextField
+            {...field}
+            hasError={Boolean(fieldState.error)}
+            label="Ünvan"
+            helperText={fieldState.error?.message}
+          />
+        )}
+      />
+      <Controller
+        name={"mechanic.locationUrl"}
+        control={control}
+        render={({ field, fieldState }) => (
+          <TextField
+            {...field}
+            hasError={Boolean(fieldState.error)}
+            label="Məkan linki"
+            helperText={fieldState.error?.message}
+            slotProps={{ input: { endAdornment: <ImLocation /> } }}
+          />
+        )}
+      />
+      <Controller
+        name="mechanic.bio"
+        control={control}
+        render={({ field, fieldState }) => (
+          <TextField
+            {...field}
+            multiline
+            maxRows={10}
+            hasError={Boolean(fieldState.error)}
+            label="Ətraflı"
+            helperText={fieldState.error?.message}
+            placeholder="İş yeriniz(brendiniz) haqqında məlumat..."
           />
         )}
       />

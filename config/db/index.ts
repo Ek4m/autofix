@@ -109,6 +109,7 @@ SpecialistInfo.init(
     experienceYears: DataTypes.INTEGER,
     bio: DataTypes.STRING,
     locationUrl: DataTypes.STRING,
+    rawAddress: DataTypes.STRING,
     objectName: DataTypes.STRING,
     city: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,

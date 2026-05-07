@@ -8,6 +8,7 @@ export interface AuthUser {
     bio: string;
     locationUrl: string;
     objectName: string;
+    rawAddress: string;
     experienceYears: number;
     city: string;
   } | null;
