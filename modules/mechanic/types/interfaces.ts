@@ -13,23 +13,10 @@ export interface MechanicOffer {
 
 export interface MechanicService {
   id: string;
-  mechanicId: string;
-  mechanicName: string;
-  mechanicAvatar: string;
-  garageName: string;
-  isVerified: boolean;
-  rating: number;
-  reviewCount: number;
-  location: string;
-  phone: string;
   serviceName: string;
   category: string;
   description: string;
   priceMin: number;
   priceMax: number;
-  isPremium: boolean;
-  isAvailable: boolean;
-  experience: number;
-  specializations: string[];
-  createdAt: string;
+  categories: string[];
 }

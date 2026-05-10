@@ -160,6 +160,33 @@ Category.init(
   },
 );
 
+// ------ SERVICE --------
+
+export class Service extends Model {}
+
+Service.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    serviceName: DataTypes.STRING,
+    description: DataTypes.TEXT,
+    priceMin: DataTypes.INTEGER,
+    priceMax: DataTypes.INTEGER,
+    categories: {
+      type: DataTypes.JSONB,
+      defaultValue: [],
+    },
+  },
+  {
+    sequelize,
+    tableName: "mechanic_services",
+    timestamps: true,
+  },
+);
+
 // ================= RELATIONS =================
 
 // USER ↔ PROBLEM
@@ -196,6 +223,10 @@ Offer.belongsTo(User, { foreignKey: "userId", as: "user" });
 // OFFER  ↔ PROBLEM
 Problem.hasMany(Offer, { foreignKey: "problemId", as: "offers" });
 Offer.belongsTo(Problem, { foreignKey: "problemId", as: "problem" });
+
+// USER ↔ SERVICES
+User.hasMany(Service, { foreignKey: "userId", as: "services" });
+Service.belongsTo(User, { foreignKey: "userId", as: "user" });
 
 // ================= INIT =================
 
