@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-const checkMinusAndZero = (value: string) => {
+export const checkMinusAndZero = (value: string) => {
   const val = Number(value);
   return !isNaN(val) && val > 0;
 };
@@ -21,7 +21,7 @@ export const postProblemSchema = yup.object({
   carModel: yup.string().required("Avtomobil modeli mütləqdir"),
   images: yup
     .array()
-    .of(yup.mixed<object>())
+    .of(yup.mixed<File>())
     .min(1, "Minimum 1 şəkil seçilməlidir"),
 
   carYear: yup

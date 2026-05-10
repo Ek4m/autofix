@@ -7,7 +7,10 @@ export const postServiceSchema = yup.object({
     .min(3, "Xidmət adı minimum 3 simvol olmalıdır")
     .max(100, "Xidmət adı maksimum 100 simvol ola bilər"),
 
-  category: yup.string().required("Kateqoriya seçilməlidir"),
+  categories: yup
+    .array()
+    .of(yup.string())
+    .min(1, "Minimum 1 kateqoriya seçilməlidir"),
 
   description: yup
     .string()
@@ -15,7 +18,10 @@ export const postServiceSchema = yup.object({
     .min(10, "Təsvir minimum 10 simvol olmalıdır")
     .max(1000, "Təsvir maksimum 1000 simvol ola bilər"),
 
-  priceMin: yup.string().required("Minimum qiymət mütləqdir"),
+  priceMin: yup
+    .number()
+    .required("Minimum qiymət mütləqdir")
+    .positive("Minimum qiymət sıfırdan böyük olmalıdır"),
 
   priceMax: yup
     .string()
@@ -32,5 +38,5 @@ export const postServiceSchema = yup.object({
       },
     ),
 
-  isPremium: yup.boolean(),
+  isVip: yup.boolean(),
 });

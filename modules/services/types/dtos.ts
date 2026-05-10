@@ -1,9 +1,8 @@
 export interface PostServiceForm {
   serviceName: string;
-  category: string;
+  categories: string[];
   description: string;
-  priceMin: string;
-  priceMax: string;
-  city: string;
-  isPremium: boolean;
+  priceMin: number;
+  priceMax: number;
+  isVip: boolean;
 }

@@ -6,19 +6,21 @@ import { FaBolt, FaCreditCard, FaStar } from "react-icons/fa";
 import { ImSpinner8 } from "react-icons/im";
 import { Grid } from "@mui/material";
 import TextField from "@/components/ui/textField";
-import SelectField from "@/components/ui/selectField";
 import categoriesList from "@/data/categories.json";
 import { useMemo } from "react";
 import SwitchField from "@/components/ui/switchField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postServiceSchema } from "../schemas";
+import MultiSelectField from "@/components/ui/selectWithSearch";
+import { postService } from "../services";
 
 export function PostServiceModal({ onClose }: { onClose: () => void }) {
   const tCommon = useTranslations("common");
   const form = useForm<PostServiceForm, object, PostServiceForm>({
     resolver: yupResolver(postServiceSchema),
     defaultValues: {
-      isPremium: false,
+      isVip: false,
+      categories: [],
     },
   });
 
@@ -38,11 +40,12 @@ export function PostServiceModal({ onClose }: { onClose: () => void }) {
   } = form;
 
   const onSubmit = async (values: PostServiceForm) => {
-    console.log(values);
+    const response = await postService(values);
+    console.log(response);
   };
 
-  const isPremium = form.watch("isPremium");
-  const postCost = isPremium ? "6.00" : "2.50";
+  const isVip = form.watch("isVip");
+  const postCost = isVip ? "6.00" : "2.50";
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
@@ -87,10 +90,10 @@ export function PostServiceModal({ onClose }: { onClose: () => void }) {
             </Grid>
             <Grid size={12}>
               <Controller
-                name="category"
+                name="categories"
                 control={control}
                 render={({ field, fieldState }) => (
-                  <SelectField
+                  <MultiSelectField
                     {...field}
                     options={categories.map((m) => ({
                       label: m.name,
@@ -128,6 +131,7 @@ export function PostServiceModal({ onClose }: { onClose: () => void }) {
                 render={({ field, fieldState }) => (
                   <TextField
                     {...field}
+                    type="number"
                     hasError={Boolean(fieldState.error)}
                     helperText={fieldState.error?.message}
                     label="Min. qiymət (₼)"
@@ -142,6 +146,7 @@ export function PostServiceModal({ onClose }: { onClose: () => void }) {
                 render={({ field, fieldState }) => (
                   <TextField
                     {...field}
+                    type="number"
                     hasError={Boolean(fieldState.error)}
                     label="Max. qiymət (₼)"
                     helperText={fieldState.error?.message}
@@ -152,16 +157,16 @@ export function PostServiceModal({ onClose }: { onClose: () => void }) {
           </Grid>
           {/* Premium toggle */}
           <div
-            className={`p-4 rounded-xl border-2 transition-all duration-150 cursor-pointer ${isPremium ? "border-amber-400 bg-amber-50" : "border-brand-border hover:border-amber-300"}`}
+            className={`p-4 rounded-xl border-2 transition-all duration-150 cursor-pointer ${isVip ? "border-amber-400 bg-amber-50" : "border-brand-border hover:border-amber-300"}`}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div
-                  className={`w-9 h-9 rounded-lg flex items-center justify-center ${isPremium ? "bg-amber-400" : "bg-brand-muted"}`}
+                  className={`w-9 h-9 rounded-lg flex items-center justify-center ${isVip ? "bg-amber-400" : "bg-brand-muted"}`}
                 >
                   <FaStar
                     size={18}
-                    className={isPremium ? "text-white" : "text-brand-muted-fg"}
+                    className={isVip ? "text-white" : "text-brand-muted-fg"}
                   />
                 </div>
                 <div>
@@ -174,7 +179,7 @@ export function PostServiceModal({ onClose }: { onClose: () => void }) {
                 </div>
               </div>
               <Controller
-                name="isPremium"
+                name="isVip"
                 control={control}
                 render={({ field, fieldState }) => (
                   <SwitchField
@@ -185,7 +190,7 @@ export function PostServiceModal({ onClose }: { onClose: () => void }) {
                 )}
               />
             </div>
-            {isPremium && (
+            {isVip && (
               <p className="mt-2 text-xs text-amber-700 flex items-center gap-1.5">
                 <FaBolt size={11} /> Xidmətiniz lentdə birinci sırada,
                 vurğulanmış göstəriləcək

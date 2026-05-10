@@ -40,7 +40,7 @@ const RATING_OPTIONS = [
 ];
 
 export default function MechanicServiceListingsScreen() {
-  const { user } = useAuth();
+  const { user, isMechanic } = useAuth();
   const tServices = useTranslations("services");
 
   const [search, setSearch] = useState("");
@@ -56,7 +56,6 @@ export default function MechanicServiceListingsScreen() {
   const [ratingOpen, setRatingOpen] = useState(false);
 
   const isLoggedIn = Boolean(user);
-  const userRole: "user" | "mechanic" = "mechanic";
 
   const filtered = useMemo(() => {
     let result = [];
@@ -116,7 +115,7 @@ export default function MechanicServiceListingsScreen() {
               {tServices("subtitle")}
             </p>
           </div>
-          {userRole === "mechanic" && (
+          {isMechanic && (
             <div className="flex items-center gap-3">
               <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-navy-DEFAULT/5 border border-navy-DEFAULT/10 rounded-lg">
                 <FaCreditCard size={13} className="text-navy-DEFAULT" />

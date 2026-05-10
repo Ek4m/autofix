@@ -129,7 +129,7 @@ VipInfo.init(
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     expiresAt: DataTypes.DATEONLY,
-    entityType: DataTypes.ENUM(EntityType.PROBLEM),
+    entityType: DataTypes.ENUM(EntityType.PROBLEM, EntityType.SERVICE),
     entityId: DataTypes.INTEGER,
   },
   {
@@ -176,6 +176,7 @@ Service.init(
     description: DataTypes.TEXT,
     priceMin: DataTypes.INTEGER,
     priceMax: DataTypes.INTEGER,
+    isVip: DataTypes.BOOLEAN,
     categories: {
       type: DataTypes.JSONB,
       defaultValue: [],
