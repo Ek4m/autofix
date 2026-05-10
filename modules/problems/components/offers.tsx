@@ -18,7 +18,7 @@ import { useGetProblemDetails } from "../hooks/useGetProblemDetails";
 import OfferListItem from "./offerListItem";
 import { Typography } from "@mui/material";
 import { IUpload } from "@/modules/upload/types";
-import { UploadedFileType } from "@/constants/enums";
+import { EntityType } from "@/constants/enums";
 
 export function OffersModal({
   problem,
@@ -47,7 +47,7 @@ export function OffersModal({
         id: Number.MIN_SAFE_INTEGER,
         entityId: problem.id,
         name: problem.thumbnail,
-        type: UploadedFileType.PROBLEM,
+        type: EntityType.PROBLEM,
         updatedAt: problem.createdAt,
       },
       ...images,

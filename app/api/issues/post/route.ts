@@ -1,4 +1,5 @@
 import { initDb, Problem, VipInfo } from "@/config/db";
+import { EntityType } from "@/constants/enums";
 import { getAuthUserFromRequest } from "@/modules/auth/utils";
 import { NextResponse } from "next/server";
 
@@ -13,13 +14,13 @@ export const POST = async (request: Request) => {
   });
   if (restOfBody.isVip) {
     const now = new Date();
-    const expireTimeInMs =
-      (Number(vipInfo.vipLifeTime) || 1) * 24 * 3600 * 1000;
+    const expireTimeInMs = 7 * 24 * 3600 * 1000;
     now.setTime(now.getTime() + expireTimeInMs);
     await VipInfo.create({
       ...vipInfo,
       expiresAt: now,
-      problemId: prob.get().id,
+      entityId: prob.get().id,
+      entityType: EntityType.PROBLEM,
     });
   }
   return NextResponse.json({ data: prob });

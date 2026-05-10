@@ -8,11 +8,8 @@ export interface PostProblemForm {
   city: string;
   isVip: boolean;
   images: File[];
-  vipInfo?: {
-    vipLifeTime: string;
-    minBudget: string;
-    maxBudget: string;
-  };
+  minBudget: string;
+  maxBudget: string;
 }
 
 export interface OfferForm {

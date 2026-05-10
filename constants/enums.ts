@@ -1,3 +1,3 @@
-export enum UploadedFileType {
+export enum EntityType {
   PROBLEM = "problem",
 }

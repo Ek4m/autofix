@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
 import path from "path";
-import { UploadedFileType } from "@/constants/enums";
+import { EntityType } from "@/constants/enums";
 import { Problem, Upload } from "@/config/db";
 
 export const POST = async (req: NextRequest) => {
   try {
     const formData = await req.formData();
-    const fileType = formData.get("fileType") as UploadedFileType;
+    const fileType = formData.get("fileType") as EntityType;
     const entityId: number = Number(formData.get("entityId"));
     const files = formData.getAll("files") as File[];
     if (!files || files.length === 0) {
@@ -29,7 +29,7 @@ export const POST = async (req: NextRequest) => {
     const [firstImage, ...restOfImages] = uploadedFiles;
     if (entityId) {
       switch (fileType) {
-        case UploadedFileType.PROBLEM:
+        case EntityType.PROBLEM:
           const problem = await Problem.findByPk(entityId);
           if (problem) {
             await Problem.update(

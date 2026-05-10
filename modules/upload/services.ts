@@ -1,9 +1,9 @@
 import { httpClient } from "@/config/httpClient";
-import { UploadedFileType } from "@/constants/enums";
+import { EntityType } from "@/constants/enums";
 
 export const uploadFiles = async (
   files: File[],
-  fileType: UploadedFileType,
+  fileType: EntityType,
   entityId: number,
 ) => {
   const formData = new FormData();

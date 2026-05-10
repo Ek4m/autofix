@@ -1,7 +1,7 @@
 import { Sequelize, DataTypes, Model } from "sequelize";
 import pg from "pg";
 import { ICategory } from "@/modules/categories/types";
-import { UploadedFileType } from "@/constants/enums";
+import { EntityType } from "@/constants/enums";
 import { OFFER_STATUS, PROBLEM_STATUS } from "@/modules/problems/constants";
 // ================= DB =================
 export const sequelize = new Sequelize({
@@ -49,6 +49,8 @@ Problem.init(
     description: DataTypes.TEXT,
     carMake: DataTypes.STRING,
     thumbnail: DataTypes.STRING,
+    minBudget: DataTypes.STRING,
+    maxBudget: DataTypes.STRING,
     carModel: DataTypes.STRING,
     carYear: DataTypes.INTEGER,
     city: DataTypes.STRING,
@@ -70,7 +72,7 @@ Upload.init(
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     name: DataTypes.STRING,
     entityId: DataTypes.INTEGER,
-    type: DataTypes.ENUM(UploadedFileType.PROBLEM),
+    type: DataTypes.ENUM(EntityType.PROBLEM),
   },
   {
     sequelize,
@@ -126,10 +128,9 @@ export class VipInfo extends Model {}
 VipInfo.init(
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    minBudget: DataTypes.STRING,
-    maxBudget: DataTypes.STRING,
     expiresAt: DataTypes.DATEONLY,
-    problemId: DataTypes.INTEGER,
+    entityType: DataTypes.ENUM(EntityType.PROBLEM),
+    entityId: DataTypes.INTEGER,
   },
   {
     sequelize,
@@ -211,10 +212,6 @@ Category.belongsTo(Category, {
 // USER ↔ SPECIALIST
 User.hasOne(SpecialistInfo, { foreignKey: "userId", as: "specialistInfo" });
 SpecialistInfo.belongsTo(User, { foreignKey: "userId", as: "user" });
-
-// PROBLEM ↔ VIP
-Problem.hasOne(VipInfo, { foreignKey: "problemId", as: "vipInfo" });
-VipInfo.belongsTo(Problem, { foreignKey: "problemId", as: "problem" });
 
 // USER  ↔ OFFER
 User.hasMany(Offer, { foreignKey: "userId", as: "offers" });

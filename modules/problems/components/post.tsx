@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "next-intl";
 import {
   Controller,
@@ -19,14 +19,13 @@ import TextField from "@/components/ui/textField";
 import SelectField from "@/components/ui/selectField";
 import categoryList from "@/data/categories.json";
 import SwitchField from "@/components/ui/switchField";
-import PremiumPost from "./premiumPost";
 import SubmitButton from "@/components/ui/submitButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postProblemSchema } from "../schemas";
 import { createProblemPost } from "../services";
 import FileUpload from "@/components/ui/fileUploadField";
 import { uploadFiles } from "@/modules/upload/services";
-import { UploadedFileType } from "@/constants/enums";
+import { EntityType } from "@/constants/enums";
 
 export function PostProblemModal({ onClose }: { onClose: () => void }) {
   const form = useForm<PostProblemForm, object, PostProblemForm>({
@@ -37,7 +36,6 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
     control,
     formState: { isSubmitting },
     watch,
-    setValue,
     handleSubmit,
   } = form;
 
@@ -59,7 +57,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
     try {
       const problem = await createProblemPost(data);
       const images = data.images;
-      await uploadFiles(images, UploadedFileType.PROBLEM, problem.id);
+      await uploadFiles(images, EntityType.PROBLEM, problem.id);
       toast.success(
         "Probleminiz uğurla paylaşıldı! Mexaniklər tezliklə cavab verəcək.",
       );
@@ -83,16 +81,6 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
     "Ford",
   ];
   const isPremium = watch("isVip");
-
-  useEffect(() => {
-    if (!isPremium) {
-      setValue("vipInfo", {
-        maxBudget: "",
-        minBudget: "",
-        vipLifeTime: "",
-      });
-    }
-  }, [isPremium, setValue]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
@@ -228,6 +216,36 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Controller
+                  name="minBudget"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      {...field}
+                      type="number"
+                      hasError={Boolean(fieldState.error)}
+                      label="Minimum büdcə"
+                      helperText={fieldState.error?.message}
+                    />
+                  )}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Controller
+                  name="maxBudget"
+                  control={control}
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      type="number"
+                      {...field}
+                      hasError={Boolean(fieldState.error)}
+                      label="Maksimum büdcə"
+                      helperText={fieldState.error?.message}
+                    />
+                  )}
+                />
+              </Grid>
               <Grid size={12}>
                 <Controller
                   name="images"
@@ -286,7 +304,6 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 </div>
               </Grid>
-              {isPremium && <PremiumPost />}
             </Grid>
             <Grid
               container
