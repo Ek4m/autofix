@@ -4,14 +4,13 @@ import categoryList from "@/data/categories.json";
 import { IService } from "../types/interfaces";
 import ProfilePhotoWithChar from "@/components/ui/profilePhotoWithChar";
 import { useMemo } from "react";
+import Link from "next/link";
 
 export default function ServiceCard({
   service,
-  onViewProfile,
   onContact,
 }: {
   service: IService;
-  onViewProfile: () => void;
   onContact: () => void;
 }) {
   const tServices = useTranslations("services");
@@ -100,13 +99,14 @@ export default function ServiceCard({
           </p>
         </div>
         <div className="flex gap-2">
-          <button
-            onClick={onViewProfile}
-            className="p-2 rounded-lg border border-brand-border hover:bg-brand-muted hover:border-primary-DEFAULT/30 transition-all duration-150"
-            title="Profili gör"
-          >
-            <FaInfoCircle size={15} className="text-brand-muted-fg" />
-          </button>
+          <Link href={`/mechanic-info/${service.userId}`} passHref>
+            <button
+              className="p-2 rounded-lg border border-brand-border hover:bg-brand-muted hover:border-primary-DEFAULT/30 transition-all duration-150"
+              title="Profili gör"
+            >
+              <FaInfoCircle size={15} className="text-brand-muted-fg" />
+            </button>
+          </Link>
           <button
             onClick={onContact}
             className="btn-primary flex items-center gap-1.5 px-3 py-2 text-sm"

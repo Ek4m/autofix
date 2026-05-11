@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { toast } from "sonner";
 import { FiX } from "react-icons/fi";
 import { FaWrench } from "react-icons/fa";
@@ -12,10 +12,7 @@ import { IService } from "@/modules/services/types/interfaces";
 import ServiceCard from "@/modules/services/components/card";
 import ServicesHead from "@/modules/services/components/blocks/servicesHead";
 import ServicesSearch from "@/modules/services/components/blocks/servicesSearch";
-import {
-  ServicesSearchContext,
-  ServicesSearchProvider,
-} from "@/modules/services/contexts/servicesSearch";
+import { ServicesSearchContext } from "@/modules/services/contexts/servicesSearch";
 
 export default function ServicesContainer() {
   const { user } = useAuth();
@@ -23,16 +20,16 @@ export default function ServicesContainer() {
     ServicesSearchContext,
   );
   const [showPostModal, setShowPostModal] = useState(false);
-  const [selectedService, setSelectedService] = useState<IService | null>(null);
-
   const { data: services } = useGetServices({ search, category });
-  console.log(search, category);
+
   const handleContact = (service: IService) => {
     if (!user) {
       toast.error("Mexanikə müraciət etmək üçün daxil olun.");
       return;
     }
-    toast.success(`${service.user?.fullName} ilə əlaqə: ${service.id}`);
+    toast.success(
+      `"${service.user?.specialistInfo?.objectName}" ilə əlaqə: ${service.user?.phoneNumber}`,
+    );
   };
 
   return (
@@ -60,8 +57,6 @@ export default function ServicesContainer() {
             </button>
           )}
         </div>
-
-        {/* Service cards grid */}
         {services?.length === 0 ? (
           <div className="card-surface p-16 text-center">
             <FaWrench
@@ -90,40 +85,15 @@ export default function ServicesContainer() {
               <ServiceCard
                 key={service.id}
                 service={service}
-                onViewProfile={() => setSelectedService(service)}
                 onContact={() => handleContact(service)}
               />
             ))}
           </div>
         )}
       </main>
-
-      {selectedService && (
-        <MechanicProfileDrawer
-          service={selectedService}
-          onClose={() => setSelectedService(null)}
-          onContact={() => handleContact(selectedService)}
-        />
-      )}
-
       {showPostModal && (
         <PostServiceModal onClose={() => setShowPostModal(false)} />
       )}
     </div>
-  );
-}
-
-// ─── Mechanic Profile Drawer ──────────────────────────────────────────────────
-function MechanicProfileDrawer({
-  service,
-  onClose,
-  onContact,
-}: {
-  service: IService;
-  onClose: () => void;
-  onContact: () => void;
-}) {
-  return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-sm animate-fade-in"></div>
   );
 }

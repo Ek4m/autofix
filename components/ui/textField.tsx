@@ -41,6 +41,7 @@ const TextField: React.FC<TextFieldComponentProps> = ({
       {...props}
       sx={sx}
       fullWidth
+      value={props.value || ""}
       onChange={(e) => onChange(e.target.value)}
     />
   );

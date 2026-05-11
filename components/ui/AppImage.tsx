@@ -19,12 +19,11 @@ interface AppImageProps {
   fallbackSrc?: string;
   loading?: "lazy" | "eager";
   unoptimized?: boolean;
-  [key: string]: any;
 }
 
 const AppImage = memo(function AppImage({
   src,
-  alt,
+  alt = "Image",
   width,
   height,
   className = "",
@@ -136,7 +135,7 @@ const AppImage = memo(function AppImage({
       height={height || 300}
       sizes={sizes}
       {...props}
-      alt={props.alt}
+      alt={alt}
     />
   );
 });

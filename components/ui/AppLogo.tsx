@@ -5,18 +5,18 @@ import AppImage from "./AppImage";
 
 interface AppLogoProps {
   src?: string; // Image source (optional)
-  iconName?: string; // Icon name when no image
   size?: number; // Size for icon/image
   className?: string; // Additional classes
   onClick?: () => void; // Click handler
+  alt?: string; // Alt text for image
 }
 
 const AppLogo = memo(function AppLogo({
   src = "/images/app_logo.png",
-  iconName = "SparklesIcon",
   size = 64,
   className = "",
   onClick,
+  alt = "SparklesIcon",
 }: AppLogoProps) {
   const containerClassName = useMemo(() => {
     const classes = ["flex items-center"];
@@ -30,7 +30,7 @@ const AppLogo = memo(function AppLogo({
     <div className={containerClassName} onClick={onClick}>
       <AppImage
         src={src}
-        alt="Logo"
+        alt={alt}
         width={size}
         height={size}
         className="flex-shrink-0"
