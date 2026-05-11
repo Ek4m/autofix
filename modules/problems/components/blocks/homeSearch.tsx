@@ -1,8 +1,7 @@
 import { useTranslations } from "next-intl";
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useState } from "react";
 import { HiOutlineSearch, HiStar } from "react-icons/hi";
-import categoryList from "@/data/categories.json";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { HomeSearchContext } from "../../contexts/homeSearch";
 import cityList from "@/data/cities.json";
 import { ORDER_BY_CREATION } from "../../constants";
@@ -10,6 +9,7 @@ import { useDebounce } from "@/modules/common/hooks/useDebounce";
 import SelectField from "@/components/ui/selectField";
 import TextField from "@/components/ui/textField";
 import SubmitButton from "@/components/ui/submitButton";
+import CategoriesList from "@/components/ui/categoriesList";
 
 const HomeSearch = () => {
   const {
@@ -23,7 +23,6 @@ const HomeSearch = () => {
     orderBy,
     setOrderBy,
   } = useContext(HomeSearchContext);
-  const [parentCategory, setParentCategory] = useState<string | null>(null);
   const [localSearch, setLocalSearch] = useState("");
   const tFeed = useTranslations("feed");
 
@@ -34,14 +33,6 @@ const HomeSearch = () => {
     [localSearch],
     1500,
   );
-
-  const childCategories = useMemo(() => {
-    if (!parentCategory) return null;
-    const selectedParent = categoryList.find(
-      (c) => c.id === Number(parentCategory),
-    );
-    return selectedParent?.subcategories;
-  }, [parentCategory]);
 
   return (
     <div className="card-surface p-4 mb-6">
@@ -90,44 +81,7 @@ const HomeSearch = () => {
           />
         </Grid>
       </Grid>
-      <Typography sx={{ mt: 2, fontSize: 15 }}>Kategoriya seçin</Typography>
-      <div className="flex gap-2 mt-4 flex-wrap pb-1 scrollbar-hide">
-        {categoryList.map((cat) => (
-          <button
-            key={`cat-${cat.id}`}
-            onClick={() => setParentCategory(String(cat.id))}
-            className={`filter-chip whitespace-nowrap shrink-0 ${
-              parentCategory === String(cat.id)
-                ? "filter-chip-active"
-                : "filter-chip-inactive"
-            }`}
-          >
-            {cat.name}
-          </button>
-        ))}
-      </div>
-      {childCategories && (
-        <>
-          <Typography sx={{ mt: 2, fontSize: 15 }}>
-            Sub-kategoriya seçin
-          </Typography>
-          <div className="flex gap-2 mt-4 flex-wrap pb-1 scrollbar-hide">
-            {childCategories.map((cat) => (
-              <button
-                key={`cat-${cat.id}`}
-                onClick={() => setCategory(cat.id)}
-                className={`filter-chip whitespace-nowrap shrink-0 ${
-                  category === cat.id
-                    ? "filter-chip-active"
-                    : "filter-chip-inactive"
-                }`}
-              >
-                {cat.name}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
+      <CategoriesList category={category} onCategorySelect={setCategory} />
     </div>
   );
 };

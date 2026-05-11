@@ -1,10 +1,25 @@
 import { httpClient } from "@/config/httpClient";
 import { PostServiceForm } from "./types/dtos";
+import { IService } from "./types/interfaces";
+import { urlFactory } from "@/helpers/urlFactory";
 
 export const postService = async (data: PostServiceForm) => {
   const response = await httpClient("/api/services/post", {
     body: JSON.stringify(data),
     method: "POST",
   });
+  return response;
+};
+
+export const getAllServices = async (
+  search: string,
+  category: number | null,
+): Promise<IService[]> => {
+  const response = await httpClient(
+    urlFactory("/api/services/list", { search, category }),
+    {
+      method: "GET",
+    },
+  );
   return response;
 };

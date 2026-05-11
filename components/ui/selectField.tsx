@@ -18,7 +18,7 @@ export type SelectFieldProps = Omit<TextFieldProps, "onChange" | "select"> & {
 
 const SelectField: React.FC<SelectFieldProps> = ({
   hasError,
-  options,
+  options = [],
   ...props
 }) => {
   return (
