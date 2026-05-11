@@ -4,11 +4,11 @@ import { FiMessageSquare } from "react-icons/fi";
 import { HiCheckCircle, HiOutlineClock } from "react-icons/hi";
 import { HiBolt, HiOutlineArrowPath, HiOutlineMapPin } from "react-icons/hi2";
 import { useAuth } from "@/modules/auth/contexts";
-import cityList from "@/data/cities.json";
 import { UserProblem } from "../types/interfaces";
 import { makeImagePath } from "@/helpers/makeImagePath";
 import { timeAgoAze } from "@/helpers/timeAgoAze";
 import { PROBLEM_STATUS } from "../constants";
+import { getCityTitle } from "@/helpers/getCityTitle";
 
 const STATUS_CONFIG: Record<
   string,
@@ -111,8 +111,7 @@ export default function ProblemCard({
 
         <div className="flex items-center gap-3 text-xs text-brand-muted-fg mb-4">
           <span className="flex items-center gap-1">
-            <HiOutlineMapPin size={11} />{" "}
-            {cityList.find((c) => c.id === Number(problem.city))?.name}
+            <HiOutlineMapPin size={11} /> {getCityTitle(problem.city)}
           </span>
           <span className="flex items-center gap-1">
             <HiOutlineClock size={11} /> {timeAgoAze(problem.createdAt)} əvvəl

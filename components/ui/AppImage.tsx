@@ -5,7 +5,7 @@ import Image from "next/image";
 
 interface AppImageProps {
   src: string;
-  alt: string;
+  alt?: string;
   width?: number;
   height?: number;
   className?: string;
@@ -122,7 +122,7 @@ const AppImage = memo(function AppImage({
           }
           style={{ objectFit: "cover" }}
           {...props}
-          alt={props.alt}
+          alt={alt}
         />
       </div>
     );

@@ -11,7 +11,6 @@ export const useGetServices = ({
   useQuery({
     queryKey: ["getservices", search, category],
     queryFn: async () => {
-      console.log("SAAAAAAA");
       const response = await getAllServices(search, category);
       return response;
     },

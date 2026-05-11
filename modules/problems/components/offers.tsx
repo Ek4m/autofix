@@ -10,7 +10,6 @@ import {
 
 import AppImage from "@/components/ui/AppImage";
 import { useAuth } from "@/modules/auth/contexts";
-import citiesList from "@/data/cities.json";
 import { UserProblem } from "../types/interfaces";
 import { makeImagePath } from "@/helpers/makeImagePath";
 import { timeAgoAze } from "@/helpers/timeAgoAze";
@@ -19,6 +18,7 @@ import OfferListItem from "./offerListItem";
 import { Typography } from "@mui/material";
 import { IUpload } from "@/modules/upload/types";
 import { EntityType } from "@/constants/enums";
+import { getCityTitle } from "@/helpers/getCityTitle";
 
 export function OffersModal({
   problem,
@@ -38,7 +38,6 @@ export function OffersModal({
     data: { images, offers },
     refetch,
   } = useGetProblemDetails(problem.id);
-  const city = citiesList.find((e) => e.id === Number(problem.city));
 
   const imagesWithThumbnail = useMemo<IUpload[]>(() => {
     return [
@@ -62,7 +61,7 @@ export function OffersModal({
             <Typography variant="h5">{problem.title}</Typography>
             <p className="text-xs text-brand-muted-fg font-mono mt-0.5">
               {problem.carMake} {problem.carModel} · {problem.carYear} ·{" "}
-              {city?.name}
+              {getCityTitle(problem.city)}
             </p>
           </div>
           <button
@@ -119,7 +118,7 @@ export function OffersModal({
               </span>
 
               <span className="flex items-center gap-1">
-                <HiOutlineMapPin size={11} /> {city?.name}
+                <HiOutlineMapPin size={11} /> {getCityTitle(problem.city)}
               </span>
               {problem.isVip && (
                 <span className="badge-premium">

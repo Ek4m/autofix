@@ -1,10 +1,9 @@
 import { useTranslations } from "next-intl";
 import { FaAward, FaInfoCircle, FaMapMarkerAlt, FaPhone } from "react-icons/fa";
-import categoryList from "@/data/categories.json";
 import { IService } from "../types/interfaces";
 import ProfilePhotoWithChar from "@/components/ui/profilePhotoWithChar";
-import { useMemo } from "react";
 import Link from "next/link";
+import { getCategoryTitle } from "@/helpers/getCategoryTitle";
 
 export default function ServiceCard({
   service,
@@ -15,17 +14,7 @@ export default function ServiceCard({
 }) {
   const tServices = useTranslations("services");
   const tCommon = useTranslations("common");
-  const categories = useMemo(
-    () =>
-      categoryList.flatMap((cat) =>
-        cat.subcategories.map((c) => ({
-          ...c,
-          id: c.id.toString(),
-          name: c.name,
-        })),
-      ),
-    [],
-  );
+
   return (
     <div
       className={`card-surface overflow-hidden transition-all duration-200 hover:shadow-card-hover hover:-translate-y-0.5 flex flex-col ${service.isVip ? "vip-glow" : ""}`}
@@ -66,7 +55,7 @@ export default function ServiceCard({
               key={`spec-${service.id}-${spec}`}
               className="text-xs bg-brand-muted text-brand-muted-fg rounded-full px-2.5 py-0.5 font-medium"
             >
-              {categories.find((c) => c.id === String(spec))?.name || "N/A"}
+              {getCategoryTitle(spec)}
             </span>
           ))}
           {service.categories.length > 1 && (
@@ -99,10 +88,10 @@ export default function ServiceCard({
           </p>
         </div>
         <div className="flex gap-2">
-          <Link href={`/mechanic-info/${service.userId}`} passHref>
+          <Link href={`/mechanic-services/${service.id}`} passHref>
             <button
               className="p-2 rounded-lg border border-brand-border hover:bg-brand-muted hover:border-primary-DEFAULT/30 transition-all duration-150"
-              title="Profili gör"
+              title=" Ətraflı məlumat"
             >
               <FaInfoCircle size={15} className="text-brand-muted-fg" />
             </button>

@@ -30,7 +30,7 @@ const ServicesSearch = () => {
             value={localSearch}
             slotProps={{
               input: {
-                startAdornment: <HiOutlineSearch />,
+                startAdornment: <HiOutlineSearch size={20} />,
               },
             }}
             onChange={setLocalSearch}

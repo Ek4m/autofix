@@ -23,3 +23,12 @@ export const getAllServices = async (
   );
   return response;
 };
+
+export const getServiceDetails = async (
+  id: string | number,
+): Promise<IService> => {
+  const response = await httpClient(`/api/services/details/${id}`, {
+    method: "GET",
+  });
+  return response;
+};
