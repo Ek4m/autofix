@@ -2,17 +2,16 @@
 import React, { useMemo } from "react";
 import { useParams } from "next/navigation";
 import { Grid, Typography } from "@mui/material";
-import { useTranslations } from "next-intl";
 import { FaAward, FaMapMarkerAlt, FaPhone, FaWrench } from "react-icons/fa";
 
 import { useGetMechanicInfo } from "../hooks/useGetMechanicInfo";
 import categoriesList from "@/data/categories.json";
+import parsePhoneNumber from "libphonenumber-js";
+import { toast } from "sonner";
 
 const MechanicDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetMechanicInfo(id);
-
-  const tServices = useTranslations("services");
 
   const categories = useMemo(() => {
     const flatArray = categoriesList.flatMap((cat) =>
@@ -25,6 +24,17 @@ const MechanicDetails = () => {
       data?.specialistInfo?.profession.includes(c.id),
     );
   }, [data]);
+
+  const onCopyPhoneNumber = () => {
+    if (!data) return;
+    const formattedNumber = parsePhoneNumber(
+      "+" + data.phoneNumber,
+    )?.formatInternational();
+    if (formattedNumber) {
+      navigator.clipboard.writeText(formattedNumber);
+      toast.success("Nömrə kopyalandı");
+    }
+  };
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 bg-white">
@@ -41,45 +51,16 @@ const MechanicDetails = () => {
                 .map((c) => c[0].toUpperCase())
                 .join("")}
             </div>
-            {/* {service.isAvailable && (
-              <span className="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
-                <FaCheckCircle size={11} className="text-white" />
-              </span>
-            )} */}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="text-xl font-bold text-brand-fg">
                 {data?.fullName}
               </h3>
-              {/* {service.isVerified && (
-                <span className="badge-verified">
-                  <FaShieldAlt size={11} /> {tServices("verified")}
-                </span>
-              )} */}
             </div>
             <p className="text-sm text-brand-muted-fg mt-0.5">
               {data?.specialistInfo?.objectName}
             </p>
-            {/* <div className="flex items-center gap-1 mt-1.5">
-              {[1, 2, 3, 4, 5].map((s) => (
-                <FaStar
-                  key={`star-${service.id}-${s}`}
-                  size={14}
-                  className={
-                    s <= Math.floor(service.rating)
-                      ? "text-amber-400"
-                      : "text-brand-muted"
-                  }
-                />
-              ))}
-              <span className="ml-1 text-sm font-bold text-brand-fg tabular-nums">
-                {service.rating}
-              </span>
-              <span className="text-sm text-brand-muted-fg">
-                ({service.reviewCount} {tServices("reviews")})
-              </span>
-            </div> */}
           </div>
         </div>
 
@@ -97,11 +78,16 @@ const MechanicDetails = () => {
             },
             {
               label: "Əlaqə nömrəsi",
-              value: data?.phoneNumber,
+              value: parsePhoneNumber(
+                "+" + data?.phoneNumber,
+              )?.formatInternational(),
               Icon: FaPhone,
+              onClick: onCopyPhoneNumber,
             },
           ].map((stat) => (
             <div
+              role={stat.onClick ? "button" : undefined}
+              onClick={stat.onClick}
               key={`pstat-${stat.label}`}
               className="bg-brand-bg rounded-xl p-3.5 text-center"
             >
@@ -165,16 +151,6 @@ const MechanicDetails = () => {
             ))}
           </div>
         </div>
-      </div>
-
-      <div className="sticky bottom-0 bg-white border-t border-brand-border px-5 py-4">
-        <button
-          onClick={() => {}}
-          className="btn-primary w-full flex items-center justify-center gap-2 py-3"
-        >
-          <FaPhone size={15} />
-          {tServices("contact")} — {data?.phoneNumber}
-        </button>
       </div>
     </div>
   );

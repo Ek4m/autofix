@@ -1,5 +1,5 @@
 "use client";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
@@ -11,7 +11,6 @@ import {
   FiCheckCircle,
   FiTool,
 } from "react-icons/fi";
-import parsePhoneNumber from "libphonenumber-js";
 
 import { useGetServiceDetails } from "@/modules/services/hooks/useGetServiceDetails";
 
@@ -249,16 +248,16 @@ export default function ServiceDetailsPage() {
 
                 <div className="min-w-0">
                   <div className="flex items-center gap-1.5">
-                    <h3 className="text-sm font-bold text-brand-fg truncate">
+                    <Typography variant="h6">
                       {service?.user?.fullName}
-                    </h3>
+                    </Typography>
 
                     <FiShield size={14} className="text-primary-DEFAULT" />
                   </div>
 
-                  <p className="text-xs text-brand-muted-fg mt-0.5">
+                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
                     Peşəkar mexanik
-                  </p>
+                  </Typography>
                 </div>
               </div>
 
@@ -287,18 +286,6 @@ export default function ServiceDetailsPage() {
                 >
                   <SubmitButton variant="contained" title="Ətraflı" />
                 </Link>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    textalign: "center",
-                    color: "text.secondary",
-                  }}
-                >
-                  {service &&
-                    parsePhoneNumber(
-                      "+" + service?.user.phoneNumber,
-                    )?.formatInternational()}
-                </Typography>
               </div>
             </div>
 

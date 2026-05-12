@@ -9,11 +9,9 @@ export const GET = async (request: NextRequest) => {
   const category = Number(searchParams.get("category"));
   const city = searchParams.get("city");
   const isVip = Boolean(Number(searchParams.get("vip")));
-  const search = String(searchParams.get("search")).trim();
+  const search = searchParams.get("search");
   const order = searchParams.get("order") || ORDER_BY_CREATION.DESC;
-
   const where: WhereOptions = {};
-
   if (!isNaN(category) && category) where.categoryId = category;
   if (isVip) where.isVip = true;
   if (search) where.title = { [Op.iLike]: `%${search}%` };
