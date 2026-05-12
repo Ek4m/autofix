@@ -12,11 +12,12 @@ export const postService = async (data: PostServiceForm) => {
 };
 
 export const getAllServices = async (
-  search: string,
-  category: number | null,
+  search?: string,
+  category?: number | null,
+  mechanic?: string,
 ): Promise<IService[]> => {
   const response = await httpClient(
-    urlFactory("/api/services/list", { search, category }),
+    urlFactory("/api/services/list", { search, category, mechanic }),
     {
       method: "GET",
     },

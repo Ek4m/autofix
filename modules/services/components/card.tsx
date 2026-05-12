@@ -4,16 +4,23 @@ import { IService } from "../types/interfaces";
 import ProfilePhotoWithChar from "@/components/ui/profilePhotoWithChar";
 import Link from "next/link";
 import { getCategoryTitle } from "@/helpers/getCategoryTitle";
+import { toast } from "sonner";
+import { useAuth } from "@/modules/auth/contexts";
 
-export default function ServiceCard({
-  service,
-  onContact,
-}: {
-  service: IService;
-  onContact: () => void;
-}) {
+export default function ServiceCard({ service }: { service: IService }) {
   const tServices = useTranslations("services");
   const tCommon = useTranslations("common");
+  const { user } = useAuth();
+
+  const handleContact = () => {
+    if (!user) {
+      toast.error("Mexanikə müraciət etmək üçün daxil olun.");
+      return;
+    }
+    toast.success(
+      `"${service.user?.specialistInfo?.objectName}" ilə əlaqə: ${service.user?.phoneNumber}`,
+    );
+  };
 
   return (
     <div
@@ -97,7 +104,7 @@ export default function ServiceCard({
             </button>
           </Link>
           <button
-            onClick={onContact}
+            onClick={handleContact}
             className="btn-primary flex items-center gap-1.5 px-3 py-2 text-sm"
           >
             <FaPhone size={13} />

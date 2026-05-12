@@ -9,12 +9,16 @@ export const GET = async (request: NextRequest) => {
   const order = searchParams.get("order") || ORDER_BY_CREATION.ASC;
   const search = searchParams.get("search")?.trim();
   const category = searchParams.get("category");
+  const userId = searchParams.get("mechanic");
   const where: WhereOptions = {};
   if (search) where.serviceName = { [Op.iLike]: `%${search}%` };
   if (category)
     where.categories = {
       [Op.contains]: [category],
     };
+  if (userId) {
+    where.userId = userId;
+  }
   return NextResponse.json({
     data: await Service.findAll({
       include: [

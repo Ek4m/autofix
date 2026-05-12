@@ -1,13 +1,15 @@
 "use client";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useParams } from "next/navigation";
-import { Grid, Typography } from "@mui/material";
+import { CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import { FaAward, FaMapMarkerAlt, FaPhone, FaWrench } from "react-icons/fa";
 
 import { useGetMechanicInfo } from "../hooks/useGetMechanicInfo";
 import categoriesList from "@/data/categories.json";
 import parsePhoneNumber from "libphonenumber-js";
 import { toast } from "sonner";
+import { useGetServices } from "@/modules/services/hooks/useGetServices";
+import ServiceCard from "@/modules/services/components/card";
 
 const MechanicDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,6 +37,10 @@ const MechanicDetails = () => {
       toast.success("Nömrə kopyalandı");
     }
   };
+
+  const { data: services, isFetching: isFetchingServices } = useGetServices({
+    mechanic: id,
+  });
 
   return (
     <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 bg-white">
@@ -108,34 +114,26 @@ const MechanicDetails = () => {
         </div>
         <div className="space-y-2.5">
           <h4 className="text-lg font-bold text-brand-fg">Digər məlumatlar</h4>
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <div className="flex items-center gap-3 p-3 bg-brand-bg rounded-xl border border-brand-border">
-                <FaMapMarkerAlt
-                  size={16}
-                  className="text-primary-DEFAULT shrink-0"
-                />
-                <span className="text-sm text-brand-fg">
-                  {data?.specialistInfo?.rawAddress}
-                </span>
-              </div>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <div className="flex items-center gap-3 p-3 bg-brand-bg rounded-xl border border-brand-border">
-                <FaMapMarkerAlt
-                  size={16}
-                  className="text-primary-DEFAULT shrink-0"
-                />
-                <a
-                  href={data?.specialistInfo?.locationUrl}
-                  target="_blank"
-                  className="text-sm text-brand-fg"
-                >
-                  {data?.specialistInfo?.locationUrl}
-                </a>
-              </div>
-            </Grid>
-          </Grid>
+
+          <div className="flex items-center gap-2 p-3">
+            <FaMapMarkerAlt
+              size={20}
+              className="text-primary-DEFAULT shrink-0"
+            />
+            <span className="text-md text-brand-fg">
+              {data?.specialistInfo?.rawAddress}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 p-3">
+            <a
+              href={data?.specialistInfo?.locationUrl}
+              target="_blank"
+              className="text-md text-brand-fg underline text-primary flex items-center gap-1"
+            >
+              Xəritədə göstər
+            </a>
+          </div>
         </div>
 
         <div>
@@ -152,6 +150,32 @@ const MechanicDetails = () => {
           </div>
         </div>
       </div>
+      <br />
+      <Divider />
+      <br />
+      <Typography variant="h4" sx={{ fontWeight: "600" }}>
+        Xidmətlər
+      </Typography>
+      {isFetchingServices && (
+        <div className="p-16 text-center">
+          <CircularProgress size={100} />
+        </div>
+      )}
+      {services && services.length === 0 && !isFetchingServices && (
+        <div className="card-surface p-16 text-center">
+          <FaWrench size={48} className="mx-auto text-brand-muted-fg/40 mb-4" />
+          <h3 className="text-lg font-bold text-brand-fg mb-2">
+            Heç bir xidmət tapılmadı
+          </h3>
+        </div>
+      )}
+      <Grid container spacing={3} className="mt-2">
+        {services?.map((service) => (
+          <Grid key={service.id} size={{ xs: 12, md: 6, lg: 4 }}>
+            <ServiceCard service={service} />
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 };

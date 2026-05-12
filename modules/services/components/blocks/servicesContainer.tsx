@@ -15,22 +15,11 @@ import ServicesSearch from "@/modules/services/components/blocks/servicesSearch"
 import { ServicesSearchContext } from "@/modules/services/contexts/servicesSearch";
 
 export default function ServicesContainer() {
-  const { user } = useAuth();
   const { setCategory, setSearch, search, category } = useContext(
     ServicesSearchContext,
   );
   const [showPostModal, setShowPostModal] = useState(false);
   const { data: services } = useGetServices({ search, category });
-
-  const handleContact = (service: IService) => {
-    if (!user) {
-      toast.error("Mexanikə müraciət etmək üçün daxil olun.");
-      return;
-    }
-    toast.success(
-      `"${service.user?.specialistInfo?.objectName}" ilə əlaqə: ${service.user?.phoneNumber}`,
-    );
-  };
 
   return (
     <div className="min-h-screen bg-brand-bg">
@@ -86,7 +75,6 @@ export default function ServicesContainer() {
               <ServiceCard
                 key={service.id}
                 service={service}
-                onContact={() => handleContact(service)}
               />
             ))}
           </div>
