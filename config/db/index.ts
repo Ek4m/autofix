@@ -189,6 +189,25 @@ Service.init(
   },
 );
 
+// ------ OFFER_AGREEMENT --------
+
+export class OfferAgreement extends Model {}
+
+OfferAgreement.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+  },
+  {
+    sequelize,
+    tableName: "offer_agreements",
+    timestamps: true,
+  },
+);
+
 // ================= RELATIONS =================
 
 // USER ↔ PROBLEM
@@ -225,6 +244,17 @@ Offer.belongsTo(Problem, { foreignKey: "problemId", as: "problem" });
 // USER ↔ SERVICES
 User.hasMany(Service, { foreignKey: "userId", as: "services" });
 Service.belongsTo(User, { foreignKey: "userId", as: "user" });
+
+// OFFER_AGREEMENT ↔ OFFERS
+Offer.hasOne(OfferAgreement, { foreignKey: "offerId", as: "offerAgreement" });
+OfferAgreement.belongsTo(Offer, { foreignKey: "offerId", as: "offer" });
+
+// OFFER_AGREEMENT ↔ ISSUES
+Problem.hasOne(OfferAgreement, {
+  foreignKey: "problemId",
+  as: "offerAgreement",
+});
+OfferAgreement.belongsTo(Problem, { foreignKey: "problemId", as: "problem" });
 
 // ================= INIT =================
 

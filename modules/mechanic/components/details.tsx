@@ -1,14 +1,16 @@
 "use client";
 import { useMemo } from "react";
 import { useParams } from "next/navigation";
-import { CircularProgress, Divider, Grid, Typography } from "@mui/material";
+import { Divider, Grid, Skeleton, Typography } from "@mui/material";
 import { FaAward, FaMapMarkerAlt, FaPhone, FaWrench } from "react-icons/fa";
+import { toast } from "sonner";
+import parsePhoneNumber from "libphonenumber-js";
 
 import { useGetMechanicInfo } from "../hooks/useGetMechanicInfo";
-import categoriesList from "@/data/categories.json";
-import parsePhoneNumber from "libphonenumber-js";
-import { toast } from "sonner";
 import { useGetServices } from "@/modules/services/hooks/useGetServices";
+
+import categoriesList from "@/data/categories.json";
+
 import ServiceCard from "@/modules/services/components/card";
 
 const MechanicDetails = () => {
@@ -156,11 +158,11 @@ const MechanicDetails = () => {
       <Typography variant="h4" sx={{ fontWeight: "600" }}>
         Xidmətlər
       </Typography>
-      {isFetchingServices && (
+      {/* {isFetchingServices && (
         <div className="p-16 text-center">
           <CircularProgress size={100} />
         </div>
-      )}
+      )} */}
       {services && services.length === 0 && !isFetchingServices && (
         <div className="card-surface p-16 text-center">
           <FaWrench size={48} className="mx-auto text-brand-muted-fg/40 mb-4" />
@@ -170,6 +172,12 @@ const MechanicDetails = () => {
         </div>
       )}
       <Grid container spacing={3} className="mt-2">
+        {isFetchingServices &&
+          [1, 2, 3]?.map((i) => (
+            <Grid key={i} size={{ xs: 12, md: 6, lg: 4 }}>
+              <Skeleton sx={{ width: "100%", height: 400 }} />
+            </Grid>
+          ))}
         {services?.map((service) => (
           <Grid key={service.id} size={{ xs: 12, md: 6, lg: 4 }}>
             <ServiceCard service={service} />

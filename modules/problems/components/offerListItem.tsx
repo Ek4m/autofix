@@ -14,7 +14,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
-import { cancelOffer } from "../services";
+import { approveOffer, cancelOffer } from "../services";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const OfferListItem: FC<{
   offer: MechanicOffer;
@@ -24,6 +26,7 @@ const OfferListItem: FC<{
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [type, setType] = useState<"cancel" | "accept">();
+  const router = useRouter();
 
   const handleClickOpen = (t: typeof type) => {
     setType(t);
@@ -38,8 +41,6 @@ const OfferListItem: FC<{
     mutationFn: async () => {
       try {
         await cancelOffer(offer.id);
-        onRefetch();
-        handleClose();
       } catch (error) {
         console.log(error);
       }
@@ -47,11 +48,32 @@ const OfferListItem: FC<{
     mutationKey: ["canceloffer", offer],
   });
 
-  const onSubmit = () => {
+  const onApproveOffer = useMutation({
+    mutationFn: async () => {
+      try {
+        await approveOffer(offer.id);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    mutationKey: ["canceloffer", offer],
+  });
+
+  const onSubmit = async () => {
     if (isCancel) {
-      onCancelOffer.mutate();
+      await onCancelOffer.mutateAsync();
+      toast.success("Təklif ləğv edildi");
+      onRefetch();
     } else {
+      await onApproveOffer.mutateAsync();
+      toast.success(
+        "Təklif qəbul edildi, ustanın əlaqə məlumatlarına yönləndirildiniz",
+      );
+      setTimeout(() => {
+        router.push(`/mechanic-info/${offer.userId}`);
+      }, 1000);
     }
+    handleClose();
   };
 
   const isMyPost = user?.id === problem.user.id;
@@ -133,10 +155,10 @@ const OfferListItem: FC<{
         <DialogActions>
           <SubmitButton onClick={handleClose} title="Geri qayıt" />
           <SubmitButton
-            loading={onCancelOffer.isPending}
+            loading={onCancelOffer.isPending || onApproveOffer.isPending}
             onClick={onSubmit}
             variant="contained"
-            title={isCancel ? "Sil" : "Qəbul et"}
+            title={isCancel ? "Sil" : "Təsdiq et"}
           />
         </DialogActions>
       </Dialog>

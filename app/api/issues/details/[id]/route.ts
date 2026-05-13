@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Op } from "sequelize";
 
 import { initDb, Offer, SpecialistInfo, Upload, User } from "@/config/db";
 import { EntityType } from "@/constants/enums";
@@ -18,9 +17,7 @@ export const GET = async (
   const offers = await Offer.findAll({
     where: {
       problemId: id,
-      status: {
-        [Op.not]: OFFER_STATUS.DECLINED,
-      },
+      status: OFFER_STATUS.PENDING,
     },
     include: [
       {

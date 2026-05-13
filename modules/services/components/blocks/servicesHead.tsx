@@ -1,7 +1,7 @@
+import SubmitButton from "@/components/ui/submitButton";
 import { useAuth } from "@/modules/auth/contexts";
 import { useTranslations } from "next-intl";
 import React, { FC } from "react";
-import { FaCreditCard } from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import { toast } from "sonner";
 
@@ -31,19 +31,12 @@ const ServicesHead: FC<{ onShowPostModal(val: boolean): void }> = ({
       </div>
       {isMechanic && (
         <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-navy-DEFAULT/5 border border-navy-DEFAULT/10 rounded-lg">
-            <FaCreditCard size={13} className="text-navy-DEFAULT" />
-            <span className="text-xs font-medium text-navy-DEFAULT">
-              Standart: 2.50 ₼ · Premium: 6.00 ₼
-            </span>
-          </div>
-          <button
+          <SubmitButton
+            variant="contained"
+            title={tServices("post_service")}
+            endIcon={<FiPlus size={16} />}
             onClick={onAdd}
-            className="btn-primary flex items-center gap-2"
-          >
-            <FiPlus size={16} />
-            {tServices("post_service")}
-          </button>
+          />
         </div>
       )}
     </div>

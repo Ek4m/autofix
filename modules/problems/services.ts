@@ -53,3 +53,10 @@ export const cancelOffer = async (id: number): Promise<MechanicOffer> => {
   });
   return response;
 };
+
+export const approveOffer = async (id: number): Promise<MechanicOffer> => {
+  const response = await httpClient(`/api/offer/${id}/approve`, {
+    method: "PUT",
+  });
+  return response;
+};

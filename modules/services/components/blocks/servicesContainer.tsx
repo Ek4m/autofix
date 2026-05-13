@@ -1,14 +1,11 @@
 "use client";
 import { useContext, useState } from "react";
-import { toast } from "sonner";
 import { FiX } from "react-icons/fi";
 import { FaWrench } from "react-icons/fa";
 
 import Topbar from "@/components/Topbar";
-import { useAuth } from "@/modules/auth/contexts";
 import { PostServiceModal } from "@/modules/services/components/post";
 import { useGetServices } from "@/modules/services/hooks/useGetServices";
-import { IService } from "@/modules/services/types/interfaces";
 import ServiceCard from "@/modules/services/components/card";
 import ServicesHead from "@/modules/services/components/blocks/servicesHead";
 import ServicesSearch from "@/modules/services/components/blocks/servicesSearch";
