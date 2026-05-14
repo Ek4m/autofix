@@ -39,27 +39,16 @@ const ProfileMainContent = () => {
 
           <Grid container spacing={2.5}>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                disabled
-                label="Tam Ad"
-                value={user?.fullName || ""}
-                fullWidth
-              />
+              <TextField disabled label="Tam Ad" value={user?.fullName || ""} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                disabled
-                label="Email"
-                value={user?.email || ""}
-                fullWidth
-              />
+              <TextField disabled label="Email" value={user?.email || ""} />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 disabled
                 label="Telefon Nömrəsi"
                 value={user?.phoneNumber || ""}
-                fullWidth
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
@@ -67,7 +56,6 @@ const ProfileMainContent = () => {
                 disabled
                 label="Hesab Növü"
                 value={isMechanic ? "Mexanik" : "İstifadəçi"}
-                fullWidth
               />
             </Grid>
           </Grid>
@@ -111,7 +99,6 @@ const ProfileMainContent = () => {
                   disabled
                   label="Emalatxana Adı"
                   value={user?.specialistInfo?.objectName || ""}
-                  fullWidth
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
@@ -119,7 +106,6 @@ const ProfileMainContent = () => {
                   disabled
                   label="Təcrübə"
                   value={`${user?.specialistInfo?.experienceYears} il`}
-                  fullWidth
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
@@ -127,7 +113,6 @@ const ProfileMainContent = () => {
                   disabled
                   label="Şəhər"
                   value={user?.specialistInfo?.city || ""}
-                  fullWidth
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
@@ -135,14 +120,13 @@ const ProfileMainContent = () => {
                   disabled
                   label="Ünvan"
                   value={user?.specialistInfo?.rawAddress || ""}
-                  fullWidth
                 />
               </Grid>
               <Grid size={{ xs: 12 }}>
                 <TextField
                   label="Bioqrafiya"
+                  disabled
                   value={user?.specialistInfo?.bio || ""}
-                  fullWidth
                   multiline
                   rows={5}
                 />

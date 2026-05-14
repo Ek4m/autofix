@@ -1,6 +1,5 @@
 "use client";
-import SubmitButton from "@/components/ui/submitButton";
-import { useAuth } from "@/modules/auth/contexts";
+import React, { useMemo } from "react";
 import {
   Avatar,
   Box,
@@ -10,7 +9,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useMemo } from "react";
 import {
   FiBriefcase,
   FiEdit2,
@@ -19,12 +17,16 @@ import {
   FiMail,
   FiMapPin,
   FiPhone,
-  FiShield,
   FiTool,
   FiUser,
 } from "react-icons/fi";
+import { BiSolidCarMechanic } from "react-icons/bi";
+
+import SubmitButton from "@/components/ui/submitButton";
+import { useAuth } from "@/modules/auth/contexts";
 import { cardStyle, iconBoxStyle } from "../styles";
 import { formatPhone } from "@/helpers/formatPhone";
+import { getCityTitle } from "@/helpers/getCityTitle";
 
 const ProfileSidebar = () => {
   const { isMechanic, user, onLogout } = useAuth();
@@ -88,16 +90,18 @@ const ProfileSidebar = () => {
             >
               {isMechanic ? (
                 <Chip
-                  icon={<FiShield size={14} color="inherit" />}
+                  icon={<BiSolidCarMechanic size={20} color="inherit" />}
                   label="Mexanik Hesabı"
                   color="success"
-                  size="small"
+                  variant="outlined"
+                  size="medium"
                 />
               ) : (
                 <Chip
                   icon={<FiUser size={14} color="inherit" />}
                   label="Standart İstifadəçi"
                   color="primary"
+                  variant="outlined"
                   size="medium"
                 />
               )}{" "}
@@ -159,7 +163,7 @@ const ProfileSidebar = () => {
                       Şəhər
                     </Typography>
                     <Typography sx={{ fontSize: "0.875rem", fontWeight: 600 }}>
-                      {user?.specialistInfo?.city}
+                      {getCityTitle(user?.specialistInfo?.city)}
                     </Typography>
                   </Box>
                 </Box>

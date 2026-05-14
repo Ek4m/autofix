@@ -6,3 +6,11 @@ export const logoutService = async () => {
   });
   return response;
 };
+
+export const editProfileService = async (formData: FormData) => {
+  const response = await httpClient("/api/profile/edit", {
+    method: "PUT",
+    body: formData,
+  });
+  return response;
+};

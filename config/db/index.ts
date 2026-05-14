@@ -24,12 +24,14 @@ export class User extends Model<{
   email: string;
   phoneNumber: string;
   password: string;
+  profilePicture: string;
 }> {}
 User.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     fullName: DataTypes.STRING,
     email: DataTypes.STRING,
+    profilePicture: DataTypes.STRING,
     phoneNumber: DataTypes.STRING,
     password: DataTypes.STRING,
   },

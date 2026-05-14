@@ -57,6 +57,7 @@ const SelectField: React.FC<SelectFieldProps> = ({
       }}
       {...props}
       onChange={(e) => props.onChange(e.target.value as string)}
+      value={props.value ?? ""}
     >
       {options.map((option) => (
         <MenuItem key={option.value} value={option.value}>
