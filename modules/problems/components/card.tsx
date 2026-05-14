@@ -5,7 +5,7 @@ import { HiCheckCircle, HiOutlineClock } from "react-icons/hi";
 import { HiBolt, HiOutlineArrowPath, HiOutlineMapPin } from "react-icons/hi2";
 import { useAuth } from "@/modules/auth/contexts";
 import { UserProblem } from "../types/interfaces";
-import { makeImagePath } from "@/helpers/makeImagePath";
+import { makeImagePath } from "@/helpers/fileOps";
 import { timeAgoAze } from "@/helpers/timeAgoAze";
 import { PROBLEM_STATUS } from "../constants";
 import { getCityTitle } from "@/helpers/getCityTitle";

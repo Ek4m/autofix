@@ -32,6 +32,7 @@ import FilePicker from "@/components/ui/filePicker";
 import objectToFormData from "@/helpers/objectToFormData";
 import { editProfileService } from "@/modules/profile/services";
 import { toast } from "sonner";
+import { makeImagePath } from "@/helpers/fileOps";
 
 export default function UpdateProfilePage() {
   const { user, isMechanic, getUserInfo } = useAuth();
@@ -168,7 +169,7 @@ export default function UpdateProfilePage() {
                         src={
                           values.image
                             ? URL.createObjectURL(values.image)
-                            : undefined
+                            : makeImagePath(user?.profilePicture)
                         }
                         sx={{
                           width: 100,

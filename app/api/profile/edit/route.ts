@@ -1,4 +1,5 @@
 import { initDb, SpecialistInfo, User } from "@/config/db";
+import { removeFile } from "@/helpers/removeFile";
 import uploadFile from "@/helpers/uploadFiles";
 import { getAuthUserFromRequest } from "@/modules/auth/utils";
 import { NextRequest, NextResponse } from "next/server";
@@ -21,6 +22,7 @@ export const PUT = async (request: NextRequest) => {
   const updateBody: Record<string, string> = { fullName, phoneNumber, email };
   if (profilePicture) {
     const fileNames = await uploadFile(profilePicture);
+    await removeFile(user.profilePicture);
     updateBody["profilePicture"] = fileNames;
   }
   await User.update(updateBody, { where: { id: user.id } });

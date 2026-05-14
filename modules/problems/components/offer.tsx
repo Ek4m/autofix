@@ -15,7 +15,7 @@ import TextField from "@/components/ui/textField";
 import SelectField from "@/components/ui/selectField";
 import SubmitButton from "@/components/ui/submitButton";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { makeImagePath } from "@/helpers/makeImagePath";
+import { makeImagePath } from "@/helpers/fileOps";
 import { UserProblem } from "../types/interfaces";
 import { TIME_UNITS } from "../constants";
 import { offerSchema } from "../schemas";

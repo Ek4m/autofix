@@ -11,7 +11,7 @@ import {
 import AppImage from "@/components/ui/AppImage";
 import { useAuth } from "@/modules/auth/contexts";
 import { UserProblem } from "../types/interfaces";
-import { makeImagePath } from "@/helpers/makeImagePath";
+import { makeImagePath } from "@/helpers/fileOps";
 import { timeAgoAze } from "@/helpers/timeAgoAze";
 import { useGetProblemDetails } from "../hooks/useGetProblemDetails";
 import OfferListItem from "./offerListItem";

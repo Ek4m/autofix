@@ -3,6 +3,7 @@ export interface AuthUser {
   fullName: string;
   email: string;
   phoneNumber: string;
+  profilePicture: string;
   specialistInfo?: {
     profession: number[];
     bio: string;
