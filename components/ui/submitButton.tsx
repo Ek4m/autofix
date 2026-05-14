@@ -10,9 +10,13 @@ const SubmitButton: FC<ButtonProps> = (props) => {
         p: 1.7,
         borderRadius: 2,
         fontWeight: "700",
-        color: props.variant === "contained" ? "white" : "#E84B2F",
-        backgroundColor: props.variant === "contained" ? "#E84B2F" : "white",
-        borderColor: props.variant === "outlined" ? "#E84B2F" : "white",
+        color:
+          props.variant === "contained" ? "white" : props?.color || "#E84B2F",
+        backgroundColor:
+          props.variant === "contained" ? props.color || "#E84B2F" : "white",
+        borderColor:
+          props.variant === "outlined" ? props.color || "#E84B2F" : "white",
+        textTransform: "none",
       }}
     >
       {props.title}

@@ -4,7 +4,6 @@ import { useParams } from "next/navigation";
 import { Divider, Grid, Skeleton, Typography } from "@mui/material";
 import { FaAward, FaMapMarkerAlt, FaPhone, FaWrench } from "react-icons/fa";
 import { toast } from "sonner";
-import parsePhoneNumber from "libphonenumber-js";
 
 import { useGetMechanicInfo } from "../hooks/useGetMechanicInfo";
 import { useGetServices } from "@/modules/services/hooks/useGetServices";
@@ -12,6 +11,7 @@ import { useGetServices } from "@/modules/services/hooks/useGetServices";
 import categoriesList from "@/data/categories.json";
 
 import ServiceCard from "@/modules/services/components/card";
+import { formatPhone } from "@/helpers/formatPhone";
 
 const MechanicDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -31,9 +31,7 @@ const MechanicDetails = () => {
 
   const onCopyPhoneNumber = () => {
     if (!data) return;
-    const formattedNumber = parsePhoneNumber(
-      "+" + data.phoneNumber,
-    )?.formatInternational();
+    const formattedNumber = formatPhone(data.phoneNumber);
     if (formattedNumber) {
       navigator.clipboard.writeText(formattedNumber);
       toast.success("Nömrə kopyalandı");
@@ -86,9 +84,7 @@ const MechanicDetails = () => {
             },
             {
               label: "Əlaqə nömrəsi",
-              value: parsePhoneNumber(
-                "+" + data?.phoneNumber,
-              )?.formatInternational(),
+              value: formatPhone(data?.phoneNumber),
               Icon: FaPhone,
               onClick: onCopyPhoneNumber,
             },

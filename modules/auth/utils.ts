@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { promisify } from "util";
 
 import { ACCESS_TOKEN, JWT_EXPIRES_IN, JWT_SECRET } from "./vault";
-import { SpecialistInfo, User } from "@/config/db";
+import { User } from "@/config/db";
 
 const scrypt = promisify(_scrypt);
 
@@ -51,9 +51,13 @@ export function generateToken(userId: number) {
   );
 }
 
-export const setAuthCookie = async (token: string) => {
-  const expires = 1000 * 60 * 60 * 24 * 5;
+export const setAuthCookie = async (token: string | null) => {
+  const expires = 60 * 60 * 24 * 5;
   const cookieStore = await cookies();
+  if (!token) {
+    cookieStore.delete(ACCESS_TOKEN);
+    return;
+  }
   cookieStore.set(ACCESS_TOKEN, `Bearer ${token}`, {
     httpOnly: true,
     secure: true,

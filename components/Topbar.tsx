@@ -12,6 +12,16 @@ import {
   HiOutlineUserPlus,
 } from "react-icons/hi2";
 import { useAuth } from "@/modules/auth/contexts";
+import { Box, ListItemIcon, Menu, MenuItem, Typography } from "@mui/material";
+import SubmitButton from "./ui/submitButton";
+import { FiUser } from "react-icons/fi";
+import {
+  IoIosArrowDown,
+  IoIosLogOut,
+  IoIosSettings,
+  IoMdListBox,
+} from "react-icons/io";
+import { FaUser } from "react-icons/fa";
 
 const NAV_LINKS = [
   { href: "/car-problems-feed", labelKey: "Problemlər", icon: HiOutlineTruck },
@@ -24,8 +34,17 @@ const NAV_LINKS = [
 
 export default function Topbar() {
   const pathname = usePathname();
-  const { user, isMechanic } = useAuth();
+  const { user, isMechanic, onLogout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const menuOpen = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-brand-border shadow-sm">
@@ -65,16 +84,47 @@ export default function Topbar() {
           </nav>
           <div className="flex items-center gap-2">
             {user ? (
-              <div className="flex items-center gap-2">
-                <span className="hidden sm:block text-sm font-medium text-brand-fg">
-                  {user?.fullName}
-                </span>
-                {isMechanic && (
-                  <span className="hidden sm:flex items-center gap-1 bg-primary-DEFAULT/10 text-primary-DEFAULT text-xs font-semibold rounded-full px-2.5 py-0.5">
-                    <HiOutlineWrenchScrewdriver size={10} /> Mexanik
-                  </span>
-                )}
-              </div>
+              <Box>
+                <SubmitButton
+                  variant="text"
+                  startIcon={<FiUser />}
+                  endIcon={<IoIosArrowDown size={15} />}
+                  onClick={handleClick}
+                  title={`${user.fullName} ${isMechanic ? "(Usta)" : ""}`}
+                />
+                <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleClose}>
+                  <Link href="/profile">
+                    <MenuItem onClick={handleClose}>
+                      <ListItemIcon>
+                        <FaUser size={20} />
+                      </ListItemIcon>
+                      Hesab
+                    </MenuItem>
+                  </Link>
+
+                  {isMechanic ? (
+                    <MenuItem onClick={handleClose}>
+                      <ListItemIcon>
+                        <IoIosSettings size={20} />
+                      </ListItemIcon>
+                      Usta paneli
+                    </MenuItem>
+                  ) : (
+                    <MenuItem onClick={handleClose}>
+                      <ListItemIcon>
+                        <IoMdListBox size={20} />
+                      </ListItemIcon>
+                      Müştəri paneli
+                    </MenuItem>
+                  )}
+                  <MenuItem onClick={onLogout}>
+                    <ListItemIcon>
+                      <IoIosLogOut size={20} color="red" />
+                    </ListItemIcon>
+                    <Typography color="error">Çıxış</Typography>
+                  </MenuItem>
+                </Menu>
+              </Box>
             ) : (
               <div className="hidden sm:flex items-center gap-2">
                 <Link

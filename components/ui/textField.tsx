@@ -2,7 +2,7 @@ import React from "react";
 import { TextField as MUITextField, TextFieldProps } from "@mui/material";
 
 export type TextFieldComponentProps = Omit<TextFieldProps, "onChange"> & {
-  onChange(val: string): void;
+  onChange?: (val: string) => void;
   hasError?: boolean;
 };
 
@@ -42,7 +42,7 @@ const TextField: React.FC<TextFieldComponentProps> = ({
       sx={sx}
       fullWidth
       value={props.value || ""}
-      onChange={(e) => onChange(e.target.value)}
+      onChange={(e) => onChange?.(e.target.value)}
     />
   );
 };

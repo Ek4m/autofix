@@ -4,19 +4,12 @@ import { TIME_UNITS } from "../constants";
 import { HiOutlineClock } from "react-icons/hi";
 import { useAuth } from "@/modules/auth/contexts";
 import SubmitButton from "@/components/ui/submitButton";
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { approveOffer, cancelOffer } from "../services";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import AppModal from "@/components/ui/modal";
 
 const OfferListItem: FC<{
   offer: MechanicOffer;
@@ -93,11 +86,6 @@ const OfferListItem: FC<{
             <Typography sx={{ fontWeight: "600" }} variant="h6">
               {offer.user.specialistInfo?.objectName}
             </Typography>
-            {/* {offer.isVerified && (
-                            <span className="badge-verified text-xs">
-                              <HiOutlineShieldCheck size={10} /> Doğrulanmış
-                            </span>
-                          )} */}
           </div>
           <p className="text-sm text-brand-muted-fg mt-1.5 leading-relaxed">
             {offer.description}
@@ -133,35 +121,31 @@ const OfferListItem: FC<{
           </Grid>
         </Grid>
       )}
-      <Dialog
+      <AppModal
         open={open}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-        role="alertdialog"
-      >
-        <DialogTitle>
-          {isCancel
+        title={
+          isCancel
             ? "Silmək istədiyinizə əminsiniz?"
-            : "Təklifi qəbul etdiyinizə əminsiniz?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {isCancel
-              ? "Bu təklifi sildikdən sonra bir daha geri qaytara bilməyəcəksiniz"
-              : ""}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <SubmitButton onClick={handleClose} title="Geri qayıt" />
-          <SubmitButton
-            loading={onCancelOffer.isPending || onApproveOffer.isPending}
-            onClick={onSubmit}
-            variant="contained"
-            title={isCancel ? "Sil" : "Təsdiq et"}
-          />
-        </DialogActions>
-      </Dialog>
+            : "Təklifi qəbul etdiyinizə əminsiniz?"
+        }
+        description={
+          isCancel
+            ? "Bu təklifi sildikdən sonra bir daha geri qaytara bilməyəcəksiniz"
+            : ""
+        }
+        buttons={[
+          {
+            title: "Geri qayıt",
+            onClick: handleClose,
+          },
+          {
+            title: isCancel ? "Sil" : "Təsdiq et",
+            loading: onCancelOffer.isPending || onApproveOffer.isPending,
+            onClick: onSubmit,
+          },
+        ]}
+      />
     </div>
   );
 };
