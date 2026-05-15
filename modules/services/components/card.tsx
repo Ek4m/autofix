@@ -6,6 +6,8 @@ import Link from "next/link";
 import { getCategoryTitle } from "@/helpers/getCategoryTitle";
 import { toast } from "sonner";
 import { useAuth } from "@/modules/auth/contexts";
+import { Avatar } from "@mui/material";
+import { makeImagePath } from "@/helpers/fileOps";
 
 export default function ServiceCard({ service }: { service: IService }) {
   const tServices = useTranslations("services");
@@ -29,7 +31,14 @@ export default function ServiceCard({ service }: { service: IService }) {
       <div className="p-4 pb-3">
         <div className="flex items-start gap-3 mb-3">
           <div className="relative shrink-0">
-            <ProfilePhotoWithChar title={service.user?.fullName || ""} />
+            {service.user.profilePicture ? (
+              <Avatar
+                sx={{ width: 50, height: 50 }}
+                src={makeImagePath(service.user.profilePicture)}
+              />
+            ) : (
+              <ProfilePhotoWithChar title={service.user?.fullName || ""} />
+            )}
           </div>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5 flex-wrap">

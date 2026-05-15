@@ -7,3 +7,16 @@ export const getMechanicInfo = async (id: string): Promise<AuthUser> => {
   });
   return response;
 };
+
+export const getMechanicContactInfo = async (
+  id: string | number,
+): Promise<{
+  phoneNumber: string;
+  rawAddress: string;
+  locationUrl: string;
+}> => {
+  const response = await httpClient("/api/mechanic/contact-info/" + id, {
+    method: "GET",
+  });
+  return response;
+};

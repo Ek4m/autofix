@@ -82,29 +82,33 @@ const ProfileSidebar = () => {
             <Box
               sx={{
                 display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "center",
+                flexDirection: "column",
+                alignItems: "center",
                 gap: 1,
                 mt: 2,
               }}
             >
               {isMechanic ? (
-                <Chip
-                  icon={<BiSolidCarMechanic size={20} color="inherit" />}
-                  label="Mexanik Hesabı"
-                  color="success"
-                  variant="outlined"
-                  size="medium"
-                />
+                <>
+                  <BiSolidCarMechanic size={40} color="green" />
+                  <Chip
+                    label="Mexanik Hesabı"
+                    color="success"
+                    variant="outlined"
+                    size="medium"
+                  />
+                </>
               ) : (
-                <Chip
-                  icon={<FiUser size={14} color="inherit" />}
-                  label="Standart İstifadəçi"
-                  color="primary"
-                  variant="outlined"
-                  size="medium"
-                />
-              )}{" "}
+                <>
+                  <FiUser size={40} color="primary" />
+                  <Chip
+                    label="Standart İstifadəçi"
+                    color="primary"
+                    variant="outlined"
+                    size="medium"
+                  />
+                </>
+              )}
             </Box>
           </Box>
 

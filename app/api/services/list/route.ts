@@ -25,7 +25,13 @@ export const GET = async (request: NextRequest) => {
         {
           model: User,
           as: "user",
-          attributes: ["id", "fullName", "email", "phoneNumber"],
+          attributes: [
+            "id",
+            "fullName",
+            "email",
+            "phoneNumber",
+            "profilePicture",
+          ],
           include: [{ model: SpecialistInfo, as: "specialistInfo" }],
         },
       ],

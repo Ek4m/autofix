@@ -8,8 +8,14 @@ export const GET = async (
   await initDb();
   const { id } = await params;
   const user = await User.findByPk(id, {
-    include: [{ model: SpecialistInfo, as: "specialistInfo" }],
-    attributes: { exclude: ["password"] },
+    include: [
+      {
+        model: SpecialistInfo,
+        as: "specialistInfo",
+        attributes: { exclude: ["rawAddress", "locationUrl"] },
+      },
+    ],
+    attributes: { exclude: ["password", "phoneNumber", "email"] },
   });
   if (!user || !("specialistInfo" in user) || !user.specialistInfo)
     return NextResponse.json({ message: "Tapılmadı" }, { status: 404 });

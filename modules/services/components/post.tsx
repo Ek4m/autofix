@@ -115,7 +115,7 @@ export function PostServiceModal({ onClose }: { onClose: () => void }) {
                   <TextField
                     {...field}
                     multiline
-                    maxRows={10}
+                    rows={10}
                     hasError={Boolean(fieldState.error)}
                     label="Ətraflı təsvir"
                     helperText={fieldState.error?.message}

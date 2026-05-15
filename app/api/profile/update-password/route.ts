@@ -1,5 +1,3 @@
-// app/api/user/update-password/route.ts
-
 import { initDb, User } from "@/config/db";
 import {
   comparePassword,

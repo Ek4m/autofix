@@ -1,186 +1,262 @@
 "use client";
+
 import { useMemo } from "react";
 import { useParams } from "next/navigation";
-import { Divider, Grid, Skeleton, Typography } from "@mui/material";
-import { FaAward, FaMapMarkerAlt, FaPhone, FaWrench } from "react-icons/fa";
-import { toast } from "sonner";
+import {
+  Box,
+  Divider,
+  Grid,
+  Skeleton,
+  Typography,
+  Paper,
+  Avatar,
+} from "@mui/material";
+import { FaAward, FaWrench } from "react-icons/fa";
 
 import { useGetMechanicInfo } from "../hooks/useGetMechanicInfo";
 import { useGetServices } from "@/modules/services/hooks/useGetServices";
 
 import categoriesList from "@/data/categories.json";
-
 import ServiceCard from "@/modules/services/components/card";
-import { formatPhone } from "@/helpers/formatPhone";
+import { makeImagePath } from "@/helpers/fileOps";
+import { useAuth } from "@/modules/auth/contexts";
+import ContactModal from "./contactModal";
+import { getCityTitle } from "@/helpers/getCityTitle";
+import { ImLocation } from "react-icons/im";
 
 const MechanicDetails = () => {
   const { id } = useParams<{ id: string }>();
   const { data } = useGetMechanicInfo(id);
+  const { user } = useAuth();
+
+  const { data: services, isFetching } = useGetServices({
+    mechanic: id,
+  });
 
   const categories = useMemo(() => {
-    const flatArray = categoriesList.flatMap((cat) =>
+    const flat = categoriesList.flatMap((cat) =>
       cat.subcategories.map((c) => ({
         ...c,
         name: `${cat.name} / ${c.name}`,
       })),
     );
-    return flatArray.filter((c) =>
-      data?.specialistInfo?.profession.includes(c.id),
-    );
+
+    return flat.filter((c) => data?.specialistInfo?.profession.includes(c.id));
   }, [data]);
 
-  const onCopyPhoneNumber = () => {
-    if (!data) return;
-    const formattedNumber = formatPhone(data.phoneNumber);
-    if (formattedNumber) {
-      navigator.clipboard.writeText(formattedNumber);
-      toast.success("Nömrə kopyalandı");
-    }
-  };
-
-  const { data: services, isFetching: isFetchingServices } = useGetServices({
-    mechanic: id,
-  });
+  const stats = [
+    {
+      label: "Təcrübə",
+      value: `${data?.specialistInfo?.experienceYears || 0} il`,
+      Icon: FaAward,
+    },
+    {
+      label: "Xidmətlər",
+      value: services?.length || 0,
+      Icon: FaWrench,
+    },
+    {
+      label: "Şəhər",
+      value: getCityTitle(data?.specialistInfo?.city),
+      Icon: ImLocation,
+    },
+  ];
 
   return (
-    <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 bg-white">
-      <Typography variant="h4" sx={{ fontWeight: "600" }}>
+    <Box
+      sx={{
+        maxWidth: 1400,
+        mx: "auto",
+        px: { xs: 2, md: 3 },
+        py: 4,
+      }}
+    >
+      <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
         Usta Profili
       </Typography>
 
-      <div className="p-5 space-y-6">
-        <div className="flex items-start gap-4">
-          <div className="relative shrink-0">
-            <div className="w-120 h-120 rounded bg-[lightgrey] p-2">
-              {data?.specialistInfo?.objectName
-                .split(" ")
-                .map((c) => c[0].toUpperCase())
-                .join("")}
-            </div>
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="text-xl font-bold text-brand-fg">
-                {data?.fullName}
-              </h3>
-            </div>
-            <p className="text-sm text-brand-muted-fg mt-0.5">
-              {data?.specialistInfo?.objectName}
-            </p>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-3">
-          {[
-            {
-              label: "Təcrübə",
-              value: `${data?.specialistInfo?.experienceYears} il`,
-              Icon: FaAward,
-            },
-            {
-              label: "Xidmətlər",
-              value: 1,
-              Icon: FaWrench,
-            },
-            {
-              label: "Əlaqə nömrəsi",
-              value: formatPhone(data?.phoneNumber),
-              Icon: FaPhone,
-              onClick: onCopyPhoneNumber,
-            },
-          ].map((stat) => (
-            <div
-              role={stat.onClick ? "button" : undefined}
-              onClick={stat.onClick}
-              key={`pstat-${stat.label}`}
-              className="bg-brand-bg rounded-xl p-3.5 text-center"
+      <Grid container spacing={3} sx={{ alignItems: "flex-start" }}>
+        {/* LEFT SIDEBAR */}
+        <Grid size={{ xs: 12, md: 4, lg: 3 }}>
+          <Box
+            sx={{
+              position: { md: "sticky" },
+              top: 100,
+            }}
+          >
+            <Paper
+              elevation={0}
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                borderRadius: 3,
+                border: "1px solid",
+                borderColor: "divider",
+              }}
             >
-              <stat.Icon
-                size={18}
-                className={`mx-auto mb-1.5 "text-primary-DEFAULT`}
-              />
-              <p className={`text-sm font-bold text-brand-fg tabular-nums`}>
-                {stat.value}
-              </p>
-              <p className="text-xs text-brand-muted-fg mt-0.5">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-        <div className="space-y-2.5">
-          <h4 className="text-lg font-bold text-brand-fg">Ətraflı</h4>
-          <p>{data?.specialistInfo?.bio}</p>
-        </div>
-        <div className="space-y-2.5">
-          <h4 className="text-lg font-bold text-brand-fg">Digər məlumatlar</h4>
-
-          <div className="flex items-center gap-2 p-3">
-            <FaMapMarkerAlt
-              size={20}
-              className="text-primary-DEFAULT shrink-0"
-            />
-            <span className="text-md text-brand-fg">
-              {data?.specialistInfo?.rawAddress}
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3 p-3">
-            <a
-              href={data?.specialistInfo?.locationUrl}
-              target="_blank"
-              className="text-md text-brand-fg underline text-primary flex items-center gap-1"
-            >
-              Xəritədə göstər
-            </a>
-          </div>
-        </div>
-
-        <div>
-          <h4 className="text-lg font-bold text-brand-fg mb-2.5">İxtisaslar</h4>
-          <div className="flex gap-2 flex-wrap">
-            {categories.map((spec) => (
-              <span
-                key={spec.id}
-                className="text-sm bg-primary-DEFAULT/10 text-primary-DEFAULT rounded-full px-3 py-1 font-medium border border-primary-DEFAULT/20"
+              <Avatar
+                src={makeImagePath(data?.profilePicture)}
+                sx={{ width: 100, height: 100 }}
               >
-                {spec.name}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-      <br />
-      <Divider />
-      <br />
-      <Typography variant="h4" sx={{ fontWeight: "600" }}>
-        Xidmətlər
-      </Typography>
-      {/* {isFetchingServices && (
-        <div className="p-16 text-center">
-          <CircularProgress size={100} />
-        </div>
-      )} */}
-      {services && services.length === 0 && !isFetchingServices && (
-        <div className="card-surface p-16 text-center">
-          <FaWrench size={48} className="mx-auto text-brand-muted-fg/40 mb-4" />
-          <h3 className="text-lg font-bold text-brand-fg mb-2">
-            Heç bir xidmət tapılmadı
-          </h3>
-        </div>
-      )}
-      <Grid container spacing={3} className="mt-2">
-        {isFetchingServices &&
-          [1, 2, 3]?.map((i) => (
-            <Grid key={i} size={{ xs: 12, md: 6, lg: 4 }}>
-              <Skeleton sx={{ width: "100%", height: 400 }} />
+                {data?.specialistInfo?.objectName
+                  .split(" ")
+                  .map((c) => c[0].toUpperCase())
+                  .join("")}
+              </Avatar>
+              {/* HEADER */}
+              <Box sx={{ mb: 2 }}>
+                <Typography
+                  sx={{ fontWeight: 700, fontSize: 18, textAlign: "center" }}
+                >
+                  {data?.fullName}
+                </Typography>
+
+                <Typography
+                  variant="body2"
+                  sx={{ color: "text.secondary", textAlign: "center" }}
+                >
+                  {data?.specialistInfo?.objectName}
+                </Typography>
+              </Box>
+
+              {/* STATS */}
+              <Grid container spacing={2}>
+                {stats.map((stat) => (
+                  <Grid size={12} key={stat.label}>
+                    <Box
+                      sx={{
+                        p: 2,
+                        borderRadius: 2,
+                        textAlign: "center",
+                        alignItems: "center",
+                        display: "flex",
+                        flexDirection: "column",
+                        bgcolor: "background.default",
+                        cursor: "default",
+                        transition: "0.2s",
+                      }}
+                    >
+                      <stat.Icon size={18} />
+
+                      <Typography
+                        sx={{
+                          mt: 1,
+                          fontWeight: 700,
+                          fontSize: 14,
+                        }}
+                      >
+                        {stat.value}
+                      </Typography>
+
+                      <Typography
+                        variant="caption"
+                        sx={{ color: "text.secondary" }}
+                      >
+                        {stat.label}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ))}
+                <Grid size={12}>{user && <ContactModal id={user.id} />}</Grid>
+              </Grid>
+            </Paper>
+          </Box>
+        </Grid>
+
+        {/* RIGHT CONTENT */}
+        <Grid size={{ xs: 12, md: 8, lg: 9 }}>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+            {/* BIO */}
+            {user && (
+              <Paper
+                sx={{
+                  p: 3,
+                  borderRadius: 3,
+                  border: "1px solid",
+                  borderColor: "divider",
+                }}
+              >
+                <Typography sx={{ fontWeight: 700, mb: 1 }}>Ətraflı</Typography>
+
+                <Typography variant="body2">
+                  {data?.specialistInfo?.bio}
+                </Typography>
+              </Paper>
+            )}
+
+            {/* SPECIALTIES */}
+            <Paper
+              sx={{
+                p: 3,
+                borderRadius: 3,
+                border: "1px solid",
+                borderColor: "divider",
+              }}
+            >
+              <Typography sx={{ fontWeight: 700, mb: 2 }}>
+                İxtisaslar
+              </Typography>
+
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+                {categories.map((spec) => (
+                  <Box
+                    key={spec.id}
+                    sx={{
+                      px: 2,
+                      py: 0.6,
+                      borderRadius: 999,
+                      fontSize: 13,
+                      fontWeight: 500,
+                      border: "1px solid",
+                    }}
+                  >
+                    {spec.name}
+                  </Box>
+                ))}
+              </Box>
+            </Paper>
+
+            <Divider />
+
+            {/* SERVICES */}
+            <Typography sx={{ fontWeight: 700, fontSize: 22 }}>
+              Xidmətlər
+            </Typography>
+
+            {services && services.length === 0 && !isFetching && (
+              <Paper sx={{ p: 5, textAlign: "center", borderRadius: 3 }}>
+                <FaWrench size={40} style={{ opacity: 0.4 }} />
+
+                <Typography sx={{ mt: 2, fontWeight: 600 }}>
+                  Heç bir xidmət tapılmadı
+                </Typography>
+              </Paper>
+            )}
+
+            <Grid container spacing={3}>
+              {isFetching &&
+                [1, 2, 3].map((i) => (
+                  <Grid size={{ xs: 12, md: 6 }} key={i}>
+                    <Skeleton
+                      variant="rectangular"
+                      height={300}
+                      sx={{ borderRadius: 2 }}
+                    />
+                  </Grid>
+                ))}
+
+              {services?.map((service) => (
+                <Grid size={{ xs: 12, md: 6 }} key={service.id}>
+                  <ServiceCard service={service} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        {services?.map((service) => (
-          <Grid key={service.id} size={{ xs: 12, md: 6, lg: 4 }}>
-            <ServiceCard service={service} />
-          </Grid>
-        ))}
+          </Box>
+        </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 };
 

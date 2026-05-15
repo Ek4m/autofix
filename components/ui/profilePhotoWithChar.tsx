@@ -12,7 +12,7 @@ const ProfilePhotoWithChar: FC<{ title: string }> = ({ title }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: 5,
+        borderRadius: 50,
       }}
     >
       {title

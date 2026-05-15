@@ -15,12 +15,9 @@ import { useAuth } from "@/modules/auth/contexts";
 import { Box, ListItemIcon, Menu, MenuItem, Typography } from "@mui/material";
 import SubmitButton from "./ui/submitButton";
 import { FiUser } from "react-icons/fi";
-import {
-  IoIosArrowDown,
-  IoIosLogOut,
-  IoIosSettings,
-  IoMdListBox,
-} from "react-icons/io";
+import { IoIosArrowDown, IoIosSettings, IoMdListBox } from "react-icons/io";
+import { IoLogOut } from "react-icons/io5";
+
 import { FaUser } from "react-icons/fa";
 
 const NAV_LINKS = [
@@ -105,21 +102,21 @@ export default function Topbar() {
                   {isMechanic ? (
                     <MenuItem onClick={handleClose}>
                       <ListItemIcon>
-                        <IoIosSettings size={20} />
+                        <IoIosSettings size={22} />
                       </ListItemIcon>
                       Usta paneli
                     </MenuItem>
                   ) : (
                     <MenuItem onClick={handleClose}>
                       <ListItemIcon>
-                        <IoMdListBox size={20} />
+                        <IoMdListBox size={24} />
                       </ListItemIcon>
                       Müştəri paneli
                     </MenuItem>
                   )}
                   <MenuItem onClick={onLogout}>
                     <ListItemIcon>
-                      <IoIosLogOut size={20} color="red" />
+                      <IoLogOut size={25} color="red" />
                     </ListItemIcon>
                     <Typography color="error">Çıxış</Typography>
                   </MenuItem>

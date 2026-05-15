@@ -261,23 +261,21 @@ export default function ServiceDetailsPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 mt-5">
-                <div className="rounded-xl bg-brand-bg border border-brand-border p-3 text-center">
-                  <p className="text-lg font-black text-brand-fg">
-                    {specialistInfo?.experienceYears || 0}
-                  </p>
+              {/* <div className="grid grid-cols-2 gap-3 mt-5"> */}
+              <div className="rounded-xl bg-brand-bg border border-brand-border p-3 text-center mt-5">
+                <p className="text-lg font-black text-brand-fg">
+                  {specialistInfo?.experienceYears || 0}
+                </p>
 
-                  <p className="text-xs text-brand-muted-fg mt-0.5">
-                    İl təcrübə
-                  </p>
-                </div>
+                <p className="text-xs text-brand-muted-fg mt-0.5">İl təcrübə</p>
+              </div>
 
-                <div className="rounded-xl bg-brand-bg border border-brand-border p-3 text-center">
+              {/* <div className="rounded-xl bg-brand-bg border border-brand-border p-3 text-center">
                   <p className="text-lg font-black text-primary-DEFAULT">VIP</p>
 
                   <p className="text-xs text-brand-muted-fg mt-0.5">Status</p>
-                </div>
-              </div>
+                </div> */}
+              {/* </div> */}
 
               <div className="space-y-3 mt-5">
                 <Link
