@@ -2,7 +2,7 @@ export interface EditProfileForm {
   fullName: string;
   phoneNumber: string;
   email: string;
-  image:File;
+  image: File;
   mechanic: {
     profession: string[];
     objectName: string;
@@ -12,4 +12,10 @@ export interface EditProfileForm {
     experienceYears: number;
     city: string;
   } | null;
+}
+
+export interface UpdatePasswordForm {
+  oldPassword: string;
+  newPassword: string;
+  newPasswordRetyped: string;
 }
