@@ -19,7 +19,11 @@ export const GET = async (request: NextRequest) => {
 
   const problems = await Problem.findAll({
     include: [
-      { model: User, as: "user", attributes: { exclude: ["password"] } },
+      {
+        model: User,
+        as: "user",
+        attributes: { exclude: ["password", "phoneNumber", "email"] },
+      },
       { model: Category, as: "category" },
     ],
     where,

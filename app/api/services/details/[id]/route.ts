@@ -13,7 +13,14 @@ export const GET = async (
       {
         model: User,
         as: "user",
-        include: [{ model: SpecialistInfo, as: "specialistInfo" }],
+        attributes: { exclude: ["phoneNumber", "password", "email"] },
+        include: [
+          {
+            model: SpecialistInfo,
+            as: "specialistInfo",
+            attributes: { exclude: ["rawAddress", "locationUrl"] },
+          },
+        ],
       },
     ],
   });
