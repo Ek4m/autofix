@@ -4,12 +4,13 @@ import { TIME_UNITS } from "../constants";
 import { HiOutlineClock } from "react-icons/hi";
 import { useAuth } from "@/modules/auth/contexts";
 import SubmitButton from "@/components/ui/submitButton";
-import { Grid, Typography } from "@mui/material";
+import { Avatar, Grid, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { approveOffer, cancelOffer } from "../services";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import AppModal from "@/components/ui/modal";
+import { makeImagePath } from "@/helpers/fileOps";
 
 const OfferListItem: FC<{
   offer: MechanicOffer;
@@ -75,12 +76,21 @@ const OfferListItem: FC<{
   return (
     <div className="p-4 bg-brand-bg rounded-xl border hover:border-primary transition-all duration-150">
       <div className="flex items-start gap-3">
-        <div className="w-100 h-100 rounded bg-[lightgrey] p-2">
+        <Avatar
+          src={makeImagePath(offer.user.profilePicture)}
+          sx={{
+            width: 70,
+            height: 70,
+            fontSize: 30,
+            fontWeight: 700,
+            bgcolor: "rgb(232, 93, 12)",
+          }}
+        >
           {offer.user.specialistInfo?.objectName
             .split(" ")
             .map((c) => c[0].toUpperCase())
             .join("")}
-        </div>
+        </Avatar>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
             <Typography sx={{ fontWeight: "600" }} variant="h6">

@@ -51,7 +51,7 @@ export default function UpdateProfilePage() {
           ? {
               objectName: user.specialistInfo?.objectName || "",
               city: user.specialistInfo?.city || "",
-              profession: user.specialistInfo?.profession || [],
+              profession: user.specialistInfo?.profession,
               experienceYears: user.specialistInfo.experienceYears || "",
               rawAddress: user.specialistInfo?.rawAddress || "",
               locationUrl: user.specialistInfo?.locationUrl || "",
