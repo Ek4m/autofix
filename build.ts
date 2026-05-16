@@ -23,6 +23,8 @@ async function loadDataFromCategories() {
     (err) => {
       if (err) {
         console.log("Error writing to categories");
+      } else {
+        console.log("\x1b[32m%s\x1b[0m", "Categories exported successfully!");
       }
     },
   );

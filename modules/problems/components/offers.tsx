@@ -15,7 +15,7 @@ import { makeImagePath } from "@/helpers/fileOps";
 import { timeAgoAze } from "@/helpers/timeAgoAze";
 import { useGetProblemDetails } from "../hooks/useGetProblemDetails";
 import OfferListItem from "./offerListItem";
-import { Stack, Typography } from "@mui/material";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { IUpload } from "@/modules/upload/types";
 import { EntityType } from "@/constants/enums";
 import { getCityTitle } from "@/helpers/getCityTitle";
@@ -43,14 +43,13 @@ export function OffersModal({
   const [activeImg, setActiveImg] = useState(0);
   const isMyPost = user?.id === problem.user.id;
 
-  const {
-    data: { images, offers },
-    refetch,
-  } = useGetProblemDetails(problem.id);
+  const { data, refetch, isFetching } = useGetProblemDetails(problem.id);
+  const { images, offers } = data ? data : { images: null, offers: null };
 
   const onCloseDeleteModal = () => setIsDeleteModalOpen(false);
 
   const imagesWithThumbnail = useMemo<IUpload[]>(() => {
+    if (!images) return [];
     return [
       {
         createdAt: problem.createdAt,
@@ -143,7 +142,7 @@ export function OffersModal({
               )}
             </div>
           </div>
-          {showUserSpecificItems && (
+          {showUserSpecificItems && !isFetching && data && (
             <Stack
               sx={{
                 p: 2.5,
@@ -168,12 +167,16 @@ export function OffersModal({
               <h3 className="text-sm font-bold text-brand-fg">
                 Mexanik Təklifləri
                 <span className="ml-2 text-primary-DEFAULT font-mono tabular-nums">
-                  ({offers.length})
+                  ({offers?.length})
                 </span>
               </h3>
             </div>
-
-            {offers.length === 0 ? (
+            {!offers && isFetching && (
+              <Box sx={{ width: "100%", textAlign: "center" }}>
+                <CircularProgress />
+              </Box>
+            )}
+            {offers?.length === 0 ? (
               <div className="text-center py-8 text-brand-muted-fg">
                 <HiOutlineChatBubbleLeftRight
                   size={32}
@@ -183,7 +186,7 @@ export function OffersModal({
               </div>
             ) : (
               <div className="space-y-3">
-                {offers.map((offer) => (
+                {offers?.map((offer) => (
                   <OfferListItem
                     onRefetch={refetch}
                     offer={offer}

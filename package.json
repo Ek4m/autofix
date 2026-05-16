@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev --turbo",
     "prebuild": "tsx build.ts",
-    "predev": "tsx build.ts",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
