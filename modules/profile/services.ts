@@ -38,3 +38,10 @@ export const cancelProblem = async (id: string | number): Promise<true> => {
   });
   return response;
 };
+
+export const completeProblem = async (id: number): Promise<true> => {
+  const response = await httpClient(`/api/profile/problems/${id}/complete`, {
+    method: "PUT",
+  });
+  return response;
+};

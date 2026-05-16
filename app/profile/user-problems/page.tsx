@@ -53,6 +53,9 @@ export default function ProblemsPage() {
     closeDialog();
   };
 
+  const filteredProblems =
+    problems?.filter((p) => p.status.includes(tab)) || [];
+
   return (
     <Box
       sx={{
@@ -152,31 +155,29 @@ export default function ProblemsPage() {
           {/* LIST */}
           {/* LIST */}
           <Grid container spacing={3}>
-            {problems
-              ?.filter((p) => p.status.includes(tab))
-              .map((problem) => (
-                <Grid
-                  key={problem.id}
-                  size={{
-                    xs: 12,
-                    md: 6,
-                    lg: 4,
-                  }}
-                >
-                  <Stack spacing={2}>
-                    <ProblemCard
-                      onViewOffers={() => setSelectedProblem(problem)}
-                      onMakeOffer={() => {}}
-                      problem={problem}
-                      showActions
-                    />
-                  </Stack>
-                </Grid>
-              ))}
+            {filteredProblems.map((problem) => (
+              <Grid
+                key={problem.id}
+                size={{
+                  xs: 12,
+                  md: 6,
+                  lg: 4,
+                }}
+              >
+                <Stack spacing={2}>
+                  <ProblemCard
+                    onViewOffers={() => setSelectedProblem(problem)}
+                    onMakeOffer={() => {}}
+                    problem={problem}
+                    showActions
+                  />
+                </Stack>
+              </Grid>
+            ))}
           </Grid>
 
           {/* EMPTY */}
-          {problems?.length === 0 && (
+          {filteredProblems.length === 0 && (
             <Paper
               elevation={0}
               sx={{
@@ -184,6 +185,9 @@ export default function ProblemsPage() {
                 borderRadius: "28px",
                 border: "1px solid",
                 borderColor: "divider",
+                alignItems: "center",
+                display: "flex",
+                flexDirection: "column",
                 textAlign: "center",
               }}
             >

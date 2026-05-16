@@ -7,6 +7,9 @@ import {
   HiOutlineMapPin,
   HiXMark,
 } from "react-icons/hi2";
+import { FiCheckCircle, FiTrash } from "react-icons/fi";
+import { Box, CircularProgress, Stack, Typography } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 
 import AppImage from "@/components/ui/AppImage";
 import { useAuth } from "@/modules/auth/contexts";
@@ -15,16 +18,14 @@ import { makeImagePath } from "@/helpers/fileOps";
 import { timeAgoAze } from "@/helpers/timeAgoAze";
 import { useGetProblemDetails } from "../hooks/useGetProblemDetails";
 import OfferListItem from "./offerListItem";
-import { Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { IUpload } from "@/modules/upload/types";
 import { EntityType } from "@/constants/enums";
 import { getCityTitle } from "@/helpers/getCityTitle";
 import SubmitButton from "@/components/ui/submitButton";
-import { FiTrash } from "react-icons/fi";
-import { PROBLEM_STATUS } from "../constants";
+import { PROBLEM_STATUS, PROBLEM_STATUS_CONFIG } from "../constants";
 import AppModal from "@/components/ui/modal";
-import { cancelProblem } from "@/modules/profile/services";
-import { useMutation } from "@tanstack/react-query";
+import { cancelProblem, completeProblem } from "@/modules/profile/services";
+import { toast } from "sonner";
 
 export function OffersModal({
   problem,
@@ -37,7 +38,9 @@ export function OffersModal({
   onMakeOffer: (p: UserProblem) => void;
   showUserSpecificItems?: boolean;
 }) {
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [modalOptionsType, setIsDeleteModalOpen] = useState<
+    "delete" | "complete" | null
+  >(null);
   const { user, isMechanic } = useAuth();
   const tFeed = useTranslations("feed");
   const [activeImg, setActiveImg] = useState(0);
@@ -46,7 +49,8 @@ export function OffersModal({
   const { data, refetch, isFetching } = useGetProblemDetails(problem.id);
   const { images, offers } = data ? data : { images: null, offers: null };
 
-  const onCloseDeleteModal = () => setIsDeleteModalOpen(false);
+  const onCloseDeleteModal = () => setIsDeleteModalOpen(null);
+  const status = PROBLEM_STATUS_CONFIG[problem.status];
 
   const imagesWithThumbnail = useMemo<IUpload[]>(() => {
     if (!images) return [];
@@ -66,6 +70,22 @@ export function OffersModal({
   const onCancel = useMutation({
     mutationFn: async () => {
       await cancelProblem(problem.id);
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    },
+  });
+
+  const onComplete = useMutation({
+    mutationFn: async () => {
+      await completeProblem(problem.id);
+    },
+    onError: (error) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
     },
   });
   return (
@@ -121,8 +141,27 @@ export function OffersModal({
               )}
             </div>
           )}
-
           <div className="px-5 py-4">
+            {status && (
+              <Typography
+                variant="caption"
+                className={status?.color}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  px: 1,
+                  py: 0.5,
+                  borderRadius: 1,
+                  width: "max-content",
+                  gap: 1,
+                  mb: 2,
+                }}
+              >
+                {status?.icon}
+                {status?.labelKey}
+              </Typography>
+            )}
+
             <p className="text-sm text-brand-fg leading-relaxed">
               {problem.description}
             </p>
@@ -145,19 +184,33 @@ export function OffersModal({
           {showUserSpecificItems && !isFetching && data && (
             <Stack
               sx={{
+                width: { xs: "100%", md: "60%" },
                 p: 2.5,
                 flexDirection: { xs: "column", md: "row", gap: 10 },
+                justifyContent: {
+                  xs: "flex-start",
+                  md: "flex-end",
+                },
               }}
             >
               {[PROBLEM_STATUS.ASSIGNED, PROBLEM_STATUS.OPEN].includes(
                 problem.status,
               ) && (
                 <SubmitButton
-                  onClick={() => setIsDeleteModalOpen(true)}
+                  onClick={() => setIsDeleteModalOpen("delete")}
                   color="error"
                   startIcon={<FiTrash />}
-                  title="Problemi bağla"
+                  variant="outlined"
+                  title="Ləğv et"
+                />
+              )}
+              {[PROBLEM_STATUS.ASSIGNED].includes(problem.status) && (
+                <SubmitButton
+                  onClick={() => setIsDeleteModalOpen("complete")}
+                  startIcon={<FiCheckCircle />}
                   variant="contained"
+                  color="success"
+                  title="Problemi bağla"
                 />
               )}
             </Stack>
@@ -212,11 +265,17 @@ export function OffersModal({
         )}
       </div>
       <AppModal
-        open={isDeleteModalOpen}
+        open={Boolean(modalOptionsType)}
         onClose={onCloseDeleteModal}
-        title={"Problemi ləğv etmək istədiyinizə əminsinizmi?"}
+        title={
+          modalOptionsType === "complete"
+            ? "Problemi bağlamaq istədiyinizə əminsinizmi?"
+            : "Problemi ləğv etmək istədiyinizə əminsinizmi?"
+        }
         description={
-          "Bu problemi ləğv etdikdən sonra artıq yeni təklif qəbul edə bilməyəcəksiniz. "
+          modalOptionsType === "complete"
+            ? "Problemi tamamladıqdan sonra bu iş üzrə proses bağlanmış hesab ediləcək. Bu, usta ilə uğurla əlaqə saxladığınızı və xidmətin tamamlandığını bildirir. Tamamlandıqdan sonra ustanın performansını qiymətləndirməyiniz üçün reytinq pəncərəsi açılacaq."
+            : "Bu problemi ləğv etdikdən sonra artıq yeni təklif qəbul edə bilməyəcəksiniz. "
         }
         buttons={[
           {
@@ -226,8 +285,11 @@ export function OffersModal({
           {
             title: "Bağla",
             variant: "contained",
-            loading: onCancel.isPending,
-            onClick: () => onCancel.mutate(),
+            loading: onCancel.isPending || onComplete.isPending,
+            onClick: () =>
+              modalOptionsType === "complete"
+                ? onComplete.mutate()
+                : onCancel.mutate(),
           },
         ]}
       />

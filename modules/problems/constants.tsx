@@ -36,7 +36,7 @@ export const PROBLEM_STATUS_CONFIG: Record<
     icon: <HiCheckCircle size={14} />,
   },
   [PROBLEM_STATUS.ASSIGNED]: {
-    labelKey: "Davam edir",
+    labelKey: "Həvalə edilib",
     color: "bg-blue-50 text-blue-700 border-blue-200",
     icon: <HiOutlineArrowPath size={14} className="animate-spin" />,
   },
