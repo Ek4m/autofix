@@ -30,12 +30,11 @@ export default async function RootLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <LocaleProvider initialLocale={locale as Locale}>
-            <AuthProvider>
-              {children}</AuthProvider>
+            <AuthProvider>{children}</AuthProvider>
             <Toaster position="bottom-right" richColors />
           </LocaleProvider>
         </NextIntlClientProvider>

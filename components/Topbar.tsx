@@ -107,12 +107,14 @@ export default function Topbar() {
                       Usta paneli
                     </MenuItem>
                   ) : (
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <IoMdListBox size={24} />
-                      </ListItemIcon>
-                      Müştəri paneli
-                    </MenuItem>
+                    <Link href="/profile/user-problems">
+                      <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                          <IoMdListBox size={24} />
+                        </ListItemIcon>
+                        Müştəri paneli
+                      </MenuItem>
+                    </Link>
                   )}
                   <MenuItem onClick={onLogout}>
                     <ListItemIcon>

@@ -27,6 +27,7 @@ import { useAuth } from "@/modules/auth/contexts";
 import { cardStyle, iconBoxStyle } from "../styles";
 import { formatPhone } from "@/helpers/formatPhone";
 import { getCityTitle } from "@/helpers/getCityTitle";
+import Link from "next/link";
 
 const ProfileSidebar = () => {
   const { isMechanic, user, onLogout } = useAuth();
@@ -210,6 +211,7 @@ const ProfileSidebar = () => {
 
           <Stack spacing={1.5}>
             <SubmitButton
+              component={Link}
               href="/profile/edit"
               startIcon={<FiEdit2 />}
               variant="outlined"
@@ -217,6 +219,7 @@ const ProfileSidebar = () => {
               title="Profili Yenilə"
             />
             <SubmitButton
+              component={Link}
               href="/profile/reset-password"
               startIcon={<FiLock />}
               variant="outlined"
@@ -225,6 +228,7 @@ const ProfileSidebar = () => {
             />
             {!isMechanic && (
               <SubmitButton
+                component={Link}
                 href="/profile/become-mechanic"
                 startIcon={<FiBriefcase />}
                 variant="outlined"

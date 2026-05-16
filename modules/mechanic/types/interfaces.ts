@@ -1,3 +1,5 @@
+import { AuthUser } from "@/modules/auth/types/types";
+
 export interface MechanicOffer {
   id: string;
   mechanicName: string;
@@ -8,6 +10,7 @@ export interface MechanicOffer {
   price: number;
   description: string;
   estimatedTime: string;
+  user?: AuthUser;
   createdAt: string;
 }
 

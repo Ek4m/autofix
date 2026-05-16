@@ -1,10 +1,15 @@
 import { FC, useState } from "react";
 import { MechanicOffer, UserProblem } from "../types/interfaces";
-import { TIME_UNITS } from "../constants";
+import {
+  OFFER_STATUS,
+  OFFER_STATUS_CONFIG,
+  PROBLEM_STATUS,
+  TIME_UNITS,
+} from "../constants";
 import { HiOutlineClock } from "react-icons/hi";
 import { useAuth } from "@/modules/auth/contexts";
 import SubmitButton from "@/components/ui/submitButton";
-import { Avatar, Grid, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Grid, Typography } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { approveOffer, cancelOffer } from "../services";
 import { toast } from "sonner";
@@ -16,11 +21,13 @@ const OfferListItem: FC<{
   offer: MechanicOffer;
   problem: UserProblem;
   onRefetch(): void;
-}> = ({ offer, problem, onRefetch }) => {
+  showUserSpecificItems?: boolean;
+}> = ({ offer, problem, onRefetch, showUserSpecificItems = false }) => {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [type, setType] = useState<"cancel" | "accept">();
   const router = useRouter();
+  const status = OFFER_STATUS_CONFIG[offer.status];
 
   const handleClickOpen = (t: typeof type) => {
     setType(t);
@@ -92,11 +99,14 @@ const OfferListItem: FC<{
             .join("")}
         </Avatar>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography sx={{ fontWeight: "600" }} variant="h6">
               {offer.user.specialistInfo?.objectName}
             </Typography>
-          </div>
+            {showUserSpecificItems && (
+              <Chip color={status.color} label={status.labelKey} />
+            )}
+          </Box>
           <p className="text-sm text-brand-muted-fg mt-1.5 leading-relaxed">
             {offer.description}
           </p>
@@ -113,24 +123,26 @@ const OfferListItem: FC<{
           </div>
         </div>
       </div>
-      {isMyPost && (
-        <Grid container spacing={2}>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <SubmitButton
-              variant="text"
-              title="Ləğv et"
-              onClick={() => handleClickOpen("cancel")}
-            />
+      {isMyPost &&
+        problem.status === PROBLEM_STATUS.OPEN &&
+        offer.status === OFFER_STATUS.PENDING && (
+          <Grid container spacing={2}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <SubmitButton
+                variant="text"
+                title="Ləğv et"
+                onClick={() => handleClickOpen("cancel")}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <SubmitButton
+                variant="contained"
+                title="Müraciət et"
+                onClick={() => handleClickOpen("accept")}
+              />
+            </Grid>
           </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <SubmitButton
-              variant="contained"
-              title="müraciət et"
-              onClick={() => handleClickOpen("accept")}
-            />
-          </Grid>
-        </Grid>
-      )}
+        )}
       <AppModal
         open={open}
         onClose={handleClose}
@@ -150,6 +162,7 @@ const OfferListItem: FC<{
             onClick: handleClose,
           },
           {
+            variant: "contained",
             title: isCancel ? "Sil" : "Təsdiq et",
             loading: onCancelOffer.isPending || onApproveOffer.isPending,
             onClick: onSubmit,

@@ -1,6 +1,6 @@
 import { initDb, Offer, OfferAgreement, Problem, User } from "@/config/db";
 import { getAuthUserFromRequest } from "@/modules/auth/utils";
-import { OFFER_STATUS } from "@/modules/problems/constants";
+import { OFFER_STATUS, PROBLEM_STATUS } from "@/modules/problems/constants";
 import { NextResponse } from "next/server";
 
 export const PUT = async (
@@ -19,6 +19,10 @@ export const PUT = async (
   });
   if (!offer || offer?.get().problem.userId !== user?.id)
     return NextResponse.json({ message: "Təklif tapılmadı!" }, { status: 400 });
+  await Problem.update(
+    { status: PROBLEM_STATUS.ASSIGNED },
+    { where: { id: offer.get().problemId } },
+  );
   await offer.update({ status: OFFER_STATUS.ACCEPTED });
   await OfferAgreement.create({
     offerId: offer.get().id,

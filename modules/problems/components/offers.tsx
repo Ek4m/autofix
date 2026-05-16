@@ -15,20 +15,29 @@ import { makeImagePath } from "@/helpers/fileOps";
 import { timeAgoAze } from "@/helpers/timeAgoAze";
 import { useGetProblemDetails } from "../hooks/useGetProblemDetails";
 import OfferListItem from "./offerListItem";
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { IUpload } from "@/modules/upload/types";
 import { EntityType } from "@/constants/enums";
 import { getCityTitle } from "@/helpers/getCityTitle";
+import SubmitButton from "@/components/ui/submitButton";
+import { FiTrash } from "react-icons/fi";
+import { PROBLEM_STATUS } from "../constants";
+import AppModal from "@/components/ui/modal";
+import { cancelProblem } from "@/modules/profile/services";
+import { useMutation } from "@tanstack/react-query";
 
 export function OffersModal({
   problem,
   onClose,
   onMakeOffer,
+  showUserSpecificItems = false,
 }: {
   problem: UserProblem;
   onClose: () => void;
   onMakeOffer: (p: UserProblem) => void;
+  showUserSpecificItems?: boolean;
 }) {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { user, isMechanic } = useAuth();
   const tFeed = useTranslations("feed");
   const [activeImg, setActiveImg] = useState(0);
@@ -38,6 +47,8 @@ export function OffersModal({
     data: { images, offers },
     refetch,
   } = useGetProblemDetails(problem.id);
+
+  const onCloseDeleteModal = () => setIsDeleteModalOpen(false);
 
   const imagesWithThumbnail = useMemo<IUpload[]>(() => {
     return [
@@ -53,6 +64,11 @@ export function OffersModal({
     ];
   }, [images, problem]);
 
+  const onCancel = useMutation({
+    mutationFn: async () => {
+      await cancelProblem(problem.id);
+    },
+  });
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
       <div className="bg-white w-full sm:max-w-2xl max-h-[92vh] sm:max-h-[85vh] rounded-t-2xl sm:rounded-2xl flex flex-col overflow-hidden shadow-modal animate-slide-up">
@@ -127,7 +143,26 @@ export function OffersModal({
               )}
             </div>
           </div>
-
+          {showUserSpecificItems && (
+            <Stack
+              sx={{
+                p: 2.5,
+                flexDirection: { xs: "column", md: "row", gap: 10 },
+              }}
+            >
+              {[PROBLEM_STATUS.ASSIGNED, PROBLEM_STATUS.OPEN].includes(
+                problem.status,
+              ) && (
+                <SubmitButton
+                  onClick={() => setIsDeleteModalOpen(true)}
+                  color="error"
+                  startIcon={<FiTrash />}
+                  title="Problemi bağla"
+                  variant="contained"
+                />
+              )}
+            </Stack>
+          )}
           <div className="px-5 pb-5">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-bold text-brand-fg">
@@ -152,6 +187,7 @@ export function OffersModal({
                   <OfferListItem
                     onRefetch={refetch}
                     offer={offer}
+                    showUserSpecificItems={showUserSpecificItems}
                     problem={problem}
                     key={offer.id}
                   />
@@ -172,6 +208,26 @@ export function OffersModal({
           </div>
         )}
       </div>
+      <AppModal
+        open={isDeleteModalOpen}
+        onClose={onCloseDeleteModal}
+        title={"Problemi ləğv etmək istədiyinizə əminsinizmi?"}
+        description={
+          "Bu problemi ləğv etdikdən sonra artıq yeni təklif qəbul edə bilməyəcəksiniz. "
+        }
+        buttons={[
+          {
+            title: "Geri qayıt",
+            onClick: onCloseDeleteModal,
+          },
+          {
+            title: "Bağla",
+            variant: "contained",
+            loading: onCancel.isPending,
+            onClick: () => onCancel.mutate(),
+          },
+        ]}
+      />
     </div>
   );
 }

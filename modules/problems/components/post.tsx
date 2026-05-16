@@ -314,6 +314,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                 <SubmitButton
                   variant="outlined"
                   type="button"
+                  onClick={onClose}
                   title={tCommon("cancel")}
                 />
               </Grid>

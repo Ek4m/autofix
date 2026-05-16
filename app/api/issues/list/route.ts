@@ -1,5 +1,8 @@
 import { Category, initDb, Problem, User } from "@/config/db";
-import { ORDER_BY_CREATION } from "@/modules/problems/constants";
+import {
+  ORDER_BY_CREATION,
+  PROBLEM_STATUS,
+} from "@/modules/problems/constants";
 import { NextRequest, NextResponse } from "next/server";
 import { Op, WhereOptions } from "sequelize";
 
@@ -11,7 +14,7 @@ export const GET = async (request: NextRequest) => {
   const isVip = Boolean(Number(searchParams.get("vip")));
   const search = searchParams.get("search");
   const order = searchParams.get("order") || ORDER_BY_CREATION.DESC;
-  const where: WhereOptions = {};
+  const where: WhereOptions = { status: PROBLEM_STATUS.OPEN };
   if (!isNaN(category) && category) where.categoryId = category;
   if (isVip) where.isVip = true;
   if (search) where.title = { [Op.iLike]: `%${search}%` };
