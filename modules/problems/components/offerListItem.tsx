@@ -16,6 +16,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import AppModal from "@/components/ui/modal";
 import { makeImagePath } from "@/helpers/fileOps";
+import ContactModal from "@/modules/mechanic/components/contactModal";
 
 const OfferListItem: FC<{
   offer: MechanicOffer;
@@ -104,7 +105,11 @@ const OfferListItem: FC<{
               {offer.user.specialistInfo?.objectName}
             </Typography>
             {showUserSpecificItems && (
-              <Chip color={status.color} label={status.labelKey} />
+              <Chip
+                color={status.color}
+                label={status.labelKey}
+                variant="outlined"
+              />
             )}
           </Box>
           <p className="text-sm text-brand-muted-fg mt-1.5 leading-relaxed">
@@ -123,6 +128,15 @@ const OfferListItem: FC<{
           </div>
         </div>
       </div>
+      {isMyPost && offer.status === OFFER_STATUS.ACCEPTED && (
+        <Box
+          sx={{
+            marginTop: 2,
+          }}
+        >
+          <ContactModal id={offer.user.id} />
+        </Box>
+      )}
       {isMyPost &&
         problem.status === PROBLEM_STATUS.OPEN &&
         offer.status === OFFER_STATUS.PENDING && (

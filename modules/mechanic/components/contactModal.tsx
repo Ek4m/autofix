@@ -24,6 +24,7 @@ import { formatPhone } from "@/helpers/formatPhone";
 import { useState } from "react";
 import SubmitButton from "@/components/ui/submitButton";
 import { useGetMechanicContactInfo } from "../hooks/useGetMechanicContactInfo";
+import { ImLocation } from "react-icons/im";
 
 type Props = {
   id: number;
@@ -47,7 +48,12 @@ const ContactModal = ({ id }: Props) => {
 
   return (
     <>
-      <SubmitButton title="Əlaqə məlumatları" onClick={() => setOpen(true)} />
+      <SubmitButton
+        startIcon={<ImLocation />}
+        variant="text"
+        title="Əlaqə məlumatları"
+        onClick={() => setOpen(true)}
+      />
       <Dialog
         open={open}
         onClose={() => setOpen(false)}

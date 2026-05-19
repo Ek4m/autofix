@@ -100,12 +100,14 @@ export default function Topbar() {
                   </Link>
 
                   {isMechanic ? (
-                    <MenuItem onClick={handleClose}>
-                      <ListItemIcon>
-                        <IoIosSettings size={22} />
-                      </ListItemIcon>
-                      Usta paneli
-                    </MenuItem>
+                    <Link href="/profile/mechanic-panel">
+                      <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                          <IoIosSettings size={22} />
+                        </ListItemIcon>
+                        Usta paneli
+                      </MenuItem>
+                    </Link>
                   ) : (
                     <Link href="/profile/user-problems">
                       <MenuItem onClick={handleClose}>

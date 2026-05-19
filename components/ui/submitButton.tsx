@@ -8,6 +8,10 @@ const SubmitButton: FC<ButtonProps> = (props) => {
       {...props}
       sx={{
         p: 1.7,
+        "& *": {
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis",
+        },
         borderRadius: 2,
         fontWeight: "700",
         color:
@@ -19,7 +23,7 @@ const SubmitButton: FC<ButtonProps> = (props) => {
         textTransform: "none",
       }}
     >
-      {props.title}
+      <span>{props.title}</span>
     </Button>
   );
 };
