@@ -68,3 +68,12 @@ export const getMechanicsServices = async (): Promise<IService[]> => {
   });
   return response;
 };
+
+export const deleteService = async (
+  id: string | number,
+): Promise<IService[]> => {
+  const response = await httpClient(`/api/profile/mechanic/services/${id}`, {
+    method: "DELETE",
+  });
+  return response;
+};

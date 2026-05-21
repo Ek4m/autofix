@@ -1,15 +1,14 @@
 "use client";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
   FiMapPin,
   FiClock,
   FiShield,
-  FiPhone,
   FiMessageSquare,
   FiCheckCircle,
-  FiTool,
+  FiSettings,
 } from "react-icons/fi";
 
 import { useGetServiceDetails } from "@/modules/services/hooks/useGetServiceDetails";
@@ -19,14 +18,36 @@ import ProfilePhotoWithChar from "@/components/ui/profilePhotoWithChar";
 import SubmitButton from "@/components/ui/submitButton";
 
 import { getCategoryTitle } from "@/helpers/getCategoryTitle";
-import { getCityTitle } from "@/helpers/getCityTitle";
 import { datePrettify } from "@/helpers/datePrettify";
-import { Typography } from "@mui/material";
+import { Chip, Typography } from "@mui/material";
+import { getCityTitle } from "@/helpers/getCityTitle";
+import { useAuth } from "@/modules/auth/contexts";
+import AppModal from "@/components/ui/modal";
+import { useMutation } from "@tanstack/react-query";
+import { deleteService } from "@/modules/profile/services";
 
 export default function ServiceDetailsPage() {
   const { id } = useParams<{ id: string }>();
   const { data: service } = useGetServiceDetails(id);
+  const { user } = useAuth();
   const specialistInfo = service?.user.specialistInfo;
+  const [optionsMenuOpen, setOptionsMenuOpen] = useState(false);
+  const isMyService = user?.id === service?.userId;
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const handleClose = () => {
+    setDeleteModalOpen(false);
+  };
+
+  const onDeleteService = useMutation({
+    mutationFn: async () => {
+      try {
+        await deleteService(id);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
 
   const priceText = useMemo(() => {
     if (!service?.priceMin && !service?.priceMax) return "Qiymət razılaşma ilə";
@@ -61,38 +82,34 @@ export default function ServiceDetailsPage() {
                       <span className="badge-premium">⭐ VIP Xidmət</span>
                     )}
 
-                    <span className="badge-status bg-white/10 border border-white/20 text-white">
+                    <span className="badge-status bg-white/10 border border-white/20">
                       <FiCheckCircle size={12} />
                       Aktiv
                     </span>
                   </div>
-
                   <h1 className="text-2xl sm:text-3xl font-bold text-black leading-tight">
                     {service?.serviceName}
                   </h1>
 
-                  <div className="flex flex-wrap items-center gap-4 mt-5 text-sm text-white/85">
+                  <div className="flex flex-wrap items-center gap-4 mt-5 text-sm">
                     {specialistInfo?.city && (
-                      <span className="flex items-center gap-1.5">
-                        <FiMapPin size={14} />
-                        {specialistInfo.city}
-                      </span>
+                      <Chip
+                        size="medium"
+                        label={getCityTitle(specialistInfo.city)}
+                        color="warning"
+                        icon={<FiMapPin size={14} />}
+                      />
                     )}
 
-                    <span className="flex items-center gap-1.5">
+                    <Typography
+                      sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                    >
                       <FiClock size={14} />
                       {service &&
                         new Date(service?.createdAt).toLocaleDateString(
                           "az-AZ",
                         )}
-                    </span>
-
-                    {specialistInfo?.experienceYears ? (
-                      <span className="flex items-center gap-1.5">
-                        <FiTool size={14} />
-                        {specialistInfo.experienceYears} il təcrübə
-                      </span>
-                    ) : null}
+                    </Typography>
                   </div>
                 </div>
               </div>
@@ -107,16 +124,6 @@ export default function ServiceDetailsPage() {
                     <h2 className="text-3xl font-black text-primary-DEFAULT tabular-nums">
                       {priceText}
                     </h2>
-                  </div>
-
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <a href={`tel: +${service?.user.phoneNumber}`}>
-                      <SubmitButton
-                        variant="contained"
-                        startIcon={<FiPhone size={16} />}
-                        title={`Əlaqə saxla`}
-                      />
-                    </a>
                   </div>
                 </div>
               </div>
@@ -271,9 +278,49 @@ export default function ServiceDetailsPage() {
                 </div>
               </div>
             </div>
+            {isMyService && (
+              <div className="card-surface p-5">
+                <SubmitButton
+                  onClick={() => setOptionsMenuOpen((prev) => !prev)}
+                  startIcon={<FiSettings />}
+                  title="Seçimlər"
+                  variant="outlined"
+                />
+                {optionsMenuOpen && (
+                  <>
+                    <SubmitButton color="primary" title="Dəyiş" />
+                    <SubmitButton
+                      color="error"
+                      title="Sil"
+                      onClick={() => setDeleteModalOpen(true)}
+                    />
+                  </>
+                )}
+              </div>
+            )}
           </aside>
         </div>
       </main>
+      <AppModal
+        open={deleteModalOpen}
+        onClose={handleClose}
+        title={"Silmək istədiyinizə əminsiniz?"}
+        description={
+          "Bu servisi sildikdən sonra bir daha geri qaytara bilməyəcəksiniz"
+        }
+        buttons={[
+          {
+            title: "Geri qayıt",
+            onClick: handleClose,
+          },
+          {
+            variant: "contained",
+            title: "Sil",
+            loading: onDeleteService.isPending,
+            onClick: () => onDeleteService.mutate(),
+          },
+        ]}
+      />
     </div>
   );
 }
