@@ -5,7 +5,6 @@ import {
   Avatar,
   Box,
   Button,
-  ButtonGroup,
   Chip,
   CircularProgress,
   Container,
@@ -21,14 +20,11 @@ import {
   FiBriefcase,
   FiCheckCircle,
   FiClock,
-  FiEdit,
   FiEye,
-  FiInfo,
   FiMessageSquare,
   FiPlus,
   FiStar,
   FiTool,
-  FiTrash,
   FiTrendingUp,
 } from "react-icons/fi";
 
@@ -41,6 +37,7 @@ import { PostServiceModal } from "@/modules/services/components/post";
 import { useGetMechanicPanelInfo } from "@/modules/profile/hooks/useGetMechanicPanelInfo";
 import { getCategoryTitle } from "@/helpers/getCategoryTitle";
 import { OFFER_STATUS_CONFIG } from "@/modules/problems/constants";
+import { IoIosSettings } from "react-icons/io";
 
 export default function MechanicDashboardPage() {
   const { user } = useAuth();
@@ -305,10 +302,16 @@ export default function MechanicDashboardPage() {
                   <Stack spacing={2}>
                     {data?.services.map((job) => (
                       <Paper
+                        component={Link}
+                        href={`/mechanic-services/${job.id}`}
                         key={job.id}
                         elevation={0}
                         sx={{
                           p: 2.5,
+                          transition: "0.2s ease 0s",
+                          "&:hover": {
+                            bgcolor: "rgba(236, 236, 236, 0.29)",
+                          },
                           borderRadius: "20px",
                           bgcolor: "background.default",
                           border: "1px solid",
@@ -328,58 +331,34 @@ export default function MechanicDashboardPage() {
                           >
                             <Box>
                               <Typography
-                                variant="h5"
+                                variant="h6"
                                 sx={{
-                                  fontWeight: 700,
+                                  fontWeight: 600,
                                 }}
                               >
                                 {job.serviceName}
                               </Typography>
-                              <Typography>
+                              <Typography sx={{ fontWeight: "lighter" }}>
                                 {job.description.slice(0, 50) + "..."}
                               </Typography>
                             </Box>
 
-                            <Chip
-                              label={job.priceMin + "-" + job.priceMax + " AZN"}
-                              color="warning"
-                              variant="outlined"
-                            />
+                            <IoIosSettings size={30} color="orangered" />
                           </Stack>
                           <Stack
                             direction={"row"}
                             sx={{ flexWrap: "wrap", gap: 1 }}
                           >
                             {job.categories.map((c) => (
-                              <Chip
+                              <Typography
+                                sx={{ fontSize: 12, color: "orangered" }}
                                 key={c}
-                                variant="outlined"
-                                color="warning"
-                                label={getCategoryTitle(c)}
-                              />
+                              >
+                                #{getCategoryTitle(c)}
+                                {"\n"}
+                              </Typography>
                             ))}
                           </Stack>
-                          <ButtonGroup>
-                            <SubmitButton
-                              variant="outlined"
-                              startIcon={<FiEdit />}
-                              title="Dəyiş"
-                            />
-                            <SubmitButton
-                              href={`/mechanic-services/${job.id}`}
-                              component={Link}
-                              variant="outlined"
-                              startIcon={<FiInfo />}
-                              color="primary"
-                              title="Ətraflı"
-                            />
-                            <SubmitButton
-                              variant="outlined"
-                              startIcon={<FiTrash />}
-                              color="error"
-                              title="Sil"
-                            />
-                          </ButtonGroup>
                         </Stack>
                       </Paper>
                     ))}
