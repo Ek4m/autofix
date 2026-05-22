@@ -3,18 +3,27 @@ import { PostServiceForm } from "../types/dtos";
 import { useTranslations } from "next-intl";
 import { FiX } from "react-icons/fi";
 import { FaBolt, FaCreditCard, FaStar } from "react-icons/fa";
-import { ImSpinner8 } from "react-icons/im";
-import { Grid } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import TextField from "@/components/ui/textField";
 import categoriesList from "@/data/categories.json";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import SwitchField from "@/components/ui/switchField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postServiceSchema } from "../schemas";
 import MultiSelectField from "@/components/ui/selectWithSearch";
 import { postService } from "../services";
+import { IService } from "../types/interfaces";
+import { toast } from "sonner";
+import SubmitButton from "@/components/ui/submitButton";
+import { updateService } from "@/modules/profile/services";
 
-export function PostServiceModal({ onClose }: { onClose: () => void }) {
+export function PostServiceModal({
+  onClose,
+  initialService,
+}: {
+  onClose: () => void;
+  initialService?: IService;
+}) {
   const tCommon = useTranslations("common");
   const form = useForm<PostServiceForm, object, PostServiceForm>({
     resolver: yupResolver(postServiceSchema),
@@ -40,9 +49,33 @@ export function PostServiceModal({ onClose }: { onClose: () => void }) {
   } = form;
 
   const onSubmit = async (values: PostServiceForm) => {
-    const response = await postService(values);
-    console.log(response);
+    try {
+      const response = initialService
+        ? await updateService(initialService.id, values)
+        : await postService(values);
+      toast.success(response.message);
+      setTimeout(() => {
+        window.navigation.reload();
+      }, 1500);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
+    }
   };
+
+  useEffect(() => {
+    if (initialService) {
+      form.reset({
+        categories: initialService.categories.map(Number),
+        description: initialService.description,
+        isVip: initialService.isVip,
+        priceMax: initialService.priceMax,
+        priceMin: initialService.priceMin,
+        serviceName: initialService.serviceName,
+      });
+    }
+  }, [initialService]);
 
   const isVip = form.watch("isVip");
   const postCost = isVip ? "6.00" : "2.50";
@@ -210,27 +243,22 @@ export function PostServiceModal({ onClose }: { onClose: () => void }) {
               {postCost} ₼
             </span>
           </div>
+          <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
+            <SubmitButton
+              variant="outlined"
+              onClick={onClose}
+              title={tCommon("cancel")}
+            />
+            <SubmitButton
+              type="submit"
+              loading={isSubmitting}
+              variant="contained"
+              title={
+                initialService ? "Dəyişiklikləri təsdiqlə" : "Xidməti Yayımla"
+              }
+            />
+          </Stack>
         </form>
-
-        <div className="px-5 py-4 border-t border-brand-border shrink-0 flex gap-3">
-          <button onClick={onClose} className="btn-secondary flex-1 py-3">
-            {tCommon("cancel")}
-          </button>
-          <button
-            onClick={form.handleSubmit(onSubmit)}
-            disabled={isSubmitting}
-            className="btn-primary flex-1 flex items-center justify-center gap-2 py-3"
-          >
-            {isSubmitting ? (
-              <>
-                <ImSpinner8 className="animate-spin h-4 w-4 text-white" />{" "}
-                Göndərilir...
-              </>
-            ) : (
-              <>Xidməti Yayımla · {postCost} ₼</>
-            )}
-          </button>
-        </div>
       </div>
     </div>
   );

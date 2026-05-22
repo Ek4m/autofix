@@ -25,6 +25,7 @@ import { useAuth } from "@/modules/auth/contexts";
 import AppModal from "@/components/ui/modal";
 import { useMutation } from "@tanstack/react-query";
 import { deleteService } from "@/modules/profile/services";
+import { PostServiceModal } from "@/modules/services/components/post";
 
 export default function ServiceDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -34,6 +35,7 @@ export default function ServiceDetailsPage() {
   const [optionsMenuOpen, setOptionsMenuOpen] = useState(false);
   const isMyService = user?.id === service?.userId;
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [showPostModal, setShowPostModal] = useState(false);
 
   const handleClose = () => {
     setDeleteModalOpen(false);
@@ -100,16 +102,6 @@ export default function ServiceDetailsPage() {
                         icon={<FiMapPin size={14} />}
                       />
                     )}
-
-                    <Typography
-                      sx={{ display: "flex", alignItems: "center", gap: 1 }}
-                    >
-                      <FiClock size={14} />
-                      {service &&
-                        new Date(service?.createdAt).toLocaleDateString(
-                          "az-AZ",
-                        )}
-                    </Typography>
                   </div>
                 </div>
               </div>
@@ -124,6 +116,17 @@ export default function ServiceDetailsPage() {
                     <h2 className="text-3xl font-black text-primary-DEFAULT tabular-nums">
                       {priceText}
                     </h2>
+                  </div>
+                  <div>
+                    <Typography
+                      sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                    >
+                      <FiClock size={14} />
+                      {service &&
+                        new Date(service?.createdAt).toLocaleDateString(
+                          "az-AZ",
+                        )}
+                    </Typography>
                   </div>
                 </div>
               </div>
@@ -288,7 +291,11 @@ export default function ServiceDetailsPage() {
                 />
                 {optionsMenuOpen && (
                   <>
-                    <SubmitButton color="primary" title="Dəyiş" />
+                    <SubmitButton
+                      color="primary"
+                      title="Dəyiş"
+                      onClick={() => setShowPostModal(true)}
+                    />
                     <SubmitButton
                       color="error"
                       title="Sil"
@@ -321,6 +328,12 @@ export default function ServiceDetailsPage() {
           },
         ]}
       />
+      {showPostModal && (
+        <PostServiceModal
+          initialService={service}
+          onClose={() => setShowPostModal(false)}
+        />
+      )}
     </div>
   );
 }

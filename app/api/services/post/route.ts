@@ -18,5 +18,5 @@ export const POST = async (data: NextRequest) => {
       entityType: EntityType.SERVICE,
     });
   }
-  return NextResponse.json({ newService });
+  return NextResponse.json({ data: { message: "Servis uğurla yaradıldı" } });
 };

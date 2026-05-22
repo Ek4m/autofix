@@ -3,7 +3,9 @@ import { PostServiceForm } from "./types/dtos";
 import { IService } from "./types/interfaces";
 import { urlFactory } from "@/helpers/urlFactory";
 
-export const postService = async (data: PostServiceForm) => {
+export const postService = async (
+  data: PostServiceForm,
+): Promise<{ message: string }> => {
   const response = await httpClient("/api/services/post", {
     body: JSON.stringify(data),
     method: "POST",

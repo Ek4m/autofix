@@ -1,6 +1,6 @@
 export interface PostServiceForm {
   serviceName: string;
-  categories: string[];
+  categories: number[];
   description: string;
   priceMin: number;
   priceMax: number;

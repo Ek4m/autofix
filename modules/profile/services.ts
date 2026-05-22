@@ -2,6 +2,7 @@ import { httpClient } from "@/config/httpClient";
 import { UpdatePasswordForm } from "./types/dtos";
 import { MechanicOffer, UserProblem } from "../problems/types/interfaces";
 import { IService } from "../services/types/interfaces";
+import { PostServiceForm } from "../services/types/dtos";
 
 export const logoutService = async () => {
   const response = await httpClient("/api/auth/logout", {
@@ -74,6 +75,17 @@ export const deleteService = async (
 ): Promise<IService[]> => {
   const response = await httpClient(`/api/profile/mechanic/services/${id}`, {
     method: "DELETE",
+  });
+  return response;
+};
+
+export const updateService = async (
+  id: string | number,
+  body: PostServiceForm,
+): Promise<{ message: string }> => {
+  const response = await httpClient(`/api/profile/mechanic/services/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(body),
   });
   return response;
 };
