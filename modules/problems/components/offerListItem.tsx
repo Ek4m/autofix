@@ -77,7 +77,6 @@ const OfferListItem: FC<{
     }
     handleClose();
   };
-
   const isMyPost = user?.id === problem.user.id;
   const isCancel = type === "cancel";
 

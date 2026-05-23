@@ -47,7 +47,6 @@ const ProfileSidebar = () => {
             sx={{
               px: 3,
               py: 4,
-              color: "white",
               textAlign: "center",
               display: "flex",
               flexDirection: "column",
@@ -57,6 +56,7 @@ const ProfileSidebar = () => {
             <Avatar
               sx={{
                 width: 88,
+                color: "white",
                 height: 88,
                 fontSize: 30,
                 fontWeight: 700,
