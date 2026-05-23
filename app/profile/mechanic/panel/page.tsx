@@ -172,7 +172,7 @@ export default function MechanicDashboardPage() {
                   />
                   <SubmitButton
                     component={Link}
-                    href="/mechanic/offers"
+                    href="/profile/mechanic/offers"
                     variant="outlined"
                     startIcon={<FiBriefcase />}
                     title="Təkliflərim"

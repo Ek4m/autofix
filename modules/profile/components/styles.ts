@@ -1,7 +1,7 @@
 export const cardStyle = {
   borderRadius: "24px",
-  boxShadow: "1px 1px 10px rgba(232, 75, 47, 0.09)",
-  overflow: "hidden",
+  border: "1px solid",
+  borderColor: "divider",
 };
 
 export const iconBoxStyle = {

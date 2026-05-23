@@ -6,7 +6,7 @@ const nextConfig: NextConfig = withNextIntl({
   redirects: () => [
     {
       source: "/",
-      destination: "/car-problems-feed",
+      destination: "/problem-feed",
       permanent: false,
     },
   ],

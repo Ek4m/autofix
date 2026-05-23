@@ -3,6 +3,7 @@ import { UpdatePasswordForm } from "./types/dtos";
 import { MechanicOffer, UserProblem } from "../problems/types/interfaces";
 import { IService } from "../services/types/interfaces";
 import { PostServiceForm } from "../services/types/dtos";
+import { MechanicPanelOffer } from "./types/interfaces";
 
 export const logoutService = async () => {
   const response = await httpClient("/api/auth/logout", {
@@ -86,6 +87,22 @@ export const updateService = async (
   const response = await httpClient(`/api/profile/mechanic/services/${id}`, {
     method: "PUT",
     body: JSON.stringify(body),
+  });
+  return response;
+};
+
+export const getOffers = async (): Promise<MechanicPanelOffer[]> => {
+  const response = await httpClient(`/api/profile/mechanic/offers`, {
+    method: "GET",
+  });
+  return response;
+};
+
+export const deleteOffer = async (
+  id: string | number,
+): Promise<{ message: string }> => {
+  const response = await httpClient(`/api/profile/mechanic/offers/${id}`, {
+    method: "DELETE",
   });
   return response;
 };
