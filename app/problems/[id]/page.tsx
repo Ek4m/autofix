@@ -47,6 +47,7 @@ import {
 } from "@/modules/problems/constants";
 import { OfferSolution } from "@/modules/problems/components/offer";
 import { cardStyle } from "@/modules/profile/components/styles";
+import MechanicRatingModal from "@/modules/problems/components/rateMechanic";
 
 export default function ProblemDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -57,7 +58,7 @@ export default function ProblemDetailsPage() {
   const { user, isMechanic } = useAuth();
 
   const [activeImg, setActiveImg] = useState(0);
-
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
   const [modalType, setModalType] = useState<"delete" | "complete" | null>(
     null,
   );
@@ -114,15 +115,13 @@ export default function ProblemDetailsPage() {
   const onComplete = useMutation({
     mutationFn: async () => {
       if (!problem) return;
-
       await completeProblem(problem.id);
     },
 
     onSuccess: () => {
       toast.success("Problem tamamlandı");
-
       refetch();
-
+      setIsRatingModalOpen(true);
       onCloseModal();
     },
 
@@ -667,6 +666,11 @@ export default function ProblemDetailsPage() {
                 : onCancel.mutate(),
           },
         ]}
+      />
+      <MechanicRatingModal
+        problemId={problem.id}
+        open={isRatingModalOpen}
+        onClose={() => setIsRatingModalOpen(false)}
       />
     </Box>
   );

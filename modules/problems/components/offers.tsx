@@ -26,6 +26,7 @@ import { PROBLEM_STATUS, PROBLEM_STATUS_CONFIG } from "../constants";
 import AppModal from "@/components/ui/modal";
 import { cancelProblem, completeProblem } from "@/modules/profile/services";
 import { toast } from "sonner";
+import MechanicRatingModal from "./rateMechanic";
 
 export function OffersModal({
   problem,
@@ -45,6 +46,7 @@ export function OffersModal({
   const tFeed = useTranslations("feed");
   const [activeImg, setActiveImg] = useState(0);
   const isMyPost = user?.id === problem.user.id;
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
 
   const { data, refetch, isFetching } = useGetProblemDetails(problem.id);
   const { images, offers } = data ? data : { images: null, offers: null };
@@ -70,6 +72,7 @@ export function OffersModal({
   const onCancel = useMutation({
     mutationFn: async () => {
       await cancelProblem(problem.id);
+      setIsDeleteModalOpen(null);
     },
     onError: (error) => {
       if (error instanceof Error) {
@@ -81,6 +84,8 @@ export function OffersModal({
   const onComplete = useMutation({
     mutationFn: async () => {
       await completeProblem(problem.id);
+      setIsDeleteModalOpen(null);
+      setIsRatingModalOpen(true);
     },
     onError: (error) => {
       if (error instanceof Error) {
@@ -292,6 +297,11 @@ export function OffersModal({
                 : onCancel.mutate(),
           },
         ]}
+      />
+      <MechanicRatingModal
+        problemId={problem.id}
+        open={isRatingModalOpen}
+        onClose={() => setIsRatingModalOpen(false)}
       />
     </div>
   );

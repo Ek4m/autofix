@@ -210,6 +210,29 @@ OfferAgreement.init(
   },
 );
 
+// ------ MECHANIC REVIEW --------
+
+export class MechanicReview extends Model {}
+
+MechanicReview.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    comment: {
+      type: DataTypes.TEXT("long"),
+    },
+    rating: DataTypes.INTEGER,
+  },
+  {
+    sequelize,
+    tableName: "mechanic_reviews",
+    timestamps: true,
+  },
+);
+
 // ================= RELATIONS =================
 
 // USER ↔ PROBLEM
@@ -258,6 +281,49 @@ Problem.hasOne(OfferAgreement, {
 });
 OfferAgreement.belongsTo(Problem, { foreignKey: "problemId", as: "problem" });
 
+// USER (customer) ↔ REVIEW
+User.hasMany(MechanicReview, {
+  foreignKey: "userId",
+  as: "givenReviews",
+});
+
+MechanicReview.belongsTo(User, {
+  foreignKey: "userId",
+  as: "reviewer",
+});
+
+// MECHANIC ↔ REVIEW
+User.hasMany(MechanicReview, {
+  foreignKey: "mechanicId",
+  as: "receivedReviews",
+});
+
+MechanicReview.belongsTo(User, {
+  foreignKey: "mechanicId",
+  as: "mechanic",
+});
+
+// PROBLEM ↔ REVIEW
+Problem.hasOne(MechanicReview, {
+  foreignKey: "problemId",
+  as: "review",
+});
+
+MechanicReview.belongsTo(Problem, {
+  foreignKey: "problemId",
+  as: "problem",
+});
+
+// OFFER AGREEMENT ↔ REVIEW
+OfferAgreement.hasOne(MechanicReview, {
+  foreignKey: "offerAgreementId",
+  as: "review",
+});
+
+MechanicReview.belongsTo(OfferAgreement, {
+  foreignKey: "offerAgreementId",
+  as: "offerAgreement",
+});
 // ================= INIT =================
 
 export const initDb = async () => {

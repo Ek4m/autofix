@@ -40,7 +40,11 @@ export const getProblemsList = async (
 
 export const getProblemDetails = async (
   id: number | string,
-): Promise<{ images: IUpload[]; offers: MechanicOffer[], problem:UserProblem }> => {
+): Promise<{
+  images: IUpload[];
+  offers: MechanicOffer[];
+  problem: UserProblem;
+}> => {
   const response = await httpClient("/api/issues/details/" + id, {
     method: "GET",
   });
@@ -57,6 +61,18 @@ export const cancelOffer = async (id: number): Promise<MechanicOffer> => {
 export const approveOffer = async (id: number): Promise<MechanicOffer> => {
   const response = await httpClient(`/api/offer/${id}/approve`, {
     method: "PUT",
+  });
+  return response;
+};
+
+export const rateMechanic = async (body: {
+  problemId: number;
+  rating: number;
+  comment: string;
+}): Promise<MechanicOffer> => {
+  const response = await httpClient(`/api/mechanic/rate`, {
+    method: "POST",
+    body: JSON.stringify(body),
   });
   return response;
 };
