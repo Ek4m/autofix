@@ -84,10 +84,7 @@ export default function AuthLayout({
       {/* Right panel */}
       <div className="flex-1 flex flex-col overflow-y-auto">
         <div className="flex items-center justify-between px-6 py-4 border-b border-brand-border bg-white/80 backdrop-blur-sm sticky top-0 z-10">
-          <Link
-            href="/problem-feed"
-            className="flex items-center gap-2 lg:hidden"
-          >
+          <Link href="/" className="flex items-center gap-2 lg:hidden">
             <AppLogo size={32} />
             <span className="font-bold text-base text-navy">AutoFixHub</span>
           </Link>

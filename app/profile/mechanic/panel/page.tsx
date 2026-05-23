@@ -342,7 +342,6 @@ export default function MechanicDashboardPage() {
                                 {job.description.slice(0, 50) + "..."}
                               </Typography>
                             </Box>
-
                             <IoIosSettings size={30} color="orangered" />
                           </Stack>
                           <Stack

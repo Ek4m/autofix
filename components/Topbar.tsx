@@ -21,7 +21,7 @@ import { IoLogOut } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 
 const NAV_LINKS = [
-  { href: "/problem-feed", labelKey: "Problemlər", icon: HiOutlineTruck },
+  { href: "/", labelKey: "Problemlər", icon: HiOutlineTruck },
   {
     href: "/mechanic-service-listing",
     labelKey: "Xidmətlər",
@@ -48,13 +48,10 @@ export default function Topbar() {
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link
-            href="/problem-feed"
-            className="flex items-center gap-2.5 shrink-0"
-          >
+          <Link href="/" className="flex items-center gap-2.5 shrink-0">
             <AppLogo size={36} />
             <span className="font-bold text-lg text-navy-DEFAULT tracking-tight hidden sm:block">
-               
+              AvtoFix
             </span>
           </Link>
 
