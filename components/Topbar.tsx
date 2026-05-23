@@ -54,7 +54,7 @@ export default function Topbar() {
           >
             <AppLogo size={36} />
             <span className="font-bold text-lg text-navy-DEFAULT tracking-tight hidden sm:block">
-              AutoFixHub
+               
             </span>
           </Link>
 

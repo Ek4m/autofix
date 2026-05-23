@@ -83,11 +83,11 @@ export default function ServiceDetailsPage() {
                     {service?.isVip && (
                       <span className="badge-premium">⭐ VIP Xidmət</span>
                     )}
-
-                    <span className="badge-status bg-white/10 border border-white/20">
-                      <FiCheckCircle size={12} />
-                      Aktiv
-                    </span>
+                    <Chip
+                      icon={<FiCheckCircle size={12} />}
+                      label="Aktiv"
+                      color="success"
+                    />
                   </div>
                   <h1 className="text-2xl sm:text-3xl font-bold text-black leading-tight">
                     {service?.serviceName}
@@ -97,6 +97,7 @@ export default function ServiceDetailsPage() {
                     {specialistInfo?.city && (
                       <Chip
                         size="medium"
+                        variant="outlined"
                         label={getCityTitle(specialistInfo.city)}
                         color="warning"
                         icon={<FiMapPin size={14} />}

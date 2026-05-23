@@ -351,7 +351,7 @@ export default function MechanicDashboardPage() {
                           >
                             {job.categories.map((c) => (
                               <Typography
-                                sx={{ fontSize: 12, color: "orangered" }}
+                                sx={{ fontSize: 12, color: "orange" }}
                                 key={c}
                               >
                                 #{getCategoryTitle(c)}
