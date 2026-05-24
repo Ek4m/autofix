@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import AppModal from "@/components/ui/modal";
 import { makeImagePath } from "@/helpers/fileOps";
 import ContactModal from "@/modules/mechanic/components/contactModal";
+import UserRating from "@/modules/mechanic/components/mechanicRating";
 
 const OfferListItem: FC<{
   offer: MechanicOffer;
@@ -111,6 +112,10 @@ const OfferListItem: FC<{
               />
             )}
           </Box>
+          <UserRating
+            rating={offer.user.avgRating}
+            reviewsCount={offer.user.reviewsCount}
+          />
           <p className="text-sm text-brand-muted-fg mt-1.5 leading-relaxed">
             {offer.description}
           </p>

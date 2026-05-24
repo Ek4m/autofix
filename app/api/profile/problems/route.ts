@@ -1,11 +1,4 @@
-import {
-  Category,
-  initDb,
-  Offer,
-  OfferAgreement,
-  Problem,
-  User,
-} from "@/config/db";
+import { Category, initDb, Problem, User } from "@/config/db";
 import { getAuthUserFromRequest } from "@/modules/auth/utils";
 import { NextResponse } from "next/server";
 

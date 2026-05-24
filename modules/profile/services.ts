@@ -4,6 +4,7 @@ import { MechanicOffer, UserProblem } from "../problems/types/interfaces";
 import { IService } from "../services/types/interfaces";
 import { PostServiceForm } from "../services/types/dtos";
 import { MechanicPanelOffer } from "./types/interfaces";
+import { UserReview } from "../mechanic/types/interfaces";
 
 export const logoutService = async () => {
   const response = await httpClient("/api/auth/logout", {
@@ -56,6 +57,10 @@ export const getMechanicPanelInfo = async (): Promise<{
   };
   servicesCount: number;
   services: IService[];
+  rating: {
+    avgRating: string;
+    reviewsCount: number;
+  };
   offers: MechanicOffer[];
 }> => {
   const response = await httpClient(`/api/profile/mechanic/panel-info`, {
@@ -103,6 +108,13 @@ export const deleteOffer = async (
 ): Promise<{ message: string }> => {
   const response = await httpClient(`/api/profile/mechanic/offers/${id}`, {
     method: "DELETE",
+  });
+  return response;
+};
+
+export const getReviews = async (): Promise<UserReview[]> => {
+  const response = await httpClient(`/api/profile/mechanic/ratings`, {
+    method: "GET",
   });
   return response;
 };

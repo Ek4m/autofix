@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import {
   initDb,
+  MechanicReview,
   Offer,
   Problem,
   SpecialistInfo,
@@ -9,6 +10,7 @@ import {
   User,
 } from "@/config/db";
 import { EntityType } from "@/constants/enums";
+import { col, fn } from "sequelize";
 
 export const GET = async (
   request: NextRequest,
@@ -34,6 +36,18 @@ export const GET = async (
         as: "user",
         attributes: {
           exclude: ["password", "phoneNumber", "email"],
+          include: [
+            [
+              fn(
+                "COALESCE",
+                fn("ROUND", fn("AVG", col("user.receivedReviews.rating")), 1),
+                0,
+              ),
+              "avgRating",
+            ],
+
+            [fn("COUNT", col("user.receivedReviews.id")), "reviewsCount"],
+          ],
         },
         include: [
           {
@@ -41,9 +55,15 @@ export const GET = async (
             as: "specialistInfo",
             attributes: ["id", "objectName"],
           },
+          {
+            model: MechanicReview,
+            as: "receivedReviews",
+            attributes: [],
+          },
         ],
       },
     ],
+    group: ["Offer.id", "user.id", "user->specialistInfo.id"],
   });
   return NextResponse.json({ data: { problem, offers, images } });
 };

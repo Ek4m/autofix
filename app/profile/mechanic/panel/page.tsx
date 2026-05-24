@@ -66,7 +66,7 @@ export default function MechanicDashboardPage() {
     },
     {
       title: "Ortalama reytinq",
-      value: "4.8",
+      value: data?.rating.avgRating,
       icon: <FiStar size={22} />,
       color: "#f59e0b",
     },
@@ -491,7 +491,7 @@ export default function MechanicDashboardPage() {
                         {
                           title: "Rəylər və reytinqlər",
                           icon: <FiTrendingUp />,
-                          href: "/mechanic/reviews",
+                          href: "/profile/mechanic/reviews",
                         },
                       ].map((item) => (
                         <SubmitButton

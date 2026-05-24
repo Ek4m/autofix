@@ -25,5 +25,5 @@ export interface MechanicOffer {
   updatedAt: string;
   userId: number;
   problemId: number;
-  user: AuthUser;
+  user: AuthUser & { avgRating: string; reviewsCount: string };
 }
