@@ -23,6 +23,8 @@ import { useAuth } from "@/modules/auth/contexts";
 import ContactModal from "./contactModal";
 import { getCityTitle } from "@/helpers/getCityTitle";
 import { ImLocation } from "react-icons/im";
+import { cardStyle } from "@/modules/profile/components/styles";
+import UserRating from "./mechanicRating";
 
 const MechanicDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -91,14 +93,12 @@ const MechanicDetails = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                borderRadius: 3,
-                border: "1px solid",
-                borderColor: "divider",
+                ...cardStyle,
               }}
             >
               <Avatar
                 src={makeImagePath(data?.profilePicture)}
-                sx={{ width: 100, height: 100 }}
+                sx={{ width: 120, height: 120, mb: 2 }}
               >
                 {data?.specialistInfo?.objectName
                   .split(" ")
@@ -106,7 +106,11 @@ const MechanicDetails = () => {
                   .join("")}
               </Avatar>
               {/* HEADER */}
-              <Box sx={{ mb: 2 }}>
+              <UserRating
+                rating={data?.rating.avgRating}
+                reviewsCount={data?.rating.reviewsCount}
+              />
+              <Box sx={{ my: 2 }}>
                 <Typography
                   sx={{ fontWeight: 700, fontSize: 18, textAlign: "center" }}
                 >
@@ -171,11 +175,10 @@ const MechanicDetails = () => {
             {/* BIO */}
             {user && (
               <Paper
+                elevation={0}
                 sx={{
                   p: 3,
-                  borderRadius: 3,
-                  border: "1px solid",
-                  borderColor: "divider",
+                  ...cardStyle,
                 }}
               >
                 <Typography sx={{ fontWeight: 700, mb: 1 }}>Ətraflı</Typography>
@@ -188,11 +191,10 @@ const MechanicDetails = () => {
 
             {/* SPECIALTIES */}
             <Paper
+              elevation={0}
               sx={{
                 p: 3,
-                borderRadius: 3,
-                border: "1px solid",
-                borderColor: "divider",
+                ...cardStyle,
               }}
             >
               <Typography sx={{ fontWeight: 700, mb: 2 }}>
