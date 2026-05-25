@@ -5,6 +5,7 @@ import { IService } from "../services/types/interfaces";
 import { PostServiceForm } from "../services/types/dtos";
 import { MechanicPanelOffer } from "./types/interfaces";
 import { UserReview } from "../mechanic/types/interfaces";
+import { MechanicForm } from "../auth/types/dtos";
 
 export const logoutService = async () => {
   const response = await httpClient("/api/auth/logout", {
@@ -115,6 +116,16 @@ export const deleteOffer = async (
 export const getReviews = async (): Promise<UserReview[]> => {
   const response = await httpClient(`/api/profile/mechanic/ratings`, {
     method: "GET",
+  });
+  return response;
+};
+
+export const becomeMechanic = async (
+  body: MechanicForm,
+): Promise<{ message: string }> => {
+  const response = await httpClient(`/api/profile/mechanic/become-one`, {
+    method: "POST",
+    body: JSON.stringify(body),
   });
   return response;
 };

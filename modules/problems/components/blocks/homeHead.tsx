@@ -2,7 +2,7 @@
 import React, { FC } from "react";
 import { useAuth } from "@/modules/auth/contexts";
 import { useTranslations } from "next-intl";
-import { HiCheckCircle, HiOutlinePlus } from "react-icons/hi";
+import { HiOutlinePlus } from "react-icons/hi";
 import { toast } from "sonner";
 import SubmitButton from "@/components/ui/submitButton";
 
@@ -28,22 +28,16 @@ const HomeHead: FC<{ onShowPostModal(val: boolean): void }> = ({
           {tFeed("subtitle")}
         </p>
       </div>
-      <div className="flex items-center gap-3">
-        {user && !isMechanic && (
-          <div
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border bg-emerald-50 text-emerald-700 border-emerald-200`}
-          >
-            <HiCheckCircle size={13} />
-            {tFeed("quota")}
-          </div>
-        )}
-        <SubmitButton
-          variant="contained"
-          onClick={onAdd}
-          title={tFeed("post_problem")}
-          endIcon={<HiOutlinePlus size={16} />}
-        />
-      </div>
+      {!isMechanic && (
+        <div className="flex items-center gap-3">
+          <SubmitButton
+            variant="contained"
+            onClick={onAdd}
+            title={tFeed("post_problem")}
+            endIcon={<HiOutlinePlus size={16} />}
+          />
+        </div>
+      )}
     </div>
   );
 };
