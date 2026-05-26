@@ -16,9 +16,9 @@ export const postProblemSchema = yup.object({
     .required("Açıqlama mütləqdir")
     .min(10, "Açıqlama ən azı 10 simvol olmalıdır"),
 
-  carMake: yup.string().required("Avtomobil markası mütləqdir"),
+  brandId: yup.number().required("Avtomobil markası mütləqdir"),
 
-  carModel: yup.string().required("Avtomobil modeli mütləqdir"),
+  modelId: yup.number().required("Avtomobil modeli mütləqdir"),
   images: yup
     .array()
     .of(yup.mixed<File>())

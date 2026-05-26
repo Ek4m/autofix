@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import {
+  CarBrand,
+  CarModel,
   initDb,
   MechanicReview,
   Offer,
@@ -20,7 +22,11 @@ export const GET = async (
   const payload = await params;
   const { id } = payload;
   const problem = await Problem.findByPk(id, {
-    include: [{ model: User, as: "user" }],
+    include: [
+      { model: User, as: "user" },
+      { model: CarBrand, as: "brand", attributes: ["id", "name"] },
+      { model: CarModel, as: "model", attributes: ["id", "name"] },
+    ],
   });
   if (!problem) return NextResponse.json({}, { status: 404 });
   const images = await Upload.findAll({

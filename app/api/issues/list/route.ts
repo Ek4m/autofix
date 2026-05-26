@@ -1,4 +1,11 @@
-import { Category, initDb, Problem, User } from "@/config/db";
+import {
+  CarBrand,
+  CarModel,
+  Category,
+  initDb,
+  Problem,
+  User,
+} from "@/config/db";
 import {
   ORDER_BY_CREATION,
   PROBLEM_STATUS,
@@ -28,6 +35,8 @@ export const GET = async (request: NextRequest) => {
         attributes: { exclude: ["password", "phoneNumber", "email"] },
       },
       { model: Category, as: "category" },
+      { model: CarBrand, as: "brand", attributes: ["id", "name"] },
+      { model: CarModel, as: "model", attributes: ["id", "name"] },
     ],
     where,
     order: [

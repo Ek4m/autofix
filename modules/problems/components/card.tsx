@@ -33,20 +33,12 @@ export default function ProblemCard({
       <div className="relative h-48 bg-brand-muted overflow-hidden">
         <AppImage
           src={makeImagePath(problem.thumbnail)}
-          alt={`${problem.carMake} ${problem.carModel} - ${problem.title}`}
+          alt={`${problem.brand.name} ${problem.model.name} - ${problem.title}`}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
-
-      {/* <div
-          className={`absolute top-2.5 right-2.5 flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${problem.offerCount > 0 ? "bg-primary-DEFAULT text-white" : "bg-black/40 text-white"}`}
-        >
-          <FiMessageSquare size={11} />
-          {problem.offerCount} {tFeed("offers")}
-        </div> */}
-
       <div className="p-4">
         <div className="flex items-center gap-2.5 mb-3">
           <div className="w-100 h-100 rounded bg-[lightgrey] p-2">
@@ -60,7 +52,7 @@ export default function ProblemCard({
               {problem.user?.fullName}
             </p>
             <p className="text-xs text-brand-muted-fg font-mono tabular-nums">
-              {problem.carMake} {problem.carModel} · {problem.carYear}
+              {problem.brand.name} {problem.model.name} · {problem.carYear}
             </p>
           </div>
         </div>

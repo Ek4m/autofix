@@ -495,7 +495,7 @@ export default function ProblemDetailsPage() {
                     <Typography color="text.secondary">Marka</Typography>
 
                     <Typography sx={{ fontWeight: 700 }}>
-                      {problem.carMake}
+                      {problem.brand.name}
                     </Typography>
                   </Stack>
 
@@ -508,7 +508,7 @@ export default function ProblemDetailsPage() {
                     <Typography color="text.secondary">Model</Typography>
 
                     <Typography sx={{ fontWeight: 700 }}>
-                      {problem.carModel}
+                      {problem.model.name}
                     </Typography>
                   </Stack>
 

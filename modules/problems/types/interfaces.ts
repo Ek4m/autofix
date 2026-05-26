@@ -9,6 +9,8 @@ export interface UserProblem extends PostProblemForm {
   user: AuthUser;
   status: PROBLEM_STATUS;
   category: ICategory;
+  brand: { id: number; name: string };
+  model: { id: number; name: string };
   createdAt: string;
 }
 export interface MechanicOffer {

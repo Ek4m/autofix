@@ -1,8 +1,8 @@
 export interface PostProblemForm {
   title: string;
   description: string;
-  carMake: string;
-  carModel: string;
+  brandId: number | null;
+  modelId: number | null;
   carYear: string;
   categoryId: number;
   city: string;

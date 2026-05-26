@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import {
   Controller,
@@ -12,6 +12,7 @@ import { HiBolt, HiXMark } from "react-icons/hi2";
 import { Grid } from "@mui/material";
 
 import citiesList from "@/data/cities.json";
+import brandList from "@/data/brands.json";
 
 import { PostProblemForm } from "../types/dtos";
 
@@ -37,6 +38,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
     formState: { isSubmitting },
     watch,
     handleSubmit,
+    setValue,
   } = form;
 
   const categories = useMemo(
@@ -68,19 +70,20 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
     }
   };
   const tCommon = useTranslations("common");
-  const CAR_MAKES = [
-    "Toyota",
-    "Hyundai",
-    "Kia",
-    "BMW",
-    "Mercedes-Benz",
-    "Volkswagen",
-    "Nissan",
-    "Honda",
-    "Chevrolet",
-    "Ford",
-  ];
+
   const isPremium = watch("isVip");
+  const brand = watch("brandId");
+
+  const modelList = useMemo(() => {
+    if (!brand) return [];
+    return brandList.find((e) => e.id === Number(brand))?.models || [];
+  }, [brand]);
+
+  useEffect(() => {
+    if (brand) {
+      setValue("modelId", null);
+    }
+  }, [brand]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
@@ -123,7 +126,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                     <TextField
                       {...field}
                       multiline
-                      maxRows={10}
+                      rows={10}
                       hasError={Boolean(fieldState.error)}
                       label="Ətraflı təsvir"
                       helperText={fieldState.error?.message}
@@ -134,12 +137,15 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
               </Grid>
               <Grid size={{ xs: 12, md: 4 }}>
                 <Controller
-                  name="carMake"
+                  name="brandId"
                   control={control}
                   render={({ field, fieldState }) => (
                     <SelectField
                       {...field}
-                      options={CAR_MAKES.map((m) => ({ label: m, value: m }))}
+                      options={brandList.map((m) => ({
+                        label: m.name,
+                        value: m.id,
+                      }))}
                       hasError={Boolean(fieldState.error)}
                       label="Marka"
                       helperText={fieldState.error?.message}
@@ -150,15 +156,19 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
               </Grid>
               <Grid size={{ xs: 12, md: 5 }}>
                 <Controller
-                  name="carModel"
+                  name="modelId"
                   control={control}
                   render={({ field, fieldState }) => (
-                    <TextField
+                    <SelectField
                       {...field}
+                      options={modelList.map((m) => ({
+                        label: m.name,
+                        value: m.id,
+                      }))}
                       hasError={Boolean(fieldState.error)}
                       label="Model"
                       helperText={fieldState.error?.message}
-                      placeholder="Model qeyd edin..."
+                      placeholder="Seçin"
                     />
                   )}
                 />

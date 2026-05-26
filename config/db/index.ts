@@ -49,11 +49,9 @@ Problem.init(
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     title: DataTypes.STRING,
     description: DataTypes.TEXT,
-    carMake: DataTypes.STRING,
     thumbnail: DataTypes.STRING,
     minBudget: DataTypes.STRING,
     maxBudget: DataTypes.STRING,
-    carModel: DataTypes.STRING,
     carYear: DataTypes.INTEGER,
     city: DataTypes.STRING,
     isVip: { type: DataTypes.BOOLEAN, defaultValue: false },
@@ -374,6 +372,28 @@ CarBrand.hasMany(CarModel, {
 CarModel.belongsTo(CarBrand, {
   foreignKey: "brandId",
   as: "brand",
+});
+
+// PROBLEM ↔ CAR BRAND
+CarBrand.hasMany(Problem, {
+  foreignKey: "brandId",
+  as: "problems",
+});
+
+Problem.belongsTo(CarBrand, {
+  foreignKey: "brandId",
+  as: "brand",
+});
+
+// CAR MODEL ↔ PROBLEM
+CarModel.hasMany(Problem, {
+  foreignKey: "modelId",
+  as: "problems",
+});
+
+Problem.belongsTo(CarModel, {
+  foreignKey: "modelId",
+  as: "model",
 });
 
 // ================= INIT =================

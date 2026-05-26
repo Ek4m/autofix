@@ -100,7 +100,7 @@ export function OffersModal({
           <div>
             <Typography variant="h5">{problem.title}</Typography>
             <p className="text-xs text-brand-muted-fg font-mono mt-0.5">
-              {problem.carMake} {problem.carModel} · {problem.carYear} ·{" "}
+              {problem.brand.name} {problem.model.name} · {problem.carYear} ·{" "}
               {getCityTitle(problem.city)}
             </p>
           </div>
@@ -119,7 +119,7 @@ export function OffersModal({
                 <AppImage
                   key={activeImg}
                   src={makeImagePath(imagesWithThumbnail[activeImg].name)}
-                  alt={`${problem.carMake} ${problem.carModel} şəkli ${activeImg + 1}`}
+                  alt={`${problem.brand.name} ${problem.model.name} şəkli ${activeImg + 1}`}
                   fill
                   className="object-cover"
                   sizes="(max-width: 640px) 100vw, 640px"
