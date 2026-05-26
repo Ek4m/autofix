@@ -233,6 +233,46 @@ MechanicReview.init(
   },
 );
 
+// ------ CAR BRAND --------
+export class CarBrand extends Model {}
+
+CarBrand.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: { type: DataTypes.STRING, defaultValue: false },
+    isPopular: DataTypes.BOOLEAN,
+  },
+  {
+    sequelize,
+    tableName: "car_brands",
+    timestamps: true,
+  },
+);
+
+// ------ CAR MODEL --------
+export class CarModel extends Model {}
+
+CarModel.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    name: DataTypes.STRING,
+    brandId: DataTypes.INTEGER,
+  },
+  {
+    sequelize,
+    tableName: "car_models",
+    timestamps: true,
+  },
+);
+
 // ================= RELATIONS =================
 
 // USER ↔ PROBLEM
@@ -324,6 +364,18 @@ MechanicReview.belongsTo(OfferAgreement, {
   foreignKey: "offerAgreementId",
   as: "offerAgreement",
 });
+
+// CAR MODEL ↔ CAR BRAND
+CarBrand.hasMany(CarModel, {
+  foreignKey: "brandId",
+  as: "models",
+});
+
+CarModel.belongsTo(CarBrand, {
+  foreignKey: "brandId",
+  as: "brand",
+});
+
 // ================= INIT =================
 
 export const initDb = async () => {

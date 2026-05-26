@@ -1,9 +1,8 @@
 import { Op } from "sequelize";
-import { Category, initDb } from "./config/db";
+import { CarBrand, CarModel, Category, initDb } from "./config/db";
 import fs from "fs";
 
 async function loadDataFromCategories() {
-  await initDb();
   const parentCategories = await Category.findAll({
     where: {
       parentId: {
@@ -24,10 +23,45 @@ async function loadDataFromCategories() {
       if (err) {
         console.log("Error writing to categories");
       } else {
-        console.log("\x1b[32m%s\x1b[0m", "Categories exported successfully!");
+        console.log(
+          "\x1b[32m%s\x1b[0m",
+          "Data exported successfully ===>  categories.json",
+        );
       }
     },
   );
 }
 
-loadDataFromCategories();
+async function loadDataFromBrandsAndModels() {
+  const response = await CarBrand.findAll({
+    order: [["name", "ASC"]],
+    attributes: { exclude: ["createdAt", "updatedAt"] },
+    include: [
+      {
+        model: CarModel,
+        as: "models",
+        attributes: { exclude: ["createdAt", "updatedAt", "brandId"] },
+      },
+    ],
+  });
+  fs.writeFile(
+    process.cwd() + "/data/brands.json",
+    JSON.stringify(response),
+    (err) => {
+      if (err) {
+        console.log("Error writing to categories");
+      } else {
+        console.log(
+          "\x1b[32m%s\x1b[0m",
+          "Data exported successfully ===>  brands.json",
+        );
+      }
+    },
+  );
+}
+
+(async () => {
+  await initDb();
+  await loadDataFromCategories();
+  await loadDataFromBrandsAndModels();
+})();

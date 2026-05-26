@@ -41,5 +41,6 @@ yarn-error.log*
 next-env.d.ts
 
 /data/categories.json
+/data/brands.json
 
 /public/uploads/*
