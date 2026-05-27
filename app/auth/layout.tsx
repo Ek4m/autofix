@@ -18,12 +18,9 @@ export default function AuthLayout({
           <div className="absolute bottom-20 right-5 w-96 h-96 rounded-full border-[60px] border-white" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 rounded-full border-[30px] border-primary" />
         </div>
-        <div className="relative z-10 flex flex-col h-full px-10 py-10 bg-primary">
+        <div className="relative z-10 flex flex-col h-full px-10 py-10 bg-[rgb(255, 132, 0)]">
           <div className="flex items-center gap-3">
             <AppLogo size={44} />
-            <span className="text-white font-bold text-2xl tracking-tight">
-              AutoFixHub
-            </span>
           </div>
           <div className="mt-16">
             <h1 className="text-white text-4xl font-bold leading-tight text-balance">
@@ -86,7 +83,6 @@ export default function AuthLayout({
         <div className="flex items-center justify-between px-6 py-4 border-b border-brand-border bg-white/80 backdrop-blur-sm sticky top-0 z-10">
           <Link href="/" className="flex items-center gap-2 lg:hidden">
             <AppLogo size={32} />
-            <span className="font-bold text-base text-navy">AutoFixHub</span>
           </Link>
           <div className="lg:hidden" />
         </div>

@@ -42,7 +42,7 @@ const NAV_LINKS = [
 export default function Topbar() {
   const pathname = usePathname();
   const { user, isMechanic, onLogout } = useAuth();
-  const [mobileOpen, setMobileOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
 
@@ -225,11 +225,11 @@ export default function Topbar() {
             </>
           ) : (
             <>
-              <ListItem href="/profile" component={Link} sx={{ gap: 1 }}>
+              <ListItem href="/auth/login" component={Link} sx={{ gap: 1 }}>
                 <HiOutlineArrowRightOnRectangle size={16} />
                 <Typography sx={{ fontSize: 12 }}>Daxil ol</Typography>
               </ListItem>
-              <ListItem href="/profile" component={Link} sx={{ gap: 1 }}>
+              <ListItem href="/auth/register" component={Link} sx={{ gap: 1 }}>
                 <HiOutlineUserPlus size={16} />
                 <Typography sx={{ fontSize: 12 }}>Qeydiyyat</Typography>
               </ListItem>
