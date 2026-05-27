@@ -19,7 +19,7 @@ import SubmitButton from "@/components/ui/submitButton";
 
 import { getCategoryTitle } from "@/helpers/getCategoryTitle";
 import { datePrettify } from "@/helpers/datePrettify";
-import { Chip, Typography } from "@mui/material";
+import { Box, Chip, Grid, Typography } from "@mui/material";
 import { getCityTitle } from "@/helpers/getCityTitle";
 import { useAuth } from "@/modules/auth/contexts";
 import AppModal from "@/components/ui/modal";
@@ -66,11 +66,12 @@ export default function ServiceDetailsPage() {
       <Topbar />
 
       <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6">
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-6 items-start">
+        <Grid container spacing={2}>
           {/* LEFT */}
-          <div className="space-y-6">
+          <Grid size={{ xs: 12, md: 8 }}>
             {/* Hero */}
-            <div
+            <Box
+              sx={{ mb: 2 }}
               className={`card-surface overflow-hidden ${
                 service?.isVip ? "premium-glow ring-amber-300/50" : ""
               }`}
@@ -131,10 +132,10 @@ export default function ServiceDetailsPage() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Box>
 
             {/* Description */}
-            <div className="card-surface p-6">
+            <Box sx={{ mb: 2 }} className="card-surface p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-9 h-9 rounded-xl bg-primary-DEFAULT/10 flex items-center justify-center">
                   <FiMessageSquare size={18} className="text-primary-DEFAULT" />
@@ -152,10 +153,10 @@ export default function ServiceDetailsPage() {
               <div className="prose prose-sm max-w-none text-brand-fg leading-7 whitespace-pre-line">
                 {service?.description}
               </div>
-            </div>
+            </Box>
 
             {/* Categories */}
-            <div className="card-surface p-6">
+            <Box sx={{ mb: 2 }} className="card-surface p-6">
               <div className="flex items-center gap-2 mb-5">
                 <div className="w-9 h-9 rounded-xl bg-amber-100 flex items-center justify-center">
                   <FiCheckCircle size={18} className="text-amber-600" />
@@ -180,13 +181,13 @@ export default function ServiceDetailsPage() {
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
+            </Box>
+          </Grid>
 
           {/* RIGHT SIDEBAR */}
-          <aside className="space-y-5 xl:sticky xl:top-24">
+          <Grid spacing={2} size={{ xs: 12, md: 4 }}>
             {/* Mechanic */}
-            <div className="card-surface p-5">
+            <Box sx={{ mb: 2 }} className="card-surface p-5">
               <div className="flex items-center gap-3">
                 {service && (
                   <ProfilePhotoWithChar title={service?.user.fullName} />
@@ -231,10 +232,10 @@ export default function ServiceDetailsPage() {
                   <SubmitButton variant="contained" title="Ətraflı" />
                 </Link>
               </div>
-            </div>
+            </Box>
 
             {/* Safety */}
-            <div className="card-surface p-5">
+            <Box sx={{ mb: 2 }} className="card-surface p-5">
               <div className="space-y-3">
                 <div className="flex items-start gap-2 text-sm text-brand-muted-fg">
                   <FiCheckCircle
@@ -254,7 +255,7 @@ export default function ServiceDetailsPage() {
                   <p>Şəffaf qiymətləndirmə</p>
                 </div>
               </div>
-            </div>
+            </Box>
 
             {/* Meta */}
             <div className="card-surface p-5">
@@ -306,8 +307,8 @@ export default function ServiceDetailsPage() {
                 )}
               </div>
             )}
-          </aside>
-        </div>
+          </Grid>
+        </Grid>
       </main>
       <AppModal
         open={deleteModalOpen}

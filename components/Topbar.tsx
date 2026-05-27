@@ -11,14 +11,24 @@ import {
   HiOutlineArrowRightOnRectangle,
   HiOutlineUserPlus,
 } from "react-icons/hi2";
+import { FaUser } from "react-icons/fa";
 import { useAuth } from "@/modules/auth/contexts";
-import { Box, ListItemIcon, Menu, MenuItem, Typography } from "@mui/material";
-import SubmitButton from "./ui/submitButton";
-import { FiUser } from "react-icons/fi";
 import { IoIosArrowDown, IoIosSettings, IoMdListBox } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
-
-import { FaUser } from "react-icons/fa";
+import { FiUser } from "react-icons/fi";
+import {
+  Box,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
+import SubmitButton from "./ui/submitButton";
 
 const NAV_LINKS = [
   { href: "/", labelKey: "Problemlər", icon: HiOutlineTruck },
@@ -32,7 +42,7 @@ const NAV_LINKS = [
 export default function Topbar() {
   const pathname = usePathname();
   const { user, isMechanic, onLogout } = useAuth();
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
 
@@ -53,7 +63,10 @@ export default function Topbar() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-1">
+          <Stack
+            sx={{ flexDirection: "row", display: { xs: "none", md: "flex" } }}
+            component={"nav"}
+          >
             {NAV_LINKS.map((link) => {
               const active = pathname === link.href;
               const Icon = link.icon;
@@ -72,10 +85,10 @@ export default function Topbar() {
                 </Link>
               );
             })}
-          </nav>
+          </Stack>
           <div className="flex items-center gap-2">
             {user ? (
-              <Box>
+              <Box sx={{ display: { xs: "none", md: "block" } }}>
                 <SubmitButton
                   variant="text"
                   startIcon={<FiUser />}
@@ -140,65 +153,99 @@ export default function Topbar() {
             )}
 
             {/* Mobile hamburger */}
-            <button
+            <IconButton
+              sx={{ display: { xs: "block", md: "none" } }}
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-brand-muted transition-colors duration-150"
-              aria-label="Toggle menu"
             >
-              {mobileOpen ? (
-                <HiOutlineXMark size={20} />
-              ) : (
-                <HiOutlineBars3 size={20} />
-              )}
-            </button>
+              <HiOutlineBars3 size={20} />
+            </IconButton>
           </div>
         </div>
       </div>
-
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="md:hidden border-t border-brand-border bg-white animate-slide-up">
-          <div className="px-4 py-3 space-y-1">
-            {NAV_LINKS.map((link) => {
-              const active = pathname === link.href;
-              const Icon = link.icon;
-              return (
-                <Link
-                  key={`mobile-nav-${link.href}`}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${
-                    active
-                      ? "bg-primary-DEFAULT/10 text-primary-DEFAULT"
-                      : "text-brand-fg hover:bg-brand-muted"
-                  }`}
+      <Drawer
+        sx={{
+          "& .MuiPaper-elevation": {
+            p: 2,
+          },
+        }}
+        open={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+      >
+        <Stack
+          sx={{ width: "250px", justifyContent: "space-between" }}
+          direction={"row"}
+        >
+          <Link href="/" className="flex items-center gap-2.5 shrink-0">
+            <AppLogo size={36} />
+          </Link>
+          <IconButton onClick={() => setMobileOpen(false)}>
+            <HiOutlineXMark size={20} />
+          </IconButton>
+        </Stack>
+        <List>
+          {NAV_LINKS.map((link) => {
+            const Icon = link.icon;
+            return (
+              <ListItem
+                href={link.href}
+                component={Link}
+                sx={{ gap: 1 }}
+                key={link.href}
+              >
+                <Icon size={16} />
+                <Typography sx={{ fontSize: 12 }}>{link.labelKey}</Typography>
+              </ListItem>
+            );
+          })}
+          {user ? (
+            <>
+              <ListItem href="/profile" component={Link} sx={{ gap: 1 }}>
+                <FaUser size={16} />
+                <Typography sx={{ fontSize: 12 }}>Hesab</Typography>
+              </ListItem>
+              {isMechanic ? (
+                <ListItem
+                  href="/profile/mechanic/panel"
+                  component={Link}
+                  sx={{ gap: 1 }}
                 >
-                  <Icon size={18} />
-                  {link.labelKey}
-                </Link>
-              );
-            })}
-            {!user && (
-              <div className="pt-2 border-t border-brand-border space-y-2">
-                <Link
-                  href="/auth/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full btn-secondary"
+                  <IoIosSettings size={18} />
+                  <Typography sx={{ fontSize: 12 }}>Usta paneli</Typography>
+                </ListItem>
+              ) : (
+                <ListItem
+                  href="/profile/user-problems"
+                  component={Link}
+                  sx={{ gap: 1 }}
                 >
-                  <HiOutlineArrowRightOnRectangle size={15} /> Daxil ol
-                </Link>
-                <Link
-                  href="/auth/register"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full btn-primary"
-                >
-                  <HiOutlineUserPlus size={15} /> Qeydiyyat
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+                  <IoMdListBox size={18} />
+                  <Typography sx={{ fontSize: 12 }}>Müştəri paneli</Typography>
+                </ListItem>
+              )}
+            </>
+          ) : (
+            <>
+              <ListItem href="/profile" component={Link} sx={{ gap: 1 }}>
+                <HiOutlineArrowRightOnRectangle size={16} />
+                <Typography sx={{ fontSize: 12 }}>Daxil ol</Typography>
+              </ListItem>
+              <ListItem href="/profile" component={Link} sx={{ gap: 1 }}>
+                <HiOutlineUserPlus size={16} />
+                <Typography sx={{ fontSize: 12 }}>Qeydiyyat</Typography>
+              </ListItem>
+            </>
+          )}
+        </List>
+        {user && (
+          <Box sx={{ position: "absolute", bottom: 0 }}>
+            <SubmitButton
+              title="Çıxış"
+              startIcon={<IoLogOut />}
+              onClick={onLogout}
+            />
+          </Box>
+        )}
+      </Drawer>
     </header>
   );
 }

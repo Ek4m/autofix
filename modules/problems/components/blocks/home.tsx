@@ -13,6 +13,7 @@ import { HomeSearchContext } from "../../contexts/homeSearch";
 import { useGetProblems } from "../../hooks/useGetProblems";
 import { UserProblem } from "../../types/interfaces";
 import { OfferSolution } from "../offer";
+import { Grid, Skeleton } from "@mui/material";
 
 const HomeMain = () => {
   const { user } = useAuth();
@@ -30,7 +31,7 @@ const HomeMain = () => {
   const [selectedProblem, setSelectedProblem] = useState<UserProblem | null>(
     null,
   );
-  const { data } = useGetProblems({
+  const { data, isFetching } = useGetProblems({
     category,
     vip: Number(isVip),
     search,
@@ -98,16 +99,27 @@ const HomeMain = () => {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-5">
-            {data?.map((problem) => (
-              <ProblemCard
-                key={problem.id}
-                problem={problem}
-                onViewOffers={() => setSelectedProblem(problem)}
-                onMakeOffer={handleMakeOffer}
-              />
-            ))}
-          </div>
+          <Grid spacing={2} container>
+            {isFetching
+              ? [1, 2, 3].map((i) => (
+                  <Grid size={{ xs: 12, sm: 6, md: 4 }} key={i}>
+                    <Skeleton
+                      variant="rectangular"
+                      height={420}
+                      sx={{ borderRadius: 4 }}
+                    />
+                  </Grid>
+                ))
+              : data?.map((problem) => (
+                  <Grid key={problem.id} size={{ xs: 12, sm: 6, md: 4 }}>
+                    <ProblemCard
+                      problem={problem}
+                      onViewOffers={() => setSelectedProblem(problem)}
+                      onMakeOffer={handleMakeOffer}
+                    />
+                  </Grid>
+                ))}
+          </Grid>
         )}
       </main>
       {problemForOffering && (

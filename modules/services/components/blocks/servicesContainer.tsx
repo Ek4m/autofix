@@ -10,13 +10,14 @@ import ServiceCard from "@/modules/services/components/card";
 import ServicesHead from "@/modules/services/components/blocks/servicesHead";
 import ServicesSearch from "@/modules/services/components/blocks/servicesSearch";
 import { ServicesSearchContext } from "@/modules/services/contexts/servicesSearch";
+import { Grid, Skeleton } from "@mui/material";
 
 export default function ServicesContainer() {
   const { setCategory, setSearch, search, category } = useContext(
     ServicesSearchContext,
   );
   const [showPostModal, setShowPostModal] = useState(false);
-  const { data: services } = useGetServices({ search, category });
+  const { data: services, isFetching } = useGetServices({ search, category });
 
   return (
     <div className="min-h-screen bg-brand-bg">
@@ -37,7 +38,7 @@ export default function ServicesContainer() {
                 setSearch("");
                 setCategory(null);
               }}
-              className="text-sm text-primary-DEFAULT font-medium hover:text-primary-dark flex items-center gap-1 transition-colors"
+              className="text-sm text-primary font-medium hover:text-primary-dark flex items-center gap-1 transition-colors"
             >
               <FiX size={13} /> Filtrləri sıfırla
             </button>
@@ -67,14 +68,23 @@ export default function ServicesContainer() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
-            {services?.map((service) => (
-              <ServiceCard
-                key={service.id}
-                service={service}
-              />
-            ))}
-          </div>
+          <Grid container spacing={2}>
+            {isFetching
+              ? [1, 2, 3, 4].map((i) => (
+                  <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={i}>
+                    <Skeleton
+                      variant="rectangular"
+                      height={300}
+                      sx={{ borderRadius: 4 }}
+                    />
+                  </Grid>
+                ))
+              : services?.map((service) => (
+                  <Grid size={{ xs: 12, sm: 6, md: 4, lg: 3 }} key={service.id}>
+                    <ServiceCard service={service} />
+                  </Grid>
+                ))}
+          </Grid>
         )}
       </main>
       {showPostModal && (
