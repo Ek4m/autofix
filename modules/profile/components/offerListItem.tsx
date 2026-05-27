@@ -205,7 +205,7 @@ export default function MechanicOfferCard({ offer, onRefresh }: Props) {
                   <FiMapPin size={14} />
 
                   <Typography variant="body2" color="text.secondary">
-                    {getCityTitle(offer.problem.city)}
+                    {getCityTitle(offer.problem?.city)}
                   </Typography>
                 </Stack>
               )}
@@ -375,7 +375,7 @@ export default function MechanicOfferCard({ offer, onRefresh }: Props) {
           href={`/problems/${offer.problemId}`}
           title="Problemə bax"
         />
-        {offer.problem.status === PROBLEM_STATUS.OPEN && (
+        {offer.problem?.status === PROBLEM_STATUS.OPEN && (
           <SubmitButton
             color="error"
             variant="contained"
