@@ -8,6 +8,7 @@ import { LocaleProvider } from "@/context/LocaleContext";
 import type { Locale } from "@/context/LocaleContext";
 import { AuthProvider } from "@/modules/auth/contexts";
 import "../styles/index.css";
+import Footer from "@/components/Footer";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -34,7 +35,10 @@ export default async function RootLayout({
       <body>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <LocaleProvider initialLocale={locale as Locale}>
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              {children}
+              <Footer />
+            </AuthProvider>
             <Toaster position="bottom-right" richColors />
           </LocaleProvider>
         </NextIntlClientProvider>
