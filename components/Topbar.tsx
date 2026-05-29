@@ -13,7 +13,12 @@ import {
 } from "react-icons/hi2";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "@/modules/auth/contexts";
-import { IoIosArrowDown, IoIosSettings, IoMdListBox } from "react-icons/io";
+import {
+  IoIosArrowDown,
+  IoIosInformationCircleOutline,
+  IoIosSettings,
+  IoMdListBox,
+} from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
 import { FiUser } from "react-icons/fi";
 import {
@@ -36,6 +41,11 @@ const NAV_LINKS = [
     href: "/mechanic-service-listing",
     labelKey: "Xidmətlər",
     icon: HiOutlineWrenchScrewdriver,
+  },
+  {
+    href: "/about-us",
+    labelKey: "Haqqımızda",
+    icon: IoIosInformationCircleOutline,
   },
 ];
 

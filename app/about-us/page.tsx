@@ -7,7 +7,7 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Haqqımızda | AvtoFix",
   description:
-    "AutoFix sürücülərlə peşəkar mexanikləri bir araya gətirən platformadır. İstifadəçilər avtomobil problemlərini paylaşır, mexaniklər isə öz təkliflərini təqdim edirlər.",
+    "AvtoFix sürücülərlə peşəkar mexanikləri bir araya gətirən platformadır. İstifadəçilər avtomobil problemlərini paylaşır, mexaniklər isə öz təkliflərini təqdim edirlər.",
 };
 
 export default function AboutUsPage() {
@@ -106,7 +106,7 @@ export default function AboutUsPage() {
                   maxWidth: 700,
                 }}
               >
-                AutoFix sürücülərlə peşəkar mexanikləri bir araya gətirən
+                AvtoFix sürücülərlə peşəkar mexanikləri bir araya gətirən
                 platformadır. İstifadəçilər avtomobil problemlərini paylaşır,
                 mexaniklər isə öz təkliflərini təqdim edirlər.
               </Typography>
@@ -183,7 +183,7 @@ export default function AboutUsPage() {
               }}
             >
               Azərbaycanda bir çox sürücü düzgün və etibarlı mexanik tapmaqda
-              çətinlik çəkir. AutoFix bu prosesi sadələşdirmək üçün yaradılıb.
+              çətinlik çəkir. AvtoFix bu prosesi sadələşdirmək üçün yaradılıb.
               İstifadəçilər problemlərini paylaşır, mexaniklər isə qiymət,
               müddət və həll yolu ilə təklif göndərirlər.
             </Typography>
@@ -392,7 +392,7 @@ export default function AboutUsPage() {
               },
             }}
           >
-            AutoFix ilə daha sürətli həll tapın
+            AvtoFix ilə daha sürətli həll tapın
           </Typography>
 
           <Typography
@@ -406,7 +406,7 @@ export default function AboutUsPage() {
               fontWeight: 400,
             }}
           >
-            İstər sürücü olun, istər peşəkar mexanik — AutoFix avtomobil
+            İstər sürücü olun, istər peşəkar mexanik — AvtoFix avtomobil
             problemlərini daha rahat idarə etməyə kömək edir.
           </Typography>
 
