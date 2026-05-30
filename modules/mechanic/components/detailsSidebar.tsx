@@ -120,7 +120,7 @@ const DetailsSidebar: FC<{ service: IService }> = ({ service }) => {
         </div>
       </Box>
       {/* Meta */}
-      <div className="card-surface p-5">
+      <div className="card-surface p-5 mb-4">
         <h3 className="text-sm font-bold text-brand-fg mb-4">
           Elan məlumatları
         </h3>

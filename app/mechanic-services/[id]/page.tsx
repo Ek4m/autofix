@@ -11,17 +11,16 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const blog = await getServiceDetailsAction(id);
-
-  if (!blog) {
+  const service = await getServiceDetailsAction(id);
+  if (!service) {
     return {
       title: "Servis tapılmadı",
     };
   }
 
   return {
-    title: `${blog.serviceName} | AvtoFix Blog`,
-    description: blog.description,
+    title: `${service.serviceName} | AvtoFix Blog`,
+    description: service.description,
   };
 }
 

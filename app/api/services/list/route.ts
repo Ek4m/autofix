@@ -10,7 +10,7 @@ export const GET = async (request: NextRequest) => {
   const search = searchParams.get("search")?.trim();
   const category = searchParams.get("category");
   const userId = searchParams.get("mechanic");
-  const where: WhereOptions = {};
+  const where: WhereOptions = { isActive: true };
   if (search) where.serviceName = { [Op.iLike]: `%${search}%` };
   if (category)
     where.categories = {
