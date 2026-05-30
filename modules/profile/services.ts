@@ -86,6 +86,15 @@ export const deleteService = async (
   return response;
 };
 
+export const toggleServiceActivation = async (
+  id: string | number,
+): Promise<IService[]> => {
+  const response = await httpClient(`/api/services/toggle-activation/${id}`, {
+    method: "PATCH",
+  });
+  return response;
+};
+
 export const updateService = async (
   id: string | number,
   body: PostServiceForm,

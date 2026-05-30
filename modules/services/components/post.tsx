@@ -85,7 +85,9 @@ export function PostServiceModal({
       <div className="bg-white w-full sm:max-w-xl max-h-[95vh] sm:max-h-[88vh] rounded-t-2xl sm:rounded-2xl flex flex-col overflow-hidden shadow-modal animate-slide-up">
         <div className="flex items-center justify-between px-5 py-4 border-b border-brand-border shrink-0">
           <div>
-            <h2 className="text-base font-bold text-brand-fg">Xidmət Paylaş</h2>
+            <h2 className="text-base font-bold text-brand-fg">
+              Xidmət {initialService ? "Yenilə" : "Paylaş"}
+            </h2>
             <p className="text-xs text-brand-muted-fg mt-0.5">
               Post dəyəri:{" "}
               <span className="font-bold text-primary-DEFAULT tabular-nums">
@@ -189,7 +191,7 @@ export function PostServiceModal({
             </Grid>
           </Grid>
           {/* Premium toggle */}
-          <div
+          {/* <div
             className={`p-4 rounded-xl border-2 transition-all duration-150 cursor-pointer ${isVip ? "border-amber-400 bg-amber-50" : "border-brand-border hover:border-amber-300"}`}
           >
             <div className="flex items-center justify-between">
@@ -229,9 +231,7 @@ export function PostServiceModal({
                 vurğulanmış göstəriləcək
               </p>
             )}
-          </div>
-
-          {/* Cost summary */}
+          </div> 
           <div className="p-3.5 bg-navy-DEFAULT/5 border border-navy-DEFAULT/10 rounded-xl flex items-center justify-between">
             <div className="flex items-center gap-2">
               <FaCreditCard size={15} className="text-navy-DEFAULT" />
@@ -243,6 +243,7 @@ export function PostServiceModal({
               {postCost} ₼
             </span>
           </div>
+          */}
           <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
             <SubmitButton
               variant="outlined"

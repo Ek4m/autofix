@@ -5,6 +5,7 @@ export interface IService {
   serviceName: string;
   description: string;
   priceMin: number;
+  isActive: boolean;
   priceMax: number;
   isVip: true;
   categories: string[];

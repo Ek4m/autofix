@@ -177,6 +177,7 @@ Service.init(
     },
     serviceName: DataTypes.STRING,
     description: DataTypes.TEXT,
+    isActive: { type: DataTypes.BOOLEAN },
     priceMin: DataTypes.INTEGER,
     priceMax: DataTypes.INTEGER,
     isVip: DataTypes.BOOLEAN,

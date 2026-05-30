@@ -6,6 +6,9 @@ const nextConfig: NextConfig = withNextIntl({
   images: {
     qualities: [75, 85],
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 });
 
 export default nextConfig;

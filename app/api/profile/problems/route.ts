@@ -1,4 +1,11 @@
-import { Category, initDb, Problem, User } from "@/config/db";
+import {
+  CarBrand,
+  CarModel,
+  Category,
+  initDb,
+  Problem,
+  User,
+} from "@/config/db";
 import { getAuthUserFromRequest } from "@/modules/auth/utils";
 import { NextResponse } from "next/server";
 
@@ -15,6 +22,8 @@ export const GET = async () => {
         as: "user",
         attributes: { exclude: ["password", "phoneNumber", "email"] },
       },
+      { model: CarBrand, as: "brand", attributes: ["id", "name"] },
+      { model: CarModel, as: "model", attributes: ["id", "name"] },
       { model: Category, as: "category" },
     ],
   });

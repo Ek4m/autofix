@@ -64,27 +64,28 @@ export default function ProblemCard({
           </span>
         </div>
 
-        <Box sx={{ height: { xs: "auto", sm: 90 } }}>
+        <Box sx={{ height: { xs: "auto", sm: 120 } }}>
           <h3 className="text-sm font-bold text-brand-fg mb-1.5 leading-snug line-clamp-2">
             {problem.title}
           </h3>
           <p className="text-xs text-brand-muted-fg line-clamp-2 leading-relaxed mb-3">
             {problem.description}
           </p>
-        </Box>
-        <div className="flex items-center gap-3 text-xs text-brand-muted-fg mb-4">
-          <span className="flex items-center gap-1">
-            <HiOutlineMapPin size={11} /> {getCityTitle(problem.city)}
-          </span>
-          <span className="flex items-center gap-1">
-            <HiOutlineClock size={11} /> {timeAgoAze(problem.createdAt)} əvvəl
-          </span>
-          {problem.isVip && (
-            <span className="badge-premium text-xs">
-              ⭐ {tFeed("premium_badge")}
+          <div className="flex items-center gap-3 text-xs text-brand-muted-fg mb-4">
+            <span className="flex items-center gap-1">
+              <HiOutlineMapPin size={11} /> {getCityTitle(problem.city)}
             </span>
-          )}
-        </div>
+            <span className="flex items-center gap-1">
+              <HiOutlineClock size={11} /> {timeAgoAze(problem.createdAt)} əvvəl
+            </span>
+            {problem.isVip && (
+              <span className="badge-premium text-xs">
+                ⭐ {tFeed("premium_badge")}
+              </span>
+            )}
+          </div>
+        </Box>
+
         {status && showActions && (
           <Typography
             variant="body2"

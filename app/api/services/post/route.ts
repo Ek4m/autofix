@@ -7,7 +7,11 @@ export const POST = async (data: NextRequest) => {
   await initDb();
   const user = await getAuthUserFromRequest();
   const body = await data.json();
-  const newService = await Service.create({ ...body, userId: user?.id });
+  const newService = await Service.create({
+    ...body,
+    userId: user?.id,
+    isActive: true,
+  });
   if (body.isVip) {
     const now = new Date();
     const expireTimeInMs = 7 * 24 * 3600 * 1000;
