@@ -168,10 +168,7 @@ const ProblemOptions: FC<{ problem: UserProblem }> = ({ problem }) => {
         </Paper>
       )}
       {postOfferOpen && (
-        <OfferSolution
-          problem={problem}
-          onClose={() => setPostOfferOpen(false)}
-        />
+        <OfferSolution problem={problem} onClose={() => navigation.reload()} />
       )}
     </>
   );
