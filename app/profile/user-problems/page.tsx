@@ -23,9 +23,7 @@ import { FiAlertCircle } from "react-icons/fi";
 import { useGetUsersProblems } from "@/modules/profile/hooks/useGetUsersProblems";
 import SubmitButton from "@/components/ui/submitButton";
 import { PostProblemModal } from "@/modules/problems/components/post";
-import { OffersModal } from "@/modules/problems/components/offers";
 import ProblemCard from "@/modules/problems/components/card";
-import { UserProblem } from "@/modules/problems/types/interfaces";
 import {
   PROBLEM_STATUS,
   PROBLEM_STATUS_CONFIG,
@@ -34,9 +32,6 @@ import {
 export default function ProblemsPage() {
   const [tab, setTab] = useState("");
   const [showPostModal, setShowPostModal] = useState(false);
-  const [selectedProblem, setSelectedProblem] = useState<UserProblem | null>(
-    null,
-  );
   const { data: problems, isFetching } = useGetUsersProblems();
 
   const [dialogType, setDialogType] = useState<"cancel" | "reopen" | null>(
@@ -45,7 +40,6 @@ export default function ProblemsPage() {
 
   const closeDialog = () => {
     setDialogType(null);
-    setSelectedProblem(null);
   };
 
   const onConfirmAction = () => {
@@ -163,7 +157,6 @@ export default function ProblemsPage() {
               >
                 <Stack spacing={2}>
                   <ProblemCard
-                    onViewOffers={() => setSelectedProblem(problem)}
                     onMakeOffer={() => {}}
                     problem={problem}
                     showActions
@@ -272,14 +265,6 @@ export default function ProblemsPage() {
           onClose={() => {
             setShowPostModal(false);
           }}
-        />
-      )}
-      {selectedProblem && (
-        <OffersModal
-          showUserSpecificItems
-          onMakeOffer={() => {}}
-          problem={selectedProblem}
-          onClose={() => setSelectedProblem(null)}
         />
       )}
     </Box>

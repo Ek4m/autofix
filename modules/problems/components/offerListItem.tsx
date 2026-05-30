@@ -1,3 +1,4 @@
+"use client";
 import { FC, useState } from "react";
 import { MechanicOffer, UserProblem } from "../types/interfaces";
 import {
@@ -22,9 +23,8 @@ import UserRating from "@/modules/mechanic/components/mechanicRating";
 const OfferListItem: FC<{
   offer: MechanicOffer;
   problem: UserProblem;
-  onRefetch(): void;
   showUserSpecificItems?: boolean;
-}> = ({ offer, problem, onRefetch, showUserSpecificItems = false }) => {
+}> = ({ offer, problem, showUserSpecificItems = false }) => {
   const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [type, setType] = useState<"cancel" | "accept">();
@@ -66,7 +66,7 @@ const OfferListItem: FC<{
     if (isCancel) {
       await onCancelOffer.mutateAsync();
       toast.success("Təklif ləğv edildi");
-      onRefetch();
+      navigation.reload();
     } else {
       await onApproveOffer.mutateAsync();
       toast.success(

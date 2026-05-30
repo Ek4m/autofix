@@ -1,25 +1,26 @@
-import AppImage from "@/components/ui/AppImage";
+import { Box, Typography } from "@mui/material";
+import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { FiMessageSquare } from "react-icons/fi";
 import { HiOutlineClock } from "react-icons/hi";
 import { HiBolt, HiOutlineMapPin } from "react-icons/hi2";
+
+import AppImage from "@/components/ui/AppImage";
 import { useAuth } from "@/modules/auth/contexts";
 import { UserProblem } from "../types/interfaces";
 import { makeImagePath } from "@/helpers/fileOps";
 import { timeAgoAze } from "@/helpers/timeAgoAze";
 import { PROBLEM_STATUS_CONFIG } from "../constants";
 import { getCityTitle } from "@/helpers/getCityTitle";
-import { Typography } from "@mui/material";
+import SubmitButton from "@/components/ui/submitButton";
 
 export default function ProblemCard({
   problem,
-  onViewOffers,
   onMakeOffer,
   showActions = false,
 }: {
   problem: UserProblem;
   showActions?: boolean;
-  onViewOffers: () => void;
   onMakeOffer: (p: UserProblem) => void;
 }) {
   const tFeed = useTranslations("feed");
@@ -63,13 +64,14 @@ export default function ProblemCard({
           </span>
         </div>
 
-        <h3 className="text-sm font-bold text-brand-fg mb-1.5 leading-snug line-clamp-2">
-          {problem.title}
-        </h3>
-        <p className="text-xs text-brand-muted-fg line-clamp-2 leading-relaxed mb-3">
-          {problem.description}
-        </p>
-
+        <Box sx={{ height: { xs: "auto", sm: 90 } }}>
+          <h3 className="text-sm font-bold text-brand-fg mb-1.5 leading-snug line-clamp-2">
+            {problem.title}
+          </h3>
+          <p className="text-xs text-brand-muted-fg line-clamp-2 leading-relaxed mb-3">
+            {problem.description}
+          </p>
+        </Box>
         <div className="flex items-center gap-3 text-xs text-brand-muted-fg mb-4">
           <span className="flex items-center gap-1">
             <HiOutlineMapPin size={11} /> {getCityTitle(problem.city)}
@@ -103,21 +105,21 @@ export default function ProblemCard({
           </Typography>
         )}
         <div className="flex gap-2">
-          <button
-            onClick={onViewOffers}
-            className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg bg-brand-muted hover:bg-primary-DEFAULT/10 hover:text-primary-DEFAULT text-sm font-semibold text-brand-fg transition-all duration-150"
-          >
-            <FiMessageSquare size={14} />
-            {tFeed("view_offers")}
-          </button>
+          <SubmitButton
+            component={Link}
+            href={`/problems/${problem.id}`}
+            variant="contained"
+            startIcon={<FiMessageSquare size={14} />}
+            title={tFeed("view_offers")}
+          />
+
           {isMechanic && (
-            <button
+            <SubmitButton
+              variant="outlined"
               onClick={() => onMakeOffer(problem)}
-              className="btn-primary flex items-center gap-1.5 px-3 py-2 text-sm"
-            >
-              <HiBolt size={13} />
-              {tFeed("make_offer")}
-            </button>
+              endIcon={<HiBolt size={14} />}
+              title={tFeed("make_offer")}
+            />
           )}
         </div>
       </div>

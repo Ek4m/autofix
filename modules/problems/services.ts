@@ -40,12 +40,20 @@ export const getProblemsList = async (
 
 export const getProblemDetails = async (
   id: number | string,
+): Promise<UserProblem> => {
+  const response = await httpClient(`/api/issues/details/${id}`, {
+    method: "GET",
+  });
+  return response;
+};
+
+export const getProblemEntities = async (
+  id: number | string,
 ): Promise<{
   images: IUpload[];
   offers: MechanicOffer[];
-  problem: UserProblem;
 }> => {
-  const response = await httpClient("/api/issues/details/" + id, {
+  const response = await httpClient(`/api/issues/details/${id}/entities`, {
     method: "GET",
   });
   return response;

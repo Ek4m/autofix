@@ -3,7 +3,6 @@ import React, { useContext, useState } from "react";
 import { toast } from "sonner";
 import { HiXMark } from "react-icons/hi2";
 import { PostProblemModal } from "../post";
-import { OffersModal } from "../offers";
 import ProblemCard from "../card";
 import { useAuth } from "@/modules/auth/contexts";
 import { FaCar } from "react-icons/fa";
@@ -28,9 +27,7 @@ const HomeMain = () => {
     city,
     setCity,
   } = useContext(HomeSearchContext);
-  const [selectedProblem, setSelectedProblem] = useState<UserProblem | null>(
-    null,
-  );
+
   const { data, isFetching } = useGetProblems({
     category,
     vip: Number(isVip),
@@ -47,7 +44,6 @@ const HomeMain = () => {
       toast.error("Təklif vermək üçün mexanik hesabına daxil olun.");
       return;
     }
-    setSelectedProblem(null);
     setProblemForOffering(problem);
   };
   return (
@@ -114,7 +110,6 @@ const HomeMain = () => {
                   <Grid key={problem.id} size={{ xs: 12, sm: 6, md: 4 }}>
                     <ProblemCard
                       problem={problem}
-                      onViewOffers={() => setSelectedProblem(problem)}
                       onMakeOffer={handleMakeOffer}
                     />
                   </Grid>
@@ -128,14 +123,6 @@ const HomeMain = () => {
           onClose={() => setProblemForOffering(null)}
         />
       )}
-      {selectedProblem && (
-        <OffersModal
-          problem={selectedProblem}
-          onClose={() => setSelectedProblem(null)}
-          onMakeOffer={handleMakeOffer}
-        />
-      )}
-
       {showPostModal && (
         <PostProblemModal
           onClose={() => {
