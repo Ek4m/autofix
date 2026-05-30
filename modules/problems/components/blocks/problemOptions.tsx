@@ -70,31 +70,6 @@ const ProblemOptions: FC<{ problem: UserProblem }> = ({ problem }) => {
   });
   return (
     <>
-      {isMyPost && (
-        <Stack spacing={2}>
-          {[PROBLEM_STATUS.ASSIGNED, PROBLEM_STATUS.OPEN].includes(
-            problem.status,
-          ) && (
-            <SubmitButton
-              onClick={() => setModalType("delete")}
-              color="error"
-              variant="outlined"
-              startIcon={<FiTrash />}
-              title="Problemi ləğv et"
-            />
-          )}
-
-          {problem.status === PROBLEM_STATUS.ASSIGNED && (
-            <SubmitButton
-              onClick={() => setModalType("complete")}
-              color="success"
-              variant="contained"
-              startIcon={<FiCheckCircle />}
-              title="Problemi tamamla"
-            />
-          )}
-        </Stack>
-      )}
       <AppModal
         open={Boolean(modalType)}
         onClose={onCloseDeleteModal}
@@ -148,6 +123,29 @@ const ProblemOptions: FC<{ problem: UserProblem }> = ({ problem }) => {
           >
             Əməliyyatlar
           </Typography>
+          <Stack spacing={2}>
+            {[PROBLEM_STATUS.ASSIGNED, PROBLEM_STATUS.OPEN].includes(
+              problem.status,
+            ) && (
+              <SubmitButton
+                onClick={() => setModalType("delete")}
+                color="error"
+                variant="outlined"
+                startIcon={<FiTrash />}
+                title="Problemi ləğv et"
+              />
+            )}
+
+            {problem.status === PROBLEM_STATUS.ASSIGNED && (
+              <SubmitButton
+                onClick={() => setModalType("complete")}
+                color="success"
+                variant="contained"
+                startIcon={<FiCheckCircle />}
+                title="Problemi tamamla"
+              />
+            )}
+          </Stack>
         </Paper>
       )}
 
