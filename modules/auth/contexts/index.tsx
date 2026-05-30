@@ -8,11 +8,13 @@ import AppModal from "@/components/ui/modal";
 import { logoutService } from "@/modules/profile/services";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { USER_ROLES } from "../vault";
 
 interface AuthState {
   user: AuthUser | null;
   authLoading: boolean;
   isMechanic: boolean;
+  isAdmin: boolean;
   onLogout(): void;
   getUserInfo(): Promise<void>;
 }
@@ -20,6 +22,7 @@ interface AuthState {
 const AuthContext = createContext<AuthState>({
   authLoading: false,
   isMechanic: false,
+  isAdmin: false,
   user: null,
   getUserInfo: async () => {},
   onLogout: () => {},
@@ -32,6 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const isMechanic = !!user?.specialistInfo;
+  const isAdmin = !!user && user.role === USER_ROLES.ADMIN;
   const router = useRouter();
 
   const getUserInfo = async () => {
@@ -79,6 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           user,
           isMechanic,
           getUserInfo,
+          isAdmin,
           authLoading: isLoading,
           onLogout: onOpen,
         }}
