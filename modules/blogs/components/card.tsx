@@ -3,6 +3,7 @@ import React, { FC } from "react";
 import { Blog } from "../types/interfaces";
 import { Box, Paper, Stack, Typography } from "@mui/material";
 import AppImage from "@/components/ui/AppImage";
+import { datePrettify } from "@/helpers/datePrettify";
 
 const BlogCard: FC<{ blog: Blog }> = ({ blog }) => {
   const blogDescription =
@@ -37,7 +38,7 @@ const BlogCard: FC<{ blog: Blog }> = ({ blog }) => {
             p: 3,
             display: "flex",
             flexDirection: "column",
-            height: 200,
+            height: 220,
             justifyContent: "space-between",
           }}
         >
@@ -60,7 +61,9 @@ const BlogCard: FC<{ blog: Blog }> = ({ blog }) => {
           >
             {blogDescription}
           </Typography>
-
+          <Typography variant="caption">
+            {blog.brand.name} {blog.model.name}
+          </Typography>
           <Typography
             sx={{
               fontSize: 12,
@@ -68,7 +71,7 @@ const BlogCard: FC<{ blog: Blog }> = ({ blog }) => {
               mt: 1,
             }}
           >
-            {new Date(blog.createdAt).toLocaleDateString("az-AZ")}
+            {datePrettify(blog.createdAt, true)}
           </Typography>
         </Stack>
       </Paper>

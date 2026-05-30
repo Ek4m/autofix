@@ -53,7 +53,9 @@ export default async function BlogDetailsPage({
           <Typography variant="h2" sx={{ fontWeight: 700 }}>
             {blog.title}
           </Typography>
-
+          <Typography variant="caption">
+            {blog.brand.name} {blog.model.name}
+          </Typography>
           <Typography
             sx={{
               color: "text.secondary",

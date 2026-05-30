@@ -6,4 +6,12 @@ export interface Blog {
   slug: string;
   thumbnail: string;
   createdAt: string;
+  brand: {
+    id: number;
+    name: string;
+  };
+  model: {
+    id: number;
+    name: string;
+  };
 }
