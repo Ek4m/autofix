@@ -1,9 +1,15 @@
-import Link from "next/link";
-import { Box, Container, Grid, Paper, Typography, Stack } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 
 import Topbar from "@/components/Topbar";
-import AppImage from "@/components/ui/AppImage";
 import { blogs } from "@/modules/blogs/mockData";
+import BlogCard from "@/modules/blogs/components/card";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Faydalı məlumatlar | AvtoFix",
+  description:
+    "Avtomobil baxımı, texniki problemlər və mexanik tövsiyələri barədə faydalı məqalələr.",
+};
 
 export default function BlogsPage() {
   return (
@@ -63,63 +69,7 @@ export default function BlogsPage() {
         <Grid container spacing={3}>
           {blogs.map((blog) => (
             <Grid key={blog.id} size={{ xs: 12, sm: 6, md: 4 }}>
-              <Link
-                href={`/blogs/${blog.slug}`}
-                style={{ textDecoration: "none" }}
-              >
-                <Paper
-                  elevation={0}
-                  sx={{
-                    borderRadius: "24px",
-                    overflow: "hidden",
-                    border: "1px solid",
-                    borderColor: "divider",
-                    transition: "0.2s",
-                    "&:hover": {
-                      transform: "translateY(-4px)",
-                      boxShadow: "0 10px 30px rgba(0,0,0,0.08)",
-                    },
-                  }}
-                >
-                  {/* IMAGE */}
-                  <Box sx={{ height: 200, position: "relative" }}>
-                    <AppImage src={blog.thumbnail} alt={blog.title} fill />
-                  </Box>
-
-                  {/* CONTENT */}
-                  <Stack spacing={1.5} sx={{ p: 3 }}>
-                    <Typography
-                      variant="h6"
-                      sx={{
-                        fontWeight: 700,
-                        color: "#111827",
-                      }}
-                    >
-                      {blog.title}
-                    </Typography>
-
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color: "text.secondary",
-                        lineHeight: 1.7,
-                      }}
-                    >
-                      {blog.description}
-                    </Typography>
-
-                    <Typography
-                      sx={{
-                        fontSize: 12,
-                        color: "text.disabled",
-                        mt: 1,
-                      }}
-                    >
-                      {new Date(blog.createdAt).toLocaleDateString("az-AZ")}
-                    </Typography>
-                  </Stack>
-                </Paper>
-              </Link>
+              <BlogCard blog={blog} />
             </Grid>
           ))}
         </Grid>
