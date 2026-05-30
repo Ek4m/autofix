@@ -24,8 +24,6 @@ import {
   FiXCircle,
 } from "react-icons/fi";
 
-import Topbar from "@/components/Topbar";
-
 import MechanicOfferCard from "@/modules/profile/components/offerListItem";
 import { useGetMechanicOffers } from "@/modules/profile/hooks/useGetMechanicOffers";
 import { cardStyle } from "@/modules/profile/components/styles";
@@ -72,8 +70,6 @@ export default function MyOffersPage() {
         minHeight: "100vh",
       }}
     >
-      <Topbar />
-
       <Container
         maxWidth="xl"
         sx={{

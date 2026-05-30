@@ -28,7 +28,6 @@ import {
   FiTrendingUp,
 } from "react-icons/fi";
 
-import Topbar from "@/components/Topbar";
 import { makeImagePath } from "@/helpers/fileOps";
 import { useAuth } from "@/modules/auth/contexts";
 import SubmitButton from "@/components/ui/submitButton";
@@ -74,7 +73,6 @@ export default function MechanicDashboardPage() {
 
   return (
     <Box sx={{ minHeight: "100vh" }}>
-      <Topbar />
       {isFetching ? (
         <Box
           sx={{

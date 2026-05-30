@@ -13,13 +13,9 @@ import {
 } from "react-icons/hi2";
 import { FaUser } from "react-icons/fa";
 import { useAuth } from "@/modules/auth/contexts";
-import {
-  IoIosArrowDown,
-  IoIosInformationCircleOutline,
-  IoIosSettings,
-  IoMdListBox,
-} from "react-icons/io";
-import { IoLogOut } from "react-icons/io5";
+import { IoIosArrowDown, IoIosSettings, IoMdListBox } from "react-icons/io";
+import { GoInfo } from "react-icons/go";
+import { IoLogOut, IoNewspaperOutline } from "react-icons/io5";
 import { FiUser } from "react-icons/fi";
 import { BsEnvelope } from "react-icons/bs";
 
@@ -47,7 +43,12 @@ const NAV_LINKS = [
   {
     href: "/about-us",
     labelKey: "Haqqımızda",
-    icon: IoIosInformationCircleOutline,
+    icon: GoInfo,
+  },
+  {
+    href: "/blogs",
+    labelKey: "Xəbərlər",
+    icon: IoNewspaperOutline,
   },
   {
     href: "/contact",
@@ -81,7 +82,7 @@ export default function Topbar() {
 
           {/* Desktop nav */}
           <Stack
-            sx={{ flexDirection: "row", display: { xs: "none", md: "flex" } }}
+            sx={{ flexDirection: "row", display: { xs: "none", lg: "flex" } }}
             component={"nav"}
           >
             {NAV_LINKS.map((link) => {
@@ -105,7 +106,7 @@ export default function Topbar() {
           </Stack>
           <div className="flex items-center gap-2">
             {user ? (
-              <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <Box sx={{ display: { xs: "none", lg: "block" } }}>
                 <SubmitButton
                   variant="text"
                   startIcon={<FiUser />}
@@ -151,27 +152,30 @@ export default function Topbar() {
                 </Menu>
               </Box>
             ) : (
-              <div className="hidden sm:flex items-center gap-2">
-                <Link
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{ display: { xs: "none", lg: "flex" } }}
+              >
+                <SubmitButton
+                  component={Link}
                   href="/auth/login"
-                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-brand-muted-fg hover:bg-brand-muted transition-all duration-150"
-                >
-                  <HiOutlineArrowRightOnRectangle size={15} />
-                  Daxil ol
-                </Link>
-                <Link
+                  startIcon={<HiOutlineArrowRightOnRectangle size={16} />}
+                  title=" Daxil ol"
+                />
+                <SubmitButton
+                  component={Link}
                   href="/auth/register"
-                  className="btn-primary flex items-center gap-1.5"
-                >
-                  <HiOutlineUserPlus size={15} />
-                  Qeydiyyat
-                </Link>
-              </div>
+                  variant="contained"
+                  startIcon={<HiOutlineUserPlus size={16} />}
+                  title="Qeydiyyat"
+                />
+              </Stack>
             )}
 
             {/* Mobile hamburger */}
             <IconButton
-              sx={{ display: { xs: "block", md: "none" } }}
+              sx={{ display: { xs: "block", lg: "none" } }}
               onClick={() => setMobileOpen(!mobileOpen)}
             >
               <HiOutlineBars3 size={20} />

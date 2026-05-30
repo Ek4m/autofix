@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { Box, Container, Typography, Stack, Paper } from "@mui/material";
 
-import Topbar from "@/components/Topbar";
 import AppImage from "@/components/ui/AppImage";
 import { getBlog } from "@/modules/blogs/actions";
 import { datePrettify } from "@/helpers/datePrettify";
@@ -38,7 +37,6 @@ export default async function BlogDetailsPage({
 
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "#fff" }}>
-      <Topbar />
       <Box
         sx={{
           height: { xs: 220, md: 380 },

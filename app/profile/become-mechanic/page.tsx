@@ -22,7 +22,7 @@ import categoriesList from "@/data/categories.json";
 import TextField from "@/components/ui/textField";
 import SelectField from "@/components/ui/selectField";
 import SelectWithSearch from "@/components/ui/selectWithSearch";
-import Topbar from "@/components/Topbar";
+
 import SubmitButton from "@/components/ui/submitButton";
 import { MechanicForm } from "@/modules/auth/types/dtos";
 import { mechanicFormSchema } from "@/modules/profile/schemas";
@@ -82,8 +82,6 @@ const BecomeMechanicPage = () => {
         minHeight: "100vh",
       }}
     >
-      <Topbar />
-
       <Container
         maxWidth="lg"
         sx={{

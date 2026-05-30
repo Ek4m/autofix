@@ -3,7 +3,6 @@ import { useContext, useState } from "react";
 import { FiX } from "react-icons/fi";
 import { FaWrench } from "react-icons/fa";
 
-import Topbar from "@/components/Topbar";
 import { PostServiceModal } from "@/modules/services/components/post";
 import { useGetServices } from "@/modules/services/hooks/useGetServices";
 import ServiceCard from "@/modules/services/components/card";
@@ -21,7 +20,6 @@ export default function ServicesContainer() {
 
   return (
     <div className="min-h-screen bg-brand-bg">
-      <Topbar />
       <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6">
         <ServicesHead onShowPostModal={setShowPostModal} />
         <ServicesSearch />

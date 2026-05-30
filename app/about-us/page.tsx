@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Box, Container, Grid, Paper, Stack, Typography } from "@mui/material";
-import Topbar from "@/components/Topbar";
+
 import SubmitButton from "@/components/ui/submitButton";
 import { Metadata } from "next";
 
@@ -36,7 +36,6 @@ export default function AboutUsPage() {
         bgcolor: "#ffff",
       }}
     >
-      <Topbar />
       {/* HERO */}
       <Box
         sx={{

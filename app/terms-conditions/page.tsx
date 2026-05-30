@@ -2,7 +2,6 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Box, Container, Paper, Stack, Typography } from "@mui/material";
 
-import Topbar from "@/components/Topbar";
 import SubmitButton from "@/components/ui/submitButton";
 
 export const metadata: Metadata = {
@@ -76,8 +75,6 @@ export default function TermsPage() {
         bgcolor: "#fff",
       }}
     >
-      <Topbar />
-
       {/* HERO */}
       <Box
         sx={{

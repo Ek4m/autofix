@@ -15,7 +15,6 @@ import {
 
 import { FiMessageSquare, FiStar, FiTrendingUp, FiUser } from "react-icons/fi";
 
-import Topbar from "@/components/Topbar";
 import UserRating from "@/modules/mechanic/components/mechanicRating";
 import { useGetMechanicReviews } from "@/modules/profile/hooks/useGetMechanicRatings";
 
@@ -32,8 +31,6 @@ export default function MechanicRatingsPage() {
         bgcolor: "background.default",
       }}
     >
-      <Topbar />
-
       <Container
         maxWidth="xl"
         sx={{

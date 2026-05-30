@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import Topbar from "@/components/Topbar";
+
 import { useGetMechanicServices } from "@/modules/profile/hooks/useGetMechanicServices";
 import ServicesHead from "@/modules/services/components/blocks/servicesHead";
 import { FaWrench } from "react-icons/fa";
@@ -14,7 +14,6 @@ export default function MechanicServiceListingsPage() {
   const { data, isFetching } = useGetMechanicServices();
   return (
     <div className="min-h-screen bg-brand-bg">
-      <Topbar />
       <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6">
         <ServicesHead
           title="Xidmətləriniz"

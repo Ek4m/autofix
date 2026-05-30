@@ -1,6 +1,5 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
 
-import Topbar from "@/components/Topbar";
 import { blogs } from "@/modules/blogs/mockData";
 import BlogCard from "@/modules/blogs/components/card";
 import { Metadata } from "next";
@@ -14,8 +13,6 @@ export const metadata: Metadata = {
 export default function BlogsPage() {
   return (
     <Box sx={{ minHeight: "100vh", bgcolor: "#fff" }}>
-      <Topbar />
-
       {/* HERO */}
       <Box
         sx={{

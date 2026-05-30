@@ -17,7 +17,6 @@ import { useTranslations } from "next-intl";
 import { FiCamera, FiCheck, FiSave, FiTool, FiUser } from "react-icons/fi";
 import { ImLocation } from "react-icons/im";
 
-import Topbar from "@/components/Topbar";
 import CitySelectField from "@/components/ui/citySelectField";
 import TextField from "@/components/ui/textField";
 import SelectWithSearch from "@/components/ui/selectWithSearch";
@@ -115,7 +114,6 @@ export default function UpdateProfilePage() {
           backgroundColor: "var(--bg)",
         }}
       >
-        <Topbar />
         <Container
           maxWidth="xl"
           sx={{

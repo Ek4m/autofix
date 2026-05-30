@@ -25,7 +25,6 @@ import { FiCheckCircle, FiTrash } from "react-icons/fi";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 
-import Topbar from "@/components/Topbar";
 import AppImage from "@/components/ui/AppImage";
 import SubmitButton from "@/components/ui/submitButton";
 import AppModal from "@/components/ui/modal";
@@ -139,8 +138,6 @@ export default function ProblemDetailsPage() {
           minHeight: "100vh",
         }}
       >
-        <Topbar />
-
         <Box
           sx={{
             display: "flex",
@@ -161,8 +158,6 @@ export default function ProblemDetailsPage() {
         minHeight: "100vh",
       }}
     >
-      <Topbar />
-
       <Container
         maxWidth="xl"
         sx={{

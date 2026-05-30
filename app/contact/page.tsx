@@ -1,7 +1,6 @@
 import { Box, Container, Grid, Paper, Stack, Typography } from "@mui/material";
 import { Metadata } from "next";
 
-import Topbar from "@/components/Topbar";
 import ContactForm from "@/modules/contact/components/form";
 
 export const metadata: Metadata = {
@@ -17,8 +16,6 @@ export default function ContactPage() {
         bgcolor: "#fff",
       }}
     >
-      <Topbar />
-
       {/* HERO */}
       <Box
         sx={{

@@ -5,7 +5,6 @@ import { Alert, Box, Container, Paper, Stack, Typography } from "@mui/material";
 
 import { FiCheckCircle, FiSave, FiShield } from "react-icons/fi";
 
-import Topbar from "@/components/Topbar";
 import { Controller, useForm } from "react-hook-form";
 import PasswordField from "@/components/ui/passwordField";
 import { cardStyle } from "@/modules/profile/components/styles";
@@ -41,8 +40,6 @@ export default function UpdatePasswordPage() {
         backgroundColor: "var(--bg)",
       }}
     >
-      <Topbar />
-
       <Container
         maxWidth="md"
         sx={{

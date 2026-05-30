@@ -20,7 +20,6 @@ import {
 
 import { FiAlertCircle } from "react-icons/fi";
 
-import Topbar from "@/components/Topbar";
 import { useGetUsersProblems } from "@/modules/profile/hooks/useGetUsersProblems";
 import SubmitButton from "@/components/ui/submitButton";
 import { PostProblemModal } from "@/modules/problems/components/post";
@@ -63,8 +62,6 @@ export default function ProblemsPage() {
         bgcolor: "background.default",
       }}
     >
-      <Topbar />
-
       <Container
         maxWidth="xl"
         sx={{

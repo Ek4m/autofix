@@ -13,7 +13,6 @@ import {
 
 import { useGetServiceDetails } from "@/modules/services/hooks/useGetServiceDetails";
 
-import Topbar from "@/components/Topbar";
 import ProfilePhotoWithChar from "@/components/ui/profilePhotoWithChar";
 import SubmitButton from "@/components/ui/submitButton";
 
@@ -63,8 +62,6 @@ export default function ServiceDetailsPage() {
 
   return (
     <div className="min-h-screen bg-brand-bg">
-      <Topbar />
-
       <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6">
         <Grid container spacing={2}>
           {/* LEFT */}
