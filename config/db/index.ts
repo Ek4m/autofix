@@ -5,15 +5,15 @@ import { EntityType } from "@/constants/enums";
 import { OFFER_STATUS, PROBLEM_STATUS } from "@/modules/problems/constants";
 import { USER_ROLES } from "@/modules/auth/vault";
 // ================= DB =================
-export const sequelize = new Sequelize({
+export const sequelize = new Sequelize(process.env.DB_URL!, {
   dialect: "postgres",
-  dialectModule: pg,
-  host: "localhost",
-  port: 5432,
-  username: "postgres",
-  password: "salmanov99",
-  database: "autofix",
   logging: false,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+  },
 });
 
 // ================= MODELS =================
