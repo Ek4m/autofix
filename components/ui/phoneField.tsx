@@ -9,6 +9,7 @@ type PhoneInputProps = {
   hasError?: boolean;
   label?: string;
   helperText?: string;
+  disabled?: boolean;
 };
 
 const PhoneField: React.FC<PhoneInputProps> = ({
@@ -17,6 +18,7 @@ const PhoneField: React.FC<PhoneInputProps> = ({
   hasError,
   helperText,
   label,
+  disabled = false,
 }) => {
   return (
     <Box>
@@ -36,6 +38,7 @@ const PhoneField: React.FC<PhoneInputProps> = ({
       <PhoneInputLib
         country={"az"} // default Azerbaijan
         value={value}
+        disabled={disabled}
         onChange={(phone) => onChange(phone)}
         inputStyle={{
           width: "100%",

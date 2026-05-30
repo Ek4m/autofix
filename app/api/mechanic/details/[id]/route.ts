@@ -34,7 +34,6 @@ export const GET = async (
 
     raw: true,
   });
-  console.log("____________________________", reviewsStats);
   if (!user || !("specialistInfo" in user) || !user.specialistInfo)
     return NextResponse.json({ message: "Tapılmadı" }, { status: 404 });
 
@@ -42,8 +41,14 @@ export const GET = async (
     data: {
       ...user.get(),
       rating: {
-        avgRating: reviewsStats?.avgRating,
-        reviewsCount: reviewsStats?.reviewsCount,
+        avgRating:
+          reviewsStats && "avgRating" in reviewsStats
+            ? reviewsStats?.avgRating
+            : "",
+        reviewsCount:
+          reviewsStats && "reviewsCount" in reviewsStats
+            ? reviewsStats?.reviewsCount
+            : "",
       },
     },
   });

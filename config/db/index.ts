@@ -12,7 +12,7 @@ export const sequelize = new Sequelize({
   username: "postgres",
   password: "salmanov99",
   database: "autofix",
-  logging: console.log,
+  logging: false,
 });
 
 // ================= MODELS =================
@@ -267,6 +267,30 @@ CarModel.init(
   {
     sequelize,
     tableName: "car_models",
+    timestamps: true,
+  },
+);
+
+// ------ CAR MODEL --------
+export class ContactMessage extends Model {}
+
+ContactMessage.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    fullName: DataTypes.STRING,
+    email: DataTypes.STRING,
+    phoneNumber: DataTypes.STRING,
+    reason: DataTypes.STRING,
+    subject: DataTypes.STRING,
+    message: DataTypes.TEXT("medium"),
+  },
+  {
+    sequelize,
+    tableName: "contact_messages",
     timestamps: true,
   },
 );
