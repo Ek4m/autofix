@@ -25,6 +25,10 @@ const footerLinks = {
       title: "Problemlər",
       href: "/problems",
     },
+    {
+      title: "Əlaqə",
+      href: "/contact",
+    },
   ],
   legal: [
     {

@@ -3,6 +3,7 @@ import pg from "pg";
 import { ICategory } from "@/modules/categories/types";
 import { EntityType } from "@/constants/enums";
 import { OFFER_STATUS, PROBLEM_STATUS } from "@/modules/problems/constants";
+import { USER_ROLES } from "@/modules/auth/vault";
 // ================= DB =================
 export const sequelize = new Sequelize({
   dialect: "postgres",
@@ -25,12 +26,14 @@ export class User extends Model<{
   phoneNumber: string;
   password: string;
   profilePicture: string;
+  role: USER_ROLES;
 }> {}
 User.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     fullName: DataTypes.STRING,
     email: DataTypes.STRING,
+    role: { type: DataTypes.STRING, defaultValue: USER_ROLES.BASIC },
     profilePicture: DataTypes.STRING,
     phoneNumber: DataTypes.STRING,
     password: DataTypes.STRING,

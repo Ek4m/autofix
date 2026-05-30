@@ -2,7 +2,6 @@ import { Box, Container, Grid, Paper, Stack, Typography } from "@mui/material";
 import { Metadata } from "next";
 
 import Topbar from "@/components/Topbar";
-import Footer from "@/components/Footer";
 import ContactForm from "@/modules/contact/components/form";
 
 export const metadata: Metadata = {
@@ -175,8 +174,6 @@ export default function ContactPage() {
           </Grid>
         </Grid>
       </Container>
-
-      <Footer />
     </Box>
   );
 }

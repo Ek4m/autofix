@@ -1,5 +1,6 @@
 import { initDb, SpecialistInfo, User } from "@/config/db";
 import { hashPassword } from "@/modules/auth/utils";
+import { USER_ROLES } from "@/modules/auth/vault";
 import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
@@ -19,6 +20,7 @@ export const POST = async (req: Request) => {
 
   const newUser = await User.create({
     ...userData,
+    role: USER_ROLES.BASIC,
     password: newPassword,
   });
   if (mechanic) {

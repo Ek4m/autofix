@@ -21,6 +21,8 @@ import {
 } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
 import { FiUser } from "react-icons/fi";
+import { BsEnvelope } from "react-icons/bs";
+
 import {
   Box,
   Drawer,
@@ -46,6 +48,11 @@ const NAV_LINKS = [
     href: "/about-us",
     labelKey: "Haqqımızda",
     icon: IoIosInformationCircleOutline,
+  },
+  {
+    href: "/contact",
+    labelKey: "Əlaqə",
+    icon: BsEnvelope,
   },
 ];
 
