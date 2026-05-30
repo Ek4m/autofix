@@ -16,6 +16,7 @@ interface AppImageProps {
   fill?: boolean;
   sizes?: string;
   onClick?: () => void;
+  objectFit?: string;
   fallbackSrc?: string;
   loading?: "lazy" | "eager";
   unoptimized?: boolean;
@@ -31,6 +32,7 @@ const AppImage = memo(function AppImage({
   quality = 85,
   placeholder = "empty",
   blurDataURL,
+  objectFit,
   fill = false,
   sizes,
   onClick,
@@ -120,7 +122,7 @@ const AppImage = memo(function AppImage({
           sizes={
             sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           }
-          style={{ objectFit: "cover" }}
+          style={{ objectFit: objectFit || "cover" }}
           {...props}
           alt={alt}
         />

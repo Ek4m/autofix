@@ -34,11 +34,11 @@ const ProblemGallery: FC<{ thumbnail: string; images: IUpload[] }> = ({
             width: "100%",
             height: {
               xs: 240,
-              md: 420,
+              md: 550,
             },
             borderRadius: "20px",
             overflow: "hidden",
-            bgcolor: "action.hover",
+            bgcolor: "black",
           }}
         >
           <AppImage
@@ -46,7 +46,7 @@ const ProblemGallery: FC<{ thumbnail: string; images: IUpload[] }> = ({
             src={makeImagePath(imagesWithThumbnail[activeImg]?.name)}
             key={activeImg}
             alt="Problem Thumbnail"
-            className="object-cover"
+            objectFit="contain"
           />
         </Box>
 
