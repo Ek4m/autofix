@@ -1,6 +1,8 @@
+import { API_URL } from "@/constants/enums";
+
 export const httpClient = async (url: string, options: RequestInit) => {
   const isFormData = options.body instanceof FormData;
-  const response = await fetch("https://autoback-ievh.onrender.com" + url, {
+  const response = await fetch(API_URL + url, {
     ...options,
     credentials: "include",
     headers: {
