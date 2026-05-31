@@ -163,7 +163,7 @@ const MechanicDetails = () => {
                     </Box>
                   </Grid>
                 ))}
-                <Grid size={12}>{user && <ContactModal id={user.id} />}</Grid>
+                <Grid size={12}>{data && <ContactModal id={data.id} />}</Grid>
               </Grid>
             </Paper>
           </Box>
