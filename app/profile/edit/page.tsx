@@ -178,7 +178,7 @@ export default function UpdateProfilePage() {
                       >
                         {initials}
                       </Avatar>
-                      <FilePicker onFileSelect={(f) => setValue("image", f)}>
+                      {/* <FilePicker onFileSelect={(f) => setValue("image", f)}>
                         <Button
                           size="small"
                           sx={{
@@ -198,7 +198,7 @@ export default function UpdateProfilePage() {
                         >
                           <FiCamera size={18} />
                         </Button>
-                      </FilePicker>
+                      </FilePicker> */}
                     </Box>
                     <Typography
                       variant="body2"
