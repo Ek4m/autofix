@@ -28,7 +28,6 @@ import categoriesList from "@/data/categories.json";
 import { cardStyle } from "@/modules/profile/components/styles";
 import { EditProfileForm } from "@/modules/profile/types/dtos";
 import FilePicker from "@/components/ui/filePicker";
-import objectToFormData from "@/helpers/objectToFormData";
 import { editProfileService } from "@/modules/profile/services";
 import { toast } from "sonner";
 import { makeImagePath } from "@/helpers/fileOps";
@@ -63,8 +62,8 @@ export default function UpdateProfilePage() {
 
   const handleEdit = async (data: EditProfileForm) => {
     try {
-      const formData = objectToFormData(data);
-      await editProfileService(formData);
+      // const formData = objectToFormData(data);
+      await editProfileService(data);
       toast.success("Hesab məlumatlarınız uğurla yeniləndi.");
       await getUserInfo();
     } catch (error) {
@@ -333,6 +332,7 @@ export default function UpdateProfilePage() {
                           <TextField
                             {...field}
                             type="email"
+                            disabled
                             hasError={Boolean(fieldState.error)}
                             label={tAuth("email")}
                             helperText={fieldState.error?.message}
@@ -513,17 +513,26 @@ export default function UpdateProfilePage() {
                           )}
                         />
                       </Grid>
-                      <Grid size={12}>
-                        <SubmitButton
-                          variant="contained"
-                          title="Yadda Saxla"
-                          type="submit"
-                          startIcon={<FiSave />}
-                        />
-                      </Grid>
                     </Grid>
                   </Paper>
                 )}
+                <Paper
+                  sx={{
+                    ...cardSx,
+                    ...cardStyle,
+                    p: 4,
+                  }}
+                >
+                  {" "}
+                  <Grid size={12}>
+                    <SubmitButton
+                      variant="contained"
+                      title="Yadda Saxla"
+                      type="submit"
+                      startIcon={<FiSave />}
+                    />
+                  </Grid>
+                </Paper>
               </Stack>
             </Grid>
           </Grid>

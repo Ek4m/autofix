@@ -1,5 +1,5 @@
 import { httpClient } from "@/config/httpClient";
-import { UpdatePasswordForm } from "./types/dtos";
+import { EditProfileForm, UpdatePasswordForm } from "./types/dtos";
 import { MechanicOffer, UserProblem } from "../problems/types/interfaces";
 import { IService } from "../services/types/interfaces";
 import { PostServiceForm } from "../services/types/dtos";
@@ -14,10 +14,10 @@ export const logoutService = async () => {
   return response;
 };
 
-export const editProfileService = async (formData: FormData) => {
+export const editProfileService = async (formData: EditProfileForm) => {
   const response = await httpClient("/profile/edit", {
     method: "PUT",
-    body: formData,
+    body: JSON.stringify(formData),
   });
   return response;
 };
