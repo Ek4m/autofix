@@ -17,11 +17,24 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "AvtoFix — Connect Car Owners with Trusted Mechanics",
+  title: "AvtoFix | Avtomobil Təmir Xidmətləri və Usta Tapma Platforması",
   description:
-    "AvtoFix helps car owners in Azerbaijan post repair problems and receive offers from verified local mechanics — fast, transparent, and affordable.",
+    "Avtomobil probleminizi paylaşın, müxtəlif ustalardan təkliflər alın və ən uyğun həlli seçin. AvtoFix sürücülərlə peşəkar mexanikləri bir araya gətirir.",
   icons: {
     icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
+  },
+  openGraph: {
+    title: "AvtoFix - Maşın Problemləri Üçün Etibarlı Usta Tapın",
+    description:
+      "Probleminizi paylaşın, ustalardan təkliflər alın, reytinqləri müqayisə edin və ən uyğun həlli seçin.",
+    images: [
+      {
+        url: "/favicon.ico",
+        width: 1200,
+        height: 630,
+        alt: "AvtoFix",
+      },
+    ],
   },
 };
 
