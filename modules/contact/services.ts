@@ -4,7 +4,7 @@ import { ContactUsForm } from "./types/dtos";
 export const sendContactMessage = async (
   body: ContactUsForm,
 ): Promise<{ message: string }> => {
-  const response = await httpClient("/send-contact-message", {
+  const response = await httpClient("/contact/send", {
     body: JSON.stringify(body),
     method: "POST",
   });
