@@ -8,14 +8,14 @@ import { UserReview } from "../mechanic/types/interfaces";
 import { MechanicForm } from "../auth/types/dtos";
 
 export const logoutService = async () => {
-  const response = await httpClient("/api/auth/logout", {
+  const response = await httpClient("/auth/logout", {
     method: "POST",
   });
   return response;
 };
 
 export const editProfileService = async (formData: FormData) => {
-  const response = await httpClient("/api/profile/edit", {
+  const response = await httpClient("/profile/edit", {
     method: "PUT",
     body: formData,
   });
@@ -23,7 +23,7 @@ export const editProfileService = async (formData: FormData) => {
 };
 
 export const updatePasswordService = async (body: UpdatePasswordForm) => {
-  const response = await httpClient("/api/profile/update-password", {
+  const response = await httpClient("/profile/update-password", {
     method: "PATCH",
     body: JSON.stringify(body),
   });
@@ -31,21 +31,21 @@ export const updatePasswordService = async (body: UpdatePasswordForm) => {
 };
 
 export const getUsersProblems = async (): Promise<UserProblem[]> => {
-  const response = await httpClient("/api/profile/problems", {
+  const response = await httpClient("/profile/problems", {
     method: "GET",
   });
   return response;
 };
 
 export const cancelProblem = async (id: string | number): Promise<true> => {
-  const response = await httpClient(`/api/profile/problems/${id}/cancel`, {
+  const response = await httpClient(`/profile/problems/${id}/cancel`, {
     method: "DELETE",
   });
   return response;
 };
 
 export const completeProblem = async (id: number): Promise<true> => {
-  const response = await httpClient(`/api/profile/problems/${id}/complete`, {
+  const response = await httpClient(`/profile/problems/${id}/complete`, {
     method: "PUT",
   });
   return response;
@@ -64,14 +64,14 @@ export const getMechanicPanelInfo = async (): Promise<{
   };
   offers: MechanicOffer[];
 }> => {
-  const response = await httpClient(`/api/profile/mechanic/panel-info`, {
+  const response = await httpClient(`/profile/mechanic/panel-info`, {
     method: "GET",
   });
   return response;
 };
 
 export const getMechanicsServices = async (): Promise<IService[]> => {
-  const response = await httpClient(`/api/profile/mechanic/services`, {
+  const response = await httpClient(`/profile/mechanic/services`, {
     method: "GET",
   });
   return response;
@@ -80,7 +80,7 @@ export const getMechanicsServices = async (): Promise<IService[]> => {
 export const deleteService = async (
   id: string | number,
 ): Promise<IService[]> => {
-  const response = await httpClient(`/api/profile/mechanic/services/${id}`, {
+  const response = await httpClient(`/profile/mechanic/services/${id}`, {
     method: "DELETE",
   });
   return response;
@@ -89,7 +89,7 @@ export const deleteService = async (
 export const toggleServiceActivation = async (
   id: string | number,
 ): Promise<IService[]> => {
-  const response = await httpClient(`/api/services/toggle-activation/${id}`, {
+  const response = await httpClient(`/services/toggle-activation/${id}`, {
     method: "PATCH",
   });
   return response;
@@ -99,7 +99,7 @@ export const updateService = async (
   id: string | number,
   body: PostServiceForm,
 ): Promise<{ message: string }> => {
-  const response = await httpClient(`/api/profile/mechanic/services/${id}`, {
+  const response = await httpClient(`/profile/mechanic/services/${id}`, {
     method: "PUT",
     body: JSON.stringify(body),
   });
@@ -107,7 +107,7 @@ export const updateService = async (
 };
 
 export const getOffers = async (): Promise<MechanicPanelOffer[]> => {
-  const response = await httpClient(`/api/profile/mechanic/offers`, {
+  const response = await httpClient(`/profile/mechanic/offers`, {
     method: "GET",
   });
   return response;
@@ -116,14 +116,14 @@ export const getOffers = async (): Promise<MechanicPanelOffer[]> => {
 export const deleteOffer = async (
   id: string | number,
 ): Promise<{ message: string }> => {
-  const response = await httpClient(`/api/profile/mechanic/offers/${id}`, {
+  const response = await httpClient(`/profile/mechanic/offers/${id}`, {
     method: "DELETE",
   });
   return response;
 };
 
 export const getReviews = async (): Promise<UserReview[]> => {
-  const response = await httpClient(`/api/profile/mechanic/ratings`, {
+  const response = await httpClient(`/profile/mechanic/ratings`, {
     method: "GET",
   });
   return response;
@@ -132,7 +132,7 @@ export const getReviews = async (): Promise<UserReview[]> => {
 export const becomeMechanic = async (
   body: MechanicForm,
 ): Promise<{ message: string }> => {
-  const response = await httpClient(`/api/profile/mechanic/become-one`, {
+  const response = await httpClient(`/profile/mechanic/become-one`, {
     method: "POST",
     body: JSON.stringify(body),
   });

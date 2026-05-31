@@ -1,7 +1,8 @@
 export const httpClient = async (url: string, options: RequestInit) => {
   const isFormData = options.body instanceof FormData;
-  const response = await fetch(url, {
+  const response = await fetch("http://localhost:4000" + url, {
     ...options,
+    credentials: "include",
     headers: {
       ...(!isFormData && { "Content-Type": "application/json" }),
       ...(options.headers || {}),

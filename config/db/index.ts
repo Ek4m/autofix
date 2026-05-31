@@ -1,20 +1,10 @@
-import { Sequelize, DataTypes, Model } from "sequelize";
-import pg from "pg";
+import { DataTypes, Model } from "sequelize";
 import { ICategory } from "@/modules/categories/types";
 import { EntityType } from "@/constants/enums";
 import { OFFER_STATUS, PROBLEM_STATUS } from "@/modules/problems/constants";
 import { USER_ROLES } from "@/modules/auth/vault";
+import { sequelize } from "./mk";
 // ================= DB =================
-export const sequelize = new Sequelize(process.env.DB_URL!, {
-  dialect: "postgres",
-  logging: false,
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
-  },
-});
 
 // ================= MODELS =================
 
@@ -39,7 +29,7 @@ User.init(
     password: DataTypes.STRING,
   },
   {
-    sequelize,
+    sequelize: sequelize,
     tableName: "users",
     timestamps: true,
   },

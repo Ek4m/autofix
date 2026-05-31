@@ -6,7 +6,7 @@ export const getMechanicInfo = async (
 ): Promise<
   AuthUser & { rating: { avgRating: string; reviewsCount: string } }
 > => {
-  const response = await httpClient("/api/mechanic/details/" + id, {
+  const response = await httpClient("/mechanic/details/" + id, {
     method: "GET",
   });
   return response;
@@ -19,7 +19,7 @@ export const getMechanicContactInfo = async (
   rawAddress: string;
   locationUrl: string;
 }> => {
-  const response = await httpClient("/api/mechanic/contact-info/" + id, {
+  const response = await httpClient("/mechanic/contact-info/" + id, {
     method: "GET",
   });
   return response;

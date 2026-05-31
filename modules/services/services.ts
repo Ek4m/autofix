@@ -6,7 +6,7 @@ import { urlFactory } from "@/helpers/urlFactory";
 export const postService = async (
   data: PostServiceForm,
 ): Promise<{ message: string }> => {
-  const response = await httpClient("/api/services/post", {
+  const response = await httpClient("/services/post", {
     body: JSON.stringify(data),
     method: "POST",
   });
@@ -19,7 +19,7 @@ export const getAllServices = async (
   mechanic?: string,
 ): Promise<IService[]> => {
   const response = await httpClient(
-    urlFactory("/api/services/list", { search, category, mechanic }),
+    urlFactory("/services/list", { search, category, mechanic }),
     {
       method: "GET",
     },
@@ -30,7 +30,7 @@ export const getAllServices = async (
 export const getServiceDetails = async (
   id: string | number,
 ): Promise<IService> => {
-  const response = await httpClient(`/api/services/details/${id}`, {
+  const response = await httpClient(`/services/details/${id}`, {
     method: "GET",
   });
   return response;

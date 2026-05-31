@@ -12,7 +12,7 @@ export const uploadFiles = async (
   files.forEach((file) => {
     formData.append("files", file);
   });
-  const response = await httpClient("/api/upload", {
+  const response = await httpClient("/upload", {
     method: "POST",
     body: formData,
   });
