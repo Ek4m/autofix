@@ -30,7 +30,7 @@ export default function BlogsPage() {
               mb: 2,
             }}
           >
-            AutoFix Blog
+            AvtoFix Blog
           </Typography>
 
           <Typography

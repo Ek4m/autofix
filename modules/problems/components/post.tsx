@@ -269,7 +269,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
-              <Grid size={12}>
+              {/* <Grid size={12}>
                 <div
                   className={`p-4 rounded-xl border-2 transition-all duration-150 cursor-pointer ${isPremium ? "border-amber-400 bg-amber-50" : "border-brand-border hover:border-amber-300"}`}
                 >
@@ -313,7 +313,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                     </p>
                   )}
                 </div>
-              </Grid>
+              </Grid> */}
             </Grid>
             <Grid
               container

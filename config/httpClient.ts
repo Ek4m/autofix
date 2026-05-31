@@ -8,6 +8,10 @@ export const httpClient = async (url: string, options: RequestInit) => {
       ...(options.headers || {}),
     },
   });
+  console.log(
+    "_______________________________________________________",
+    response,
+  );
   const result = await response.json();
   if (("ok" in response && !response.ok) || response.status >= 400) {
     throw new Error(result.message || "HTTP error");

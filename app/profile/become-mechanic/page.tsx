@@ -124,7 +124,7 @@ const BecomeMechanicPage = () => {
                           lineHeight: 1.2,
                         }}
                       >
-                        Autofix-də mexanik ol
+                        AvtoFix-də mexanik ol
                       </Typography>
 
                       <Typography

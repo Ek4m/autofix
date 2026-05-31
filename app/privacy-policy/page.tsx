@@ -14,7 +14,7 @@ const sections = [
   {
     title: "1. Giriş",
     content:
-      "AutoFix istifadəçilərlə mexanikləri bir araya gətirən platformadır. İstifadəçilər avtomobil problemlərini paylaşır, mexaniklər isə həmin problemlərə həll təklifləri təqdim edirlər. Platformadan istifadə etməklə bu siyasətlə razılaşmış hesab olunursunuz.",
+      "AvtoFix istifadəçilərlə mexanikləri bir araya gətirən platformadır. İstifadəçilər avtomobil problemlərini paylaşır, mexaniklər isə həmin problemlərə həll təklifləri təqdim edirlər. Platformadan istifadə etməklə bu siyasətlə razılaşmış hesab olunursunuz.",
   },
   {
     title: "2. Toplanan Məlumatlar",
@@ -39,7 +39,7 @@ const sections = [
   {
     title: "6. Məlumatların Qorunması",
     content:
-      "AutoFix istifadəçi məlumatlarının qorunması üçün təhlükəsizlik tədbirləri tətbiq edir. Buna baxmayaraq internet üzərindən ötürülən məlumatların tam təhlükəsizliyinə zəmanət verilmir.",
+      "AvtoFix istifadəçi məlumatlarının qorunması üçün təhlükəsizlik tədbirləri tətbiq edir. Buna baxmayaraq internet üzərindən ötürülən məlumatların tam təhlükəsizliyinə zəmanət verilmir.",
   },
   {
     title: "7. Üçüncü Tərəflər",
@@ -54,7 +54,7 @@ const sections = [
   {
     title: "9. Siyasətdə Dəyişikliklər",
     content:
-      "AutoFix bu Məxfilik Siyasətini istənilən vaxt yeniləmək hüququnu özündə saxlayır.",
+      "AvtoFix bu Məxfilik Siyasətini istənilən vaxt yeniləmək hüququnu özündə saxlayır.",
   },
 ];
 
@@ -127,7 +127,7 @@ export default function PrivacyPolicyPage() {
               maxWidth: 800,
             }}
           >
-            Bu səhifə AutoFix platformasında məlumatlarınızın necə toplandığını,
+            Bu səhifə AvtoFix platformasında məlumatlarınızın necə toplandığını,
             istifadə olunduğunu və qorunduğunu izah edir.
           </Typography>
         </Container>

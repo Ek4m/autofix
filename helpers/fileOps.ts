@@ -1,1 +1,2 @@
-export const makeImagePath = (fileId?: string) => `/uploads/${fileId}`;
+export const makeImagePath = (fileId?: string) =>
+  `http://localhost:4000/public/uploads/${fileId}`;

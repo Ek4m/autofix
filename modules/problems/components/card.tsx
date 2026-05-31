@@ -34,7 +34,7 @@ export default function ProblemCard({
       <div className="relative h-48 bg-brand-muted overflow-hidden">
         <AppImage
           src={makeImagePath(problem.thumbnail)}
-          alt={`${problem.brand.name} ${problem.model.name} - ${problem.title}`}
+          alt={`${problem.brand?.name} ${problem.model?.name} - ${problem.title}`}
           fill
           className="object-cover group-hover:scale-105 transition-transform duration-300"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -53,7 +53,7 @@ export default function ProblemCard({
               {problem.user?.fullName}
             </p>
             <p className="text-xs text-brand-muted-fg font-mono tabular-nums">
-              {problem.brand.name} {problem.model.name} · {problem.carYear}
+              {problem.brand?.name} {problem.model?.name} · {problem.carYear}
             </p>
           </div>
         </div>

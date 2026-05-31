@@ -17,9 +17,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "AutoFixHub — Connect Car Owners with Trusted Mechanics",
+  title: "AvtoFix — Connect Car Owners with Trusted Mechanics",
   description:
-    "AutoFixHub helps car owners in Azerbaijan post repair problems and receive offers from verified local mechanics — fast, transparent, and affordable.",
+    "AvtoFix helps car owners in Azerbaijan post repair problems and receive offers from verified local mechanics — fast, transparent, and affordable.",
   icons: {
     icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
   },
