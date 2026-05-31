@@ -44,6 +44,7 @@ export default function MechanicRatingModal({
       toast.success(
         "Fikirləriniz qeydə alındı, vaxt ayırdığınız üçün təşəkkür edirik!",
       );
+      setTimeout(() => navigation.reload(), 1500);
       onClose();
     },
   });

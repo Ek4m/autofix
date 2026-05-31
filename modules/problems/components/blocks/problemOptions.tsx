@@ -57,7 +57,6 @@ const ProblemOptions: FC<{ problem: UserProblem }> = ({ problem }) => {
 
     onSuccess: () => {
       toast.success("Problem tamamlandı");
-      navigation.reload();
       setIsRatingModalOpen(true);
       onCloseModal();
     },
