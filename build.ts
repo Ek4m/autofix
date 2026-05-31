@@ -1,21 +1,8 @@
-import { Op } from "sequelize";
-import { CarBrand, CarModel, Category, initDb } from "./config/db";
 import fs from "fs";
+import { getAllCategories, getBrandsAndModels } from "./modules/build/services";
 
 async function loadDataFromCategories() {
-  const parentCategories = await Category.findAll({
-    where: {
-      parentId: {
-        [Op.eq]: null,
-      },
-    },
-    include: [{ model: Category, as: "subcategories" }],
-  });
-
-  const allCategories = parentCategories.map((cat) => ({
-    ...cat.get(),
-    subcategories: cat.get().subcategories,
-  }));
+  const allCategories = await getAllCategories();
   fs.writeFile(
     process.cwd() + "/data/categories.json",
     JSON.stringify(allCategories),
@@ -33,17 +20,7 @@ async function loadDataFromCategories() {
 }
 
 async function loadDataFromBrandsAndModels() {
-  const response = await CarBrand.findAll({
-    order: [["name", "ASC"]],
-    attributes: { exclude: ["createdAt", "updatedAt"] },
-    include: [
-      {
-        model: CarModel,
-        as: "models",
-        attributes: { exclude: ["createdAt", "updatedAt", "brandId"] },
-      },
-    ],
-  });
+  const response = await getBrandsAndModels();
   fs.writeFile(
     process.cwd() + "/data/brands.json",
     JSON.stringify(response),
@@ -61,7 +38,6 @@ async function loadDataFromBrandsAndModels() {
 }
 
 (async () => {
-  await initDb();
   await loadDataFromCategories();
   await loadDataFromBrandsAndModels();
 })();
