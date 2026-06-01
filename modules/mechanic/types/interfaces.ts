@@ -14,3 +14,19 @@ export interface UserReview {
   reviewer: AuthUser;
   problem: UserProblem;
 }
+
+export interface MechanicListItem {
+  id: number;
+  fullName: string;
+  profilePicture: string | null;
+  avgRating: number;
+  reviewsCount: string;
+  score: number;
+  specialistInfo: {
+    objectName: string;
+    experienceYears: number;
+    bio: string;
+    city: number;
+    profession: number[];
+  };
+}

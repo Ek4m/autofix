@@ -1,5 +1,6 @@
 import { httpClient } from "@/config/httpClient";
 import { AuthUser } from "../auth/types/types";
+import { MechanicListItem } from "./types/interfaces";
 
 export const getMechanicInfo = async (
   id: string,
@@ -20,6 +21,13 @@ export const getMechanicContactInfo = async (
   locationUrl: string;
 }> => {
   const response = await httpClient("/mechanic/contact-info/" + id, {
+    method: "GET",
+  });
+  return response;
+};
+
+export const getMechanicList = async (): Promise<MechanicListItem[]> => {
+  const response = await httpClient("/mechanic", {
     method: "GET",
   });
   return response;

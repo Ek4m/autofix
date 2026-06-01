@@ -35,10 +35,6 @@ export default async function ProblemDetailsPage({
   const { id } = await params;
 
   const problem = await getProblemDetailsAction(id);
-  console.log(
-    "________________________________PROBLEM_____________________________",
-    problem,
-  );
   const { images, offers } = await getProblemEntitiesActions(id);
   const status = problem ? PROBLEM_STATUS_CONFIG[problem.status] : null;
   return (

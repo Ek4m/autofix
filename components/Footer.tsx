@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 
 import { FiInstagram, FiFacebook, FiMail, FiPhone } from "react-icons/fi";
+import AppLogo from "./ui/AppLogo";
 
 const footerLinks = {
   platform: [
@@ -65,14 +66,10 @@ export default function Footer() {
         <Grid container spacing={6}>
           {/* LEFT */}
           <Grid size={{ xs: 12, md: 5 }}>
-            <Typography
-              variant="h4"
-              sx={{
-                fontWeight: 800,
-              }}
-            >
-              AvtoFix
-            </Typography>
+           <Link href="/" className="flex items-center gap-2.5 shrink-0">
+            <AppLogo size={36} />
+          </Link>
+
 
             <Typography
               sx={{

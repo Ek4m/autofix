@@ -17,7 +17,6 @@ import { IoIosArrowDown, IoIosSettings, IoMdListBox } from "react-icons/io";
 import { GoInfo } from "react-icons/go";
 import { IoLogOut, IoNewspaperOutline } from "react-icons/io5";
 import { FiUser } from "react-icons/fi";
-import { BsEnvelope } from "react-icons/bs";
 
 import {
   Box,
@@ -32,6 +31,7 @@ import {
   Typography,
 } from "@mui/material";
 import SubmitButton from "./ui/submitButton";
+import { BiSolidCarMechanic } from "react-icons/bi";
 
 const NAV_LINKS = [
   { href: "/", labelKey: "Problemlər", icon: HiOutlineTruck },
@@ -51,9 +51,9 @@ const NAV_LINKS = [
     icon: IoNewspaperOutline,
   },
   {
-    href: "/contact",
-    labelKey: "Əlaqə",
-    icon: BsEnvelope,
+    href: "/mechanics",
+    labelKey: "Ustalar",
+    icon: BiSolidCarMechanic,
   },
 ];
 
