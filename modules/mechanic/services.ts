@@ -3,7 +3,7 @@ import { AuthUser } from "../auth/types/types";
 import { MechanicListItem } from "./types/interfaces";
 
 export const getMechanicInfo = async (
-  id: string,
+  id: string | number,
 ): Promise<
   AuthUser & { rating: { avgRating: string; reviewsCount: string } }
 > => {

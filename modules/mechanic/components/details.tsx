@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { FC, useMemo } from "react";
 import { useParams } from "next/navigation";
 import {
   Box,
@@ -13,7 +13,6 @@ import {
 } from "@mui/material";
 import { FaAward, FaWrench } from "react-icons/fa";
 
-import { useGetMechanicInfo } from "../hooks/useGetMechanicInfo";
 import { useGetServices } from "@/modules/services/hooks/useGetServices";
 
 import categoriesList from "@/data/categories.json";
@@ -25,26 +24,34 @@ import { getCityTitle } from "@/helpers/getCityTitle";
 import { ImLocation } from "react-icons/im";
 import { cardStyle } from "@/modules/profile/components/styles";
 import UserRating from "./mechanicRating";
+import { AuthUser } from "@/modules/auth/types/types";
 
-const MechanicDetails = () => {
+const flat = categoriesList.flatMap((cat) =>
+  cat.subcategories.map((c) => ({
+    ...c,
+    name: `${cat.name} / ${c.name}`,
+  })),
+);
+
+const MechanicDetails: FC<{
+  data: AuthUser & {
+    rating: {
+      avgRating: string;
+      reviewsCount: string;
+    };
+  };
+}> = ({ data }) => {
   const { id } = useParams<{ id: string }>();
-  const { data } = useGetMechanicInfo(id);
   const { user } = useAuth();
 
   const { data: services, isFetching } = useGetServices({
     mechanic: id,
   });
 
-  const categories = useMemo(() => {
-    const flat = categoriesList.flatMap((cat) =>
-      cat.subcategories.map((c) => ({
-        ...c,
-        name: `${cat.name} / ${c.name}`,
-      })),
-    );
-
-    return flat.filter((c) => data?.specialistInfo?.profession.includes(c.id));
-  }, [data]);
+  const categories = useMemo(
+    () => flat.filter((c) => data?.specialistInfo?.profession.includes(c.id)),
+    [data],
+  );
 
   const stats = [
     {
