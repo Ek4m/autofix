@@ -6,10 +6,17 @@ import {
   SubmitHandler,
   useForm,
 } from "react-hook-form";
-import { HiStar } from "react-icons/hi";
 import { toast } from "sonner";
-import { HiBolt, HiXMark } from "react-icons/hi2";
-import { Grid } from "@mui/material";
+import { HiXMark } from "react-icons/hi2";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
 
 import citiesList from "@/data/cities.json";
 import brandList from "@/data/brands.json";
@@ -19,7 +26,6 @@ import { PostProblemForm } from "../types/dtos";
 import TextField from "@/components/ui/textField";
 import SelectField from "@/components/ui/selectField";
 import categoryList from "@/data/categories.json";
-import SwitchField from "@/components/ui/switchField";
 import SubmitButton from "@/components/ui/submitButton";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { postProblemSchema } from "../schemas";
@@ -71,7 +77,6 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
   };
   const tCommon = useTranslations("common");
 
-  const isPremium = watch("isVip");
   const brand = watch("brandId");
 
   const modelList = useMemo(() => {
@@ -86,23 +91,41 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
   }, [brand]);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white w-full sm:max-w-xl max-h-[95vh] sm:max-h-[88vh] rounded-t-2xl sm:rounded-2xl flex flex-col overflow-hidden shadow-modal animate-slide-up">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-brand-border shrink-0">
-          <h2 className="text-base font-bold text-brand-fg">Problem Paylaş</h2>
-          <button
-            onClick={onClose}
-            className="p-2 rounded-lg hover:bg-brand-muted transition-colors"
-          >
-            <HiXMark size={18} className="text-brand-muted-fg" />
-          </button>
-        </div>
-        <FormProvider {...form}>
-          <form
-            encType="multipart/form-data"
-            onSubmit={handleSubmit(handlePostSubmit)}
-          >
-            <Grid container spacing={2} sx={{ padding: 3 }}>
+    <Dialog
+      open
+      onClose={onClose}
+      fullWidth
+      maxWidth="md"
+      PaperProps={{
+        sx: {
+          borderRadius: 3,
+          maxHeight: "90vh",
+        },
+      }}
+    >
+      <DialogTitle
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderBottom: 1,
+          borderColor: "divider",
+        }}
+      >
+        <Typography variant="h6">Problem Paylaş</Typography>
+
+        <IconButton onClick={onClose}>
+          <HiXMark />
+        </IconButton>
+      </DialogTitle>
+
+      <FormProvider {...form}>
+        <form
+          onSubmit={handleSubmit(handlePostSubmit)}
+          encType="multipart/form-data"
+        >
+          <DialogContent dividers>
+            <Grid container spacing={2}>
               <Grid size={12}>
                 <Controller
                   name="title"
@@ -118,6 +141,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
+
               <Grid size={12}>
                 <Controller
                   name="description"
@@ -135,6 +159,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
+
               <Grid size={{ xs: 12, md: 4 }}>
                 <Controller
                   name="brandId"
@@ -154,6 +179,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
+
               <Grid size={{ xs: 12, md: 5 }}>
                 <Controller
                   name="modelId"
@@ -173,6 +199,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
+
               <Grid size={{ xs: 12, md: 3 }}>
                 <Controller
                   name="carYear"
@@ -188,7 +215,8 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
-              <Grid size={6}>
+
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Controller
                   name="categoryId"
                   control={control}
@@ -207,7 +235,8 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
-              <Grid size={6}>
+
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Controller
                   name="city"
                   control={control}
@@ -226,6 +255,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
+
               <Grid size={{ xs: 12, md: 6 }}>
                 <Controller
                   name="minBudget"
@@ -241,14 +271,15 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
+
               <Grid size={{ xs: 12, md: 6 }}>
                 <Controller
                   name="maxBudget"
                   control={control}
                   render={({ field, fieldState }) => (
                     <TextField
-                      type="number"
                       {...field}
+                      type="number"
                       hasError={Boolean(fieldState.error)}
                       label="Maksimum büdcə"
                       helperText={fieldState.error?.message}
@@ -256,6 +287,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
+
               <Grid size={12}>
                 <Controller
                   name="images"
@@ -269,57 +301,17 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   )}
                 />
               </Grid>
-              {/* <Grid size={12}>
-                <div
-                  className={`p-4 rounded-xl border-2 transition-all duration-150 cursor-pointer ${isPremium ? "border-amber-400 bg-amber-50" : "border-brand-border hover:border-amber-300"}`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-9 h-9 rounded-lg flex items-center justify-center ${isPremium ? "bg-amber-400" : "bg-brand-muted"}`}
-                      >
-                        <HiStar
-                          size={18}
-                          className={
-                            isPremium ? "text-white" : "text-brand-muted-fg"
-                          }
-                        />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold text-brand-fg">
-                          Premium Post — 0 ₼
-                        </p>
-                        <p className="text-xs text-brand-muted-fg">
-                          İstifadəçilər üçün pulsuzdur
-                        </p>
-                      </div>
-                    </div>
-                    <Controller
-                      name="isVip"
-                      control={control}
-                      render={({ field, fieldState }) => (
-                        <SwitchField
-                          {...field}
-                          hasError={Boolean(fieldState.error)}
-                          helperText={fieldState.error?.message}
-                        />
-                      )}
-                    />
-                  </div>
-                  {isPremium && (
-                    <p className="mt-2 text-xs text-amber-700 flex items-center gap-1.5">
-                      <HiBolt size={11} /> Postunuz lentdə birinci sırada
-                      göstəriləcək
-                    </p>
-                  )}
-                </div>
-              </Grid> */}
             </Grid>
-            <Grid
-              container
-              spacing={2}
-              className="px-5 py-4 border-t border-brand-border"
-            >
+          </DialogContent>
+
+          <DialogActions
+            sx={{
+              p: 3,
+              borderTop: 1,
+              borderColor: "divider",
+            }}
+          >
+            <Grid container spacing={2} sx={{ width: "100%" }}>
               <Grid size={{ xs: 12, md: 6 }}>
                 <SubmitButton
                   variant="outlined"
@@ -328,6 +320,7 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                   title={tCommon("cancel")}
                 />
               </Grid>
+
               <Grid size={{ xs: 12, md: 6 }}>
                 <SubmitButton
                   variant="contained"
@@ -337,9 +330,9 @@ export function PostProblemModal({ onClose }: { onClose: () => void }) {
                 />
               </Grid>
             </Grid>
-          </form>
-        </FormProvider>
-      </div>
-    </div>
+          </DialogActions>
+        </form>
+      </FormProvider>
+    </Dialog>
   );
 }
