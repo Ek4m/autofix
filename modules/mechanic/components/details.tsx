@@ -170,7 +170,9 @@ const MechanicDetails: FC<{
                     </Box>
                   </Grid>
                 ))}
-                <Grid size={12}>{data && <ContactModal id={data.id} />}</Grid>
+                <Grid size={12}>
+                  {data && user && <ContactModal id={data.id} />}
+                </Grid>
               </Grid>
             </Paper>
           </Box>

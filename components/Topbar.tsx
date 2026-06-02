@@ -208,6 +208,7 @@ export default function Topbar() {
             const Icon = link.icon;
             return (
               <ListItem
+                onClick={() => setMobileOpen(false)}
                 href={link.href}
                 component={Link}
                 sx={{ gap: 1 }}
@@ -220,12 +221,18 @@ export default function Topbar() {
           })}
           {user ? (
             <>
-              <ListItem href="/profile" component={Link} sx={{ gap: 1 }}>
+              <ListItem
+                onClick={() => setMobileOpen(false)}
+                href="/profile"
+                component={Link}
+                sx={{ gap: 1 }}
+              >
                 <FaUser size={16} />
                 <Typography sx={{ fontSize: 12 }}>Hesab</Typography>
               </ListItem>
               {isMechanic ? (
                 <ListItem
+                  onClick={() => setMobileOpen(false)}
                   href="/profile/mechanic/panel"
                   component={Link}
                   sx={{ gap: 1 }}
@@ -235,6 +242,7 @@ export default function Topbar() {
                 </ListItem>
               ) : (
                 <ListItem
+                  onClick={() => setMobileOpen(false)}
                   href="/profile/user-problems"
                   component={Link}
                   sx={{ gap: 1 }}
@@ -246,11 +254,21 @@ export default function Topbar() {
             </>
           ) : (
             <>
-              <ListItem href="/auth/login" component={Link} sx={{ gap: 1 }}>
+              <ListItem
+                onClick={() => setMobileOpen(false)}
+                href="/auth/login"
+                component={Link}
+                sx={{ gap: 1 }}
+              >
                 <HiOutlineArrowRightOnRectangle size={16} />
                 <Typography sx={{ fontSize: 12 }}>Daxil ol</Typography>
               </ListItem>
-              <ListItem href="/auth/register" component={Link} sx={{ gap: 1 }}>
+              <ListItem
+                onClick={() => setMobileOpen(false)}
+                href="/auth/register"
+                component={Link}
+                sx={{ gap: 1 }}
+              >
                 <HiOutlineUserPlus size={16} />
                 <Typography sx={{ fontSize: 12 }}>Qeydiyyat</Typography>
               </ListItem>
